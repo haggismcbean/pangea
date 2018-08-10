@@ -25,3 +25,49 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+==============
+## Plans!
+
+#### Index (unlogged in)
+
+Are you bored? Lonely? Tired of that dull empty feeling day in day out? Well why don't you colonize an alien planet with a group of strangers instead?!
+
+Sign Up Now
+
+Once in a lifetime opportunity to spend the rest of your life doing something interesting for once. With nothing but your wits and a few meagre supplies, you'll be dropped into the middle of an alien wasteland to make of it what you can
+
+Become a celebrity!
+
+Your every move will be followed by our hidden drones, so your friends and loved ones back on earth will see how you get along. Will you be become leader of your tribe? Be a brave warrior in the face of impossible foes? Discover how to make fire or smelt a precious ore? Or will you be eaten by a two headed alien savage the day you land? Only one way to find out!
+
+A one way ticket to almost certain death!
+
+You'll be signing your life away, but who wants that boring old life anyway? Had enough of toiling away your best years just so you can grow old to die and never be remembered for anything? Come and settle Pangea and make a name for yourself. The most popular TV show on earth for the past {{years}} running wants YOU to come and make a name for yourself
+
+#### Character creation page
+
+Passchip Identity Number: AICHLKEHGB838LAO9
+
+Strength
+Stamina
+Fortitude
+Sneakiness
+
+Sign Your Life Away
+
+Seriously once you click this there's no going back
+
+-----
+
+Name: Truipo Balzak
+Age: 23
+Height: 6'2
+Weight: 202lbs
+Appearance: adsfkjadlsfk
+Bio: asdkfjlasdf
+
+Yes, that's me
+
+No, that's not me
+
