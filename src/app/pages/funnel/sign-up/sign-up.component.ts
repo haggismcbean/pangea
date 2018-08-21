@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { AuthenticationWebService } from "../../../web-services/authentication-web.service";
+
 
 @Component({
     selector: 'pan-sign-up',
@@ -8,14 +10,25 @@ import { Router } from '@angular/router';
     styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent {
-    runningYears: number = 101;
+    public form = {
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirmation: ""
+    };
 
     constructor(
-        private router: Router
-    ) {}
+        private router: Router,
+        private authenticationWebService: AuthenticationWebService
+    ) {
+    }
 
-    // public signUp() {
-    //     console.log('clicked!');
-    //     this.router.navigate(['/sign-up']);
-    // }
+    public signUp(): void {
+        console.log('form: ', this);
+        this.authenticationWebService
+            .register(this.form)
+            .subscribe((response) => {
+                console.log('response!', response);
+            })
+    }
 }

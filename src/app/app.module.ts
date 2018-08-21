@@ -7,6 +7,7 @@ import { LandingComponent } from './pages/funnel/landing/landing.component';
 
 import { SignUpModule } from "./pages/funnel/sign-up/sign-up.module";
 import { LandingModule } from "./pages/funnel/landing/landing.module";
+import { WebServicesModule } from "./web-services/web-services.module";
 
 const appRoutes: Routes = [
   { path: '',   redirectTo: '/landing', pathMatch: 'full' },
@@ -19,12 +20,12 @@ const appRoutes: Routes = [
     ],
     imports: [
         BrowserModule,
+        RouterModule.forRoot(
+            appRoutes
+        ),
         SignUpModule,
         LandingModule,
-        RouterModule.forRoot(
-            appRoutes,
-            { enableTracing: true }
-        ),
+        WebServicesModule,
     ],
     exports: [],
     providers: [],

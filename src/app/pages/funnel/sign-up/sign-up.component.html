@@ -1,3 +1,25 @@
 <div class="landing-page">
-    Hello!
+    <form>
+        Username
+        <input type="text"
+               name="name"
+               [(ngModel)]="form.name"/>
+
+        Email
+        <input type="email"
+               name="email"
+               [(ngModel)]="form.email"/>
+
+        Password
+        <input type="password"
+               name="password"
+               [(ngModel)]="form.password"/>
+
+        Confirm Password
+        <input type="password"
+               name="confirm-password"
+               [(ngModel)]="form.passwordConfirmation"/>
+
+        <div (click)=signUp()>Submit</div>
+    </form>
 </div>
