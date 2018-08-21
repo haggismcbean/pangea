@@ -4,30 +4,27 @@ import { RouterModule, Routes }  from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './pages/funnel/landing/landing.component';
-import { SignUpComponent } from "./pages/funnel/sign-up/sign-up.component";
 
-// import { SignUpModule } from "./pages/funnel/sign-up/sign-up.module";
+import { SignUpModule } from "./pages/funnel/sign-up/sign-up.module";
+import { LandingModule } from "./pages/funnel/landing/landing.module";
 
 const appRoutes: Routes = [
-  { path: 'landing', component: LandingComponent },
-  { path: 'sign-up', component: SignUpComponent },
   { path: '',   redirectTo: '/landing', pathMatch: 'full' },
-  { path: '**', component: SignUpComponent },
+  { path: '**', component: LandingComponent },
 ];
 
 @NgModule({
     declarations: [
-        AppComponent,
-        LandingComponent,
-        SignUpComponent
+        AppComponent
     ],
     imports: [
         BrowserModule,
+        SignUpModule,
+        LandingModule,
         RouterModule.forRoot(
             appRoutes,
             { enableTracing: true }
         ),
-        // SignUpModule,
     ],
     exports: [],
     providers: [],
