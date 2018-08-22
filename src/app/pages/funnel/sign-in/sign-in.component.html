@@ -1,0 +1,16 @@
+<div class="sign-in-page">
+    <form>
+        Email
+        <input type="email"
+               name="email"
+               [(ngModel)]="form.email"/>
+
+        Password
+        <input type="password"
+               name="password"
+               [(ngModel)]="form.password"/>
+
+
+        <div (click)="signIn()">Sign in</div>
+    </form>
+</div>

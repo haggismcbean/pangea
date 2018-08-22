@@ -24,14 +24,13 @@ export class ResetPasswordComponent {
     ) {
         this.activatedRoute.params.subscribe(
             (params) => {
-                console.log('BOOM!', params);
                 this.form.token = params.token;
+                this.router.navigate(['/sign-in']);
             }
         );
     }
 
     public resetPassword(): void {
-        console.log('form: ', this);
         this.authenticationWebService
             .resetPassword(this.form)
             .subscribe((response) => {

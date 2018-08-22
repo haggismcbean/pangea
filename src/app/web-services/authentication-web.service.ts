@@ -31,9 +31,21 @@ export class AuthenticationWebService {
             .post<any>(url, credentials);
     }
 
-    // public login() {
+    public login(form) {
+        const url = `${this.baseUrl}/login`;
+        const credentials = {
+            email: form.email,
+            password: form.password
+        };
 
-    // }
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        });
+
+        return this.http
+            .post<any>(url, credentials);
+    }
 
     // public logout() {
 

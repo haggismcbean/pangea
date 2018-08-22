@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LandingComponent } from './pages/funnel/landing/landing.component';
 
 import { SignUpModule } from './pages/funnel/sign-up/sign-up.module';
+import { SignInModule } from './pages/funnel/sign-in/sign-in.module';
 import { LandingModule } from './pages/funnel/landing/landing.module';
 import { GetPasswordEmailModule } from './pages/password/get-password-email/get-password-email.module';
 import { ResetPasswordModule } from './pages/password/reset-password/reset-password.module';
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
             appRoutes
         ),
         SignUpModule,
+        SignInModule,
         LandingModule,
         GetPasswordEmailModule,
         ResetPasswordModule,
