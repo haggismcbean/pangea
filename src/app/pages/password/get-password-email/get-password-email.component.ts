@@ -5,11 +5,11 @@ import { AuthenticationWebService } from '../../../web-services/authentication-w
 
 
 @Component({
-    selector: 'pan-sign-up',
-    templateUrl: './sign-up.component.html',
-    styleUrls: ['../../../app.component.css', './sign-up.component.css']
+    selector: 'pan-get-password-email',
+    templateUrl: './get-password-email.component.html',
+    styleUrls: ['../../../app.component.css', './get-password-email.component.css']
 })
-export class SignUpComponent {
+export class GetPasswordEmailComponent {
     public form = {
         name: '',
         email: '',
@@ -23,15 +23,12 @@ export class SignUpComponent {
     ) {
     }
 
-    public signUp(): void {
+    public getPasswordEmail(): void {
+        console.log('form: ', this);
         this.authenticationWebService
-            .register(this.form)
+            .getPasswordEmail(this.form)
             .subscribe((response) => {
                 console.log('response!', response);
             });
-    }
-
-    public forgotPassword(): void {
-        this.router.navigate(['/get-password-email']);
     }
 }
