@@ -1,0 +1,15 @@
+body {
+	font-family: "Monaco", "Courier", serif;
+	width: 32em;
+	margin: 0 auto;
+}
+
+input {
+	display: block;
+}
+
+.link {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}

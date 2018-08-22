@@ -1,7 +1,7 @@
-import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { landingRouting } from "./landing.routing";
-import { LandingComponent } from "./landing.component";
+import { landingRouting } from './landing.routing';
+import { LandingComponent } from './landing.component';
 
 @NgModule({
     imports: [

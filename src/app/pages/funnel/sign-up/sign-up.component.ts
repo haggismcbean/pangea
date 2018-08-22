@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationWebService } from "../../../web-services/authentication-web.service";
+import { AuthenticationWebService } from '../../../web-services/authentication-web.service';
 
 
 @Component({
@@ -11,10 +11,10 @@ import { AuthenticationWebService } from "../../../web-services/authentication-w
 })
 export class SignUpComponent {
     public form = {
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirmation: ""
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: ''
     };
 
     constructor(
@@ -29,6 +29,6 @@ export class SignUpComponent {
             .register(this.form)
             .subscribe((response) => {
                 console.log('response!', response);
-            })
+            });
     }
 }

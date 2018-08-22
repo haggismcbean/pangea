@@ -1,4 +1,4 @@
-<div class="landing-page">
+<div class="sign-up-page">
     <form>
         Username
         <input type="text"
@@ -20,6 +20,8 @@
                name="confirm-password"
                [(ngModel)]="form.passwordConfirmation"/>
 
-        <div (click)=signUp()>Submit</div>
+        <div (click)="signUp()">Submit</div>
     </form>
+
+    <p (click)="forgotPassword()">Forgot password?</p>
 </div>

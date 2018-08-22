@@ -7,7 +7,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
     styleUrls: ['./landing.component.css']
 })
 export class LandingComponent {
-    runningYears: number = 101;
+    runningYears = 101;
 
     constructor(
         private router: Router

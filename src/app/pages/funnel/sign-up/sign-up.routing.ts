@@ -1,10 +1,10 @@
-import { ModuleWithProviders } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { ModuleWithProviders } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import { SignUpComponent } from "./sign-up.component";
+import { SignUpComponent } from './sign-up.component';
 
 const signUpRoutes: Routes = [{
-    path: "sign-up",
+    path: 'sign-up',
     component: SignUpComponent,
 }];
 
