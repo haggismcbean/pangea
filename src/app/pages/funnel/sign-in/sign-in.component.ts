@@ -42,6 +42,36 @@ export class SignInComponent {
         private authenticationWebService: AuthenticationWebService,
         private http: HttpClient
     ) {
+         const echo = new Echo({
+            broadcaster: 'socket.io',
+            host: 'http://local.pangea-api.com:6001',
+            auth:
+            {
+                headers:
+                {
+                    'Authorization': 'Bearer ' + undefined
+                },
+            },
+            client: io
+        });
+
+        echo.channel('chat')
+            .listen('MessageSent', (e) => {
+                console.log('UNAUTHENTICATED public!', e);
+                this.messages.push({
+                    message: e.message.message,
+                    user: e.user
+                });
+            });
+
+        echo.private('chat')
+            .listen('MessageSent', (e) => {
+                console.log('UNAUTHENTICATED private!', e);
+                this.messages.push({
+                    message: e.message.message,
+                    user: e.user
+                });
+            });
     }
 
     public signIn(): void {
@@ -67,13 +97,22 @@ export class SignInComponent {
                 });
 
                 echo.channel('chat')
-                  .listen('MessageSent', (e) => {
-                    console.log('holy shit!', e);
-                    this.messages.push({
-                      message: e.message.message,
-                      user: e.user
+                    .listen('MessageSent', (e) => {
+                        console.log('public!', e);
+                        this.messages.push({
+                            message: e.message.message,
+                            user: e.user
+                        });
                     });
-                  });
+
+                echo.private('chat')
+                    .listen('MessageSent', (e) => {
+                        console.log('private!', e);
+                        this.messages.push({
+                            message: e.message.message,
+                            user: e.user
+                        });
+                    });
             });
     }
 
