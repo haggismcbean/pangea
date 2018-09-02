@@ -7,7 +7,7 @@ import { SignInComponent } from './sign-in.component';
 @NgModule({
     imports: [
         FormsModule,
-        signInRouting,
+        signInRouting
     ],
     providers: [
     ],
