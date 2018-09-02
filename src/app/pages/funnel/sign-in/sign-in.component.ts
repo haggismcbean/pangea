@@ -60,7 +60,7 @@ export class SignInComponent {
                     {
                         headers:
                         {
-                            'Authorization': 'Bearer ' + 'asdf'
+                            'Authorization': 'Bearer ' + response.data.api_token
                         },
                     },
                     client: io
