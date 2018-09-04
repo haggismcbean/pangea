@@ -10,6 +10,8 @@ import { SignInModule } from './pages/funnel/sign-in/sign-in.module';
 import { LandingModule } from './pages/funnel/landing/landing.module';
 import { GetPasswordEmailModule } from './pages/password/get-password-email/get-password-email.module';
 import { ResetPasswordModule } from './pages/password/reset-password/reset-password.module';
+import { PangeaModule } from './pages/character/pangea/pangea.module';
+
 import { WebServicesModule } from './web-services/web-services.module';
 
 const appRoutes: Routes = [
@@ -31,6 +33,7 @@ const appRoutes: Routes = [
         LandingModule,
         GetPasswordEmailModule,
         ResetPasswordModule,
+        PangeaModule,
         WebServicesModule,
     ],
     exports: [],

@@ -83,31 +83,4 @@ export class AuthenticationWebService {
         return this.http
             .post<any>(url, credentials);
     }
-
-
-    // chat stuff!
-
-    public fetchMessages(token) {
-        const url = `${this.baseUrl}/messages?api_token=${token}`;
-
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-        return this.http
-            .get<any>(url);
-    }
-
-    public addMessage(message) {
-        const url = `${this.baseUrl}/messages?api_token=${message.user.api_token}`;
-
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-        return this.http
-            .post<any>(url, message);
-    }
 }

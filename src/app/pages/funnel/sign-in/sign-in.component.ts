@@ -41,38 +41,7 @@ export class SignInComponent {
         private router: Router,
         private authenticationWebService: AuthenticationWebService,
         private http: HttpClient
-    ) {
-         const echo = new Echo({
-            broadcaster: 'socket.io',
-            host: 'http://local.pangea-api.com:6001',
-            auth:
-            {
-                headers:
-                {
-                    'Authorization': 'Bearer ' + undefined
-                },
-            },
-            client: io
-        });
-
-        echo.channel('chat')
-            .listen('MessageSent', (e) => {
-                console.log('UNAUTHENTICATED public!', e);
-                this.messages.push({
-                    message: e.message.message,
-                    user: e.user
-                });
-            });
-
-        echo.private('chat')
-            .listen('MessageSent', (e) => {
-                console.log('UNAUTHENTICATED private!', e);
-                this.messages.push({
-                    message: e.message.message,
-                    user: e.user
-                });
-            });
-    }
+    ) {}
 
     public signIn(): void {
         this.authenticationWebService
@@ -83,46 +52,7 @@ export class SignInComponent {
                 this.user.email = response.data.email;
                 this.user.id = response.data.id;
 
-                const echo = new Echo({
-                    broadcaster: 'socket.io',
-                    host: 'http://local.pangea-api.com:6001',
-                    auth:
-                    {
-                        headers:
-                        {
-                            'Authorization': 'Bearer ' + response.data.api_token
-                        },
-                    },
-                    client: io
-                });
-
-                echo.channel('chat')
-                    .listen('MessageSent', (e) => {
-                        console.log('public!', e);
-                        this.messages.push({
-                            message: e.message.message,
-                            user: e.user
-                        });
-                    });
-
-                echo.private('chat')
-                    .listen('MessageSent', (e) => {
-                        console.log('private!', e);
-                        this.messages.push({
-                            message: e.message.message,
-                            user: e.user
-                        });
-                    });
-            });
-    }
-
-    public sendMessage() {
-        console.log('send!!');
-        this.message.message = this.newMessage;
-        this.authenticationWebService
-            .addMessage(this.message)
-            .subscribe((response) => {
-                console.log('response? ??', response);
+                this.router.navigate(['/pangea']);
             });
     }
 }
