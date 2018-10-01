@@ -8,7 +8,8 @@ import * as Echo from 'laravel-echo';
 import * as io from 'socket.io-client';
 
 import { WebhookService } from '../../../web-services/webhook.service';
-
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../models/user.model';
 
 @Component({
     selector: 'pan-gea',
@@ -21,16 +22,10 @@ export class PangeaComponent {
         password: '',
     };
 
-    public user = {
-        api_token: '',
-        name: 'Harry',
-        email: '',
-        id: 0
-    };
+    public user: User;
 
     public message = {
-        message: '',
-        user: this.user
+        message: ''
     };
 
     public newMessage = '';
@@ -40,9 +35,12 @@ export class PangeaComponent {
     constructor(
         private router: Router,
         private webhookService: WebhookService,
-        private http: HttpClient
+        private http: HttpClient,
+        private userService: UserService
     ) {
-         const echo = new Echo({
+        this.user = this.userService.getUser();
+
+        const echo = new Echo({
             broadcaster: 'socket.io',
             host: 'http://local.pangea-api.com:6001',
             auth:
@@ -57,7 +55,7 @@ export class PangeaComponent {
 
         echo.private('chat')
             .listen('MessageSent', (e) => {
-                console.log('UNAUTHENTICATED private!', e);
+                console.log('message!', e);
                 this.messages.push({
                     message: e.message.message,
                     user: e.user

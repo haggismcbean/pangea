@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 // import { BackendService } from '~/shared/services/backend.service';
 
@@ -44,7 +44,10 @@ export class AuthenticationWebService {
         });
 
         return this.http
-            .post<any>(url, credentials);
+            .post<any>(url, credentials)
+            .pipe(
+                map((body: any) => body.data)
+            );
     }
 
     // public logout() {

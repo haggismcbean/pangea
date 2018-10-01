@@ -8,6 +8,9 @@ import * as Echo from 'laravel-echo';
 import * as io from 'socket.io-client';
 
 import { AuthenticationWebService } from '../../../web-services/authentication-web.service';
+import { UserService } from '../../../services/user.service';
+
+import { ILoginResponseData } from '../../../web-service-interfaces/i-login.authentication-service';
 
 
 @Component({
@@ -28,29 +31,18 @@ export class SignInComponent {
         id: 0
     };
 
-    public message = {
-        message: '',
-        user: this.user
-    };
-
-    public newMessage = '';
-
-    public messages = [];
-
     constructor(
         private router: Router,
         private authenticationWebService: AuthenticationWebService,
-        private http: HttpClient
+        private http: HttpClient,
+        private userService: UserService
     ) {}
 
     public signIn(): void {
         this.authenticationWebService
             .login(this.form)
-            .subscribe((response: any) => {
-                console.log('response!', response);
-                this.user.api_token = response.data.api_token;
-                this.user.email = response.data.email;
-                this.user.id = response.data.id;
+            .subscribe((loginResponseData: ILoginResponseData) => {
+                this.userService.newUser(loginResponseData);
 
                 this.router.navigate(['/pangea']);
             });

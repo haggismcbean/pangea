@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-// import { BackendService } from '~/shared/services/backend.service';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class WebhookService {
@@ -11,6 +11,7 @@ export class WebhookService {
 
     constructor(
         private http: HttpClient,
+        private userService: UserService
     ) {}
 
     public fetchMessages(token) {
@@ -26,7 +27,8 @@ export class WebhookService {
     }
 
     public addMessage(message) {
-        const url = `${this.baseUrl}/messages?api_token=${message.user.api_token}`;
+        const user = this.userService.getUser();
+        const url = `${this.baseUrl}/messages?api_token=${user.token}`;
 
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
