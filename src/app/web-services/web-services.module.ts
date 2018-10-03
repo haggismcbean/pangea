@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServicesModule } from '../services/services.module';
 
 import { AuthenticationWebService } from './authentication-web.service';
+import { CharacterWebService } from './character-web.service';
 import { WebhookService } from './webhook.service';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { WebhookService } from './webhook.service';
     providers: [
         AuthenticationWebService,
         WebhookService,
+        CharacterWebService,
     ],
     declarations: [
     ],

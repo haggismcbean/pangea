@@ -14,7 +14,10 @@ export class LandingComponent {
     ) {}
 
     public signUp() {
-        this.runningYears = 123;
         this.router.navigate(['/sign-up']);
+    }
+
+    public signIn() {
+        this.router.navigate(['/sign-in']);
     }
 }

@@ -44,7 +44,7 @@ export class SignInComponent {
             .subscribe((loginResponseData: ILoginResponseData) => {
                 this.userService.newUser(loginResponseData);
 
-                this.router.navigate(['/pangea']);
+                this.router.navigate(['/embark']);
             });
     }
 }

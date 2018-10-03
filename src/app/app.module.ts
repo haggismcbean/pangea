@@ -11,6 +11,7 @@ import { LandingModule } from './pages/funnel/landing/landing.module';
 import { GetPasswordEmailModule } from './pages/password/get-password-email/get-password-email.module';
 import { ResetPasswordModule } from './pages/password/reset-password/reset-password.module';
 import { PangeaModule } from './pages/character/pangea/pangea.module';
+import { EmbarkModule } from './pages/character/embark/embark.module';
 
 import { WebServicesModule } from './web-services/web-services.module';
 
@@ -34,6 +35,7 @@ const appRoutes: Routes = [
         GetPasswordEmailModule,
         ResetPasswordModule,
         PangeaModule,
+        EmbarkModule,
         WebServicesModule,
     ],
     exports: [],
