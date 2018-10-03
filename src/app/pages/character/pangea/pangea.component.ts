@@ -47,21 +47,21 @@ export class PangeaComponent {
         this.activatedRoute.queryParams
             .subscribe((queryParams) => {
                 this.character = this.characterService.getCharacter(Number(queryParams.characterId));
+                this.user = this.userService.getUser();
 
                 const echo = new Echo({
                     broadcaster: 'socket.io',
                     host: 'http://local.pangea-api.com:6001',
                     auth:
                     {
-                        headers:
-                        {
-                            'Authorization': 'Bearer ' + undefined
+                        headers: {
+                            'Authorization': 'Bearer ' + this.user.token
                         },
                     },
                     client: io
                 });
 
-                echo.private('chat')
+                echo.private('chat.' + this.character.id)
                     .listen('MessageSent', (e) => {
                         console.log('message!', e);
                         this.messages.push({
@@ -70,7 +70,6 @@ export class PangeaComponent {
                         });
                     });
             });
-        this.user = this.userService.getUser();
     }
 
     public sendMessage() {
