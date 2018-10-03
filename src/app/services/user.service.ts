@@ -8,7 +8,7 @@ import { ILoginResponseData } from '../web-service-interfaces/i-login.authentica
 
 @Injectable()
 export class UserService {
-    public user: User;
+    private user: User;
 
     public newUser(user: ILoginResponseData) {
         this.user = new User(user.id);
