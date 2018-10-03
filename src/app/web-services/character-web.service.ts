@@ -30,6 +30,7 @@ export class CharacterWebService {
 
     public get(): any {
         const user = this.userService.getUser();
+        console.log(user);
         const url = `${this.baseUrl}/characters?api_token=${user.token}`;
 
         const headers = new HttpHeaders({

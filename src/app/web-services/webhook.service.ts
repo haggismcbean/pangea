@@ -27,6 +27,7 @@ export class WebhookService {
     }
 
     public addMessage(message) {
+        console.log('hello!');
         const user = this.userService.getUser();
         const url = `${this.baseUrl}/messages?api_token=${user.token}`;
 

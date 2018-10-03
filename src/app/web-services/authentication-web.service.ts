@@ -50,10 +50,6 @@ export class AuthenticationWebService {
             );
     }
 
-    // public logout() {
-
-    // }
-
     public getPasswordEmail(form) {
         const url = `${this.baseUrl}/password/email`;
         const credentials = {

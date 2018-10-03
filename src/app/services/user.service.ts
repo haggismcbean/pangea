@@ -9,18 +9,33 @@ import { ILoginResponseData } from '../web-service-interfaces/i-login.authentica
 @Injectable()
 export class UserService {
     private user: User;
+    private readonly USER_KEY = 'USER_KEY';
 
     public newUser(user: ILoginResponseData) {
         this.user = new User(user.id);
 
-        this.user.setToken(user.api_token);
+        this.user.setToken(user.api_token || user.token);
         this.user.setEmail(user.email);
         this.user.setName(user.name);
+
+        localStorage.setItem(this.USER_KEY, JSON.stringify(this.user));
 
         return this.user;
     }
 
     public getUser() {
-        return this.user;
+        if (this.user) {
+            return this.user;
+        } else {
+            return this.getCachedUser();
+        }
+    }
+
+    private getCachedUser() {
+        const cachedUser = JSON.parse(localStorage.getItem(this.USER_KEY));
+
+        if (cachedUser) {
+            return this.newUser(cachedUser);
+        }
     }
 }

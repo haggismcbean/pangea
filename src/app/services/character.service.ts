@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Character } from '../models/character.model';
+import { CharacterWebService } from '../web-services/character-web.service';
 
 import * as _ from 'lodash';
 
@@ -11,7 +12,42 @@ import * as _ from 'lodash';
 export class CharacterService {
     private characters: Character[];
 
-    public newCharacters(characters): Character[] {
+    constructor(
+        private characterWebService: CharacterWebService
+    ) {}
+
+    public getCharacters(): Observable<Character[]> {
+        if (this.characters) {
+            return of(this.characters);
+        } else {
+            return this.fetchCharacters();
+        }
+    }
+
+    public getCharacter(characterId: number): Observable<Character> {
+        if (this.characters) {
+            return of(_.find(this.characters, {'id': characterId}));
+        } else {
+            return this.fetchCharacters()
+                .pipe(
+                    map(() => {
+                        return _.find(this.characters, {'id': characterId});
+                    })
+                );
+        }
+    }
+
+    private fetchCharacters(): Observable<Character[]> {
+        return this.characterWebService
+            .get()
+            .pipe(
+                map((characters) => {
+                    return this.newCharacters(characters);
+                })
+            );
+    }
+
+    private newCharacters(characters): Character[] {
         this.characters = _.map(characters, (_character) => {
             const character = new Character(_character.id);
 
@@ -36,11 +72,5 @@ export class CharacterService {
         });
 
         return this.characters;
-    }
-
-    public getCharacter(characterId: number): Character {
-        console.log('characters: ', this.characters);
-        console.log('characterId: ', characterId);
-        return _.find(this.characters, {'id': characterId});
     }
 }

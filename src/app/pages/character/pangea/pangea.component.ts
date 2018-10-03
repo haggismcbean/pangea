@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, flatMap } from 'rxjs/operators';
 
 import * as Echo from 'laravel-echo';
 import * as io from 'socket.io-client';
@@ -33,8 +33,9 @@ export class PangeaComponent {
     };
 
     public newMessage = '';
-
     public messages = [];
+
+    private echoSocket;
 
     constructor(
         private router: Router,
@@ -45,30 +46,18 @@ export class PangeaComponent {
         private characterService: CharacterService
     ) {
         this.activatedRoute.queryParams
-            .subscribe((queryParams) => {
-                this.character = this.characterService.getCharacter(Number(queryParams.characterId));
+            .pipe(
+                flatMap((queryParams) => {
+                    return this.characterService
+                        .getCharacter(Number(queryParams.characterId));
+                })
+            )
+            .subscribe((character: Character) => {
+                this.character = character;
                 this.user = this.userService.getUser();
 
-                const echo = new Echo({
-                    broadcaster: 'socket.io',
-                    host: 'http://local.pangea-api.com:6001',
-                    auth:
-                    {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.user.token
-                        },
-                    },
-                    client: io
-                });
-
-                echo.private('chat.' + this.character.id)
-                    .listen('MessageSent', (e) => {
-                        console.log('message!', e);
-                        this.messages.push({
-                            message: e.message.message,
-                            user: e.user
-                        });
-                    });
+                this.registerEchoSocket();
+                this.subscribeCharacter();
             });
     }
 
@@ -76,10 +65,34 @@ export class PangeaComponent {
         this.message.message = this.newMessage;
         this.message.characterId = this.character.id;
 
-        this.webhookService
+        return this.webhookService
             .addMessage(this.message)
-            .subscribe((response) => {
-                console.log('response? ??', response);
+            .subscribe();
+    }
+
+    private registerEchoSocket(): void {
+        this.echoSocket = new Echo({
+            broadcaster: 'socket.io',
+            host: 'http://local.pangea-api.com:6001',
+            auth:
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + this.user.token
+                },
+            },
+            client: io
+        });
+    }
+
+    private subscribeCharacter(): void {
+        this.echoSocket
+            .private('chat.' + this.character.id)
+            .listen('MessageSent', (e) => {
+                console.log('message!', e);
+                this.messages.push({
+                    message: e.message.message,
+                    user: e.user
+                });
             });
     }
 }
