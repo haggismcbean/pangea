@@ -38,12 +38,6 @@ export class CharacterWebService {
         });
 
         return this.http
-            .get<any>(url)
-            .pipe(
-                map((body: any) => {
-                    console.log('response!: ', body);
-                    return body.data;
-                })
-            );
+            .get<any>(url);
     }
 }
