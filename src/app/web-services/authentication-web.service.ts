@@ -3,18 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-// import { BackendService } from '~/shared/services/backend.service';
+import { ApiService } from './api.service';
 
 @Injectable()
 export class AuthenticationWebService {
-    private baseUrl = 'http://local.pangea-api.com:8888/api';
-
     constructor(
-        private http: HttpClient,
+        private api: ApiService,
     ) {}
 
     public register(form) {
-        const url = `${this.baseUrl}/register`;
+        const url = `register`;
         const credentials = {
             name: form.name,
             email: form.email,
@@ -22,51 +20,36 @@ export class AuthenticationWebService {
             password_confirmation: form.passwordConfirmation
         };
 
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-        return this.http
-            .post<any>(url, credentials);
+        return this.api
+            .post(url, credentials);
     }
 
     public login(form): any {
-        const url = `${this.baseUrl}/login`;
+        const url = `login`;
         const credentials = {
             email: form.email,
             password: form.password
         };
 
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-        return this.http
-            .post<any>(url, credentials)
+        return this.api
+            .post(url, credentials)
             .pipe(
                 map((body: any) => body.data)
             );
     }
 
     public getPasswordEmail(form) {
-        const url = `${this.baseUrl}/password/email`;
+        const url = `password/email`;
         const credentials = {
             email: form.email,
         };
 
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-        return this.http
-            .post<any>(url, credentials);
+        return this.api
+            .post(url, credentials);
     }
 
     public resetPassword(form) {
-        const url = `${this.baseUrl}/password/reset`;
+        const url = `password/reset`;
         const credentials = {
             email: form.email,
             password: form.password,
@@ -74,12 +57,7 @@ export class AuthenticationWebService {
             token: form.token,
         };
 
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-        return this.http
-            .post<any>(url, credentials);
+        return this.api
+            .post(url, credentials);
     }
 }
