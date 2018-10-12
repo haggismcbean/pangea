@@ -16,7 +16,7 @@ import { Character } from '../../../models/character.model';
 @Component({
     selector: 'pan-gea',
     templateUrl: './pangea.component.html',
-    styleUrls: ['../../../app.component.css', './pangea.component.css']
+    styleUrls: ['../../../app.component.css', './pangea.component.scss']
 })
 export class PangeaComponent {
     public form = {

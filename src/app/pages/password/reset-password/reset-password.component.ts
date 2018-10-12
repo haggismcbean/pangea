@@ -7,7 +7,7 @@ import { AuthenticationWebService } from '../../../web-services/authentication-w
 @Component({
     selector: 'pan-reset-password',
     templateUrl: './reset-password.component.html',
-    styleUrls: ['../../../app.component.css', './reset-password.component.css']
+    styleUrls: ['../../../app.component.css', './reset-password.component.scss']
 })
 export class ResetPasswordComponent {
     public form = {

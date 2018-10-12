@@ -7,7 +7,7 @@ import { AuthenticationWebService } from '../../../web-services/authentication-w
 @Component({
     selector: 'pan-sign-up',
     templateUrl: './sign-up.component.html',
-    styleUrls: ['../../../app.component.css', './sign-up.component.css']
+    styleUrls: ['../../../app.component.css', './sign-up.component.scss']
 })
 export class SignUpComponent {
     public form = {

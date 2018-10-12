@@ -7,7 +7,7 @@ import { AuthenticationWebService } from '../../../web-services/authentication-w
 @Component({
     selector: 'pan-get-password-email',
     templateUrl: './get-password-email.component.html',
-    styleUrls: ['../../../app.component.css', './get-password-email.component.css']
+    styleUrls: ['../../../app.component.css', './get-password-email.component.scss']
 })
 export class GetPasswordEmailComponent {
     public form = {

@@ -16,7 +16,7 @@ import { ILoginResponseData } from '../../../web-service-interfaces/i-login.auth
 @Component({
     selector: 'pan-sign-in',
     templateUrl: './sign-in.component.html',
-    styleUrls: ['../../../app.component.css', './sign-in.component.css']
+    styleUrls: ['../../../app.component.css', './sign-in.component.scss']
 })
 export class SignInComponent {
     public form = {
