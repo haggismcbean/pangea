@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+h1, h2, h3, h4, p {
+	margin: 0.5em;
+}
+
+body {
+	background-color: #2d2f35;
+	color: #fefefe;
+	/* Note - text is always just the colour of text (ie. white, grey, black) 
+	   it's only visual elements that can be any other colour.*/
+	/*accent-color: #9d44b5;*/
+	/*accent-color2: #b5446e;*/
+	/*accent-color3: #badefc;*/
+	/*accent-color4: #0affed;*/
+}
+
+h1, h2, h3 {
+	font-size: 16px;
+}
+
+h4, p {
+	font-size: 14px;
+}

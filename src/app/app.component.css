@@ -1,9 +1,11 @@
+@import '~@angular/material/prebuilt-themes/purple-green.css';
+
 input {
 	display: block;
 }
 
 .link {
-	color: blue;
+	color: #0affed;
 	text-decoration: underline;
 	cursor: pointer;
 }

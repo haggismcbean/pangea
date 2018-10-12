@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 @Component({
     selector: 'pan-embark',
     templateUrl: './embark.component.html',
-    styleUrls: ['../../../app.component.css']
+    styleUrls: ['../../../app.component.css', './embark.component.css']
 })
 export class EmbarkComponent {
     public characters: Character[];
