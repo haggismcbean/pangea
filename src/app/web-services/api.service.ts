@@ -15,7 +15,7 @@ export class ApiService {
     ) {}
 
     public get(url, data?) {
-        url = `${this.baseUrl}/${url}` + this.getApiToken();
+        url = `${this.baseUrl}/${url}` + this.getApiToken(url);
 
         if (!data) {
             data = {};
@@ -26,7 +26,7 @@ export class ApiService {
     }
 
     public post(url, data?) {
-        url = `${this.baseUrl}/${url}` + this.getApiToken();
+        url = `${this.baseUrl}/${url}` + this.getApiToken(url);
 
         if (!data) {
             data = {};
@@ -36,11 +36,15 @@ export class ApiService {
             .post<any>(url, data);
     }
 
-    private getApiToken() {
+    private getApiToken(url) {
         const user = this.userService.getUser();
 
         if (user) {
-            return `?api_token=${user.token}`;
+            if (url.indexOf('?') === -1) {
+                return `?api_token=${user.token}`;
+            } else {
+                return `&api_token=${user.token}`;
+            }
         }
 
         return '';

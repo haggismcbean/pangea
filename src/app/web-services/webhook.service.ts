@@ -11,8 +11,8 @@ export class WebhookService {
         private api: ApiService
     ) {}
 
-    public fetchMessages(token) {
-        const url = `messages`;
+    public fetchMessages(characterId) {
+        const url = `messages?character_id=${characterId}`;
 
         return this.api
             .get(url);

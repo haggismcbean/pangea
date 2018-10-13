@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { catchError, map, flatMap } from 'rxjs/operators';
 
 import * as Echo from 'laravel-echo';
@@ -48,13 +48,20 @@ export class PangeaComponent {
         this.activatedRoute.queryParams
             .pipe(
                 flatMap((queryParams) => {
-                    return this.characterService
-                        .getCharacter(Number(queryParams.characterId));
+                    const characterId = Number(queryParams.characterId);
+                    return combineLatest(
+                        this.webhookService.fetchMessages(characterId),
+                        this.characterService.getCharacter(characterId),
+                    );
                 })
             )
-            .subscribe((character: Character) => {
-                this.character = character;
+            .subscribe((subscriptions: [messages, character: Character]) => {
+                this.messages = subscriptions[0].data;
+                this.character = subscriptions[1];
                 this.user = this.userService.getUser();
+
+                console.log('messages: ', this.messages);
+                console.log('character: ', this.character);
 
                 this.registerEchoSocket();
                 this.subscribeCharacter();
