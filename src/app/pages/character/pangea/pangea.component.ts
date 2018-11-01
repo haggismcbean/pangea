@@ -55,7 +55,7 @@ export class PangeaComponent {
                     );
                 })
             )
-            .subscribe((subscriptions: [messages, character: Character]) => {
+            .subscribe((subscriptions: any) => {
                 this.messages = subscriptions[0].data;
                 this.character = subscriptions[1];
                 this.user = this.userService.getUser();
