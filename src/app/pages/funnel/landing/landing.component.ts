@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
     selector: 'pan-landing',
     templateUrl: './landing.component.html',
-    styleUrls: ['../../../app.component.css', './landing.component.scss']
+    styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
     runningYears = 101;

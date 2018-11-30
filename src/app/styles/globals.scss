@@ -1,0 +1,54 @@
+@import '../../../node_modules/reset-css/sass/reset.scss';
+@import 'colours.scss';
+@import 'box.scss';
+@import 'strip.scss';
+
+h1, h2, h3, h4, p {
+	margin: 0.5em;
+}
+
+html, 
+body {
+    height: 100%;
+}
+
+body {
+	background-color: $background;
+	color: #fefefe;
+	font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+	overflow: hidden;
+}
+
+h1, h2, h3 {
+	color: $text-title-color;
+	font-size: 14px;
+	line-height: 1.2em;
+	padding: 0;
+	margin: 14px 0 0 0;
+}
+
+h4, p {
+	color: $text-normal-color;
+	font-size: 14px;
+	line-height: 1.2em;
+	padding: 0;
+	margin: 0;
+}
+
+h4 {
+	color: $success-button;
+	margin: 14px 0 0 0;
+}
+
+.link {
+	text-decoration: none;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.background-text {
+	color: $background-highlight;
+}
