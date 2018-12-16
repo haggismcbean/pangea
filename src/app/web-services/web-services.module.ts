@@ -7,6 +7,7 @@ import { ApiService } from './api.service';
 import { AuthenticationWebService } from './authentication-web.service';
 import { CharacterWebService } from './character-web.service';
 import { WebhookService } from './webhook.service';
+import { ZoneWebService } from './zone-web.service';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { WebhookService } from './webhook.service';
         AuthenticationWebService,
         WebhookService,
         CharacterWebService,
+        ZoneWebService,
     ],
     declarations: [
     ],

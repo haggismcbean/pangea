@@ -3,6 +3,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from './user.service';
 import { CharacterService } from './character.service';
 import { AuthGuardService } from './auth-guard.service';
+import { ZoneService } from './zone.service';
 
 @NgModule({
     imports: [
@@ -11,6 +12,7 @@ import { AuthGuardService } from './auth-guard.service';
         UserService,
         CharacterService,
         AuthGuardService,
+        ZoneService
     ],
     declarations: [
     ],

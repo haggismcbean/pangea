@@ -10,6 +10,8 @@ import * as io from 'socket.io-client';
 import { WebhookService } from '../../../web-services/webhook.service';
 import { UserService } from '../../../services/user.service';
 import { CharacterService } from '../../../services/character.service';
+import { ZoneService } from '../../../services/zone.service';
+
 import { User } from '../../../models/user.model';
 import { Character } from '../../../models/character.model';
 
@@ -43,7 +45,8 @@ export class PangeaComponent {
         private http: HttpClient,
         private userService: UserService,
         private activatedRoute: ActivatedRoute,
-        private characterService: CharacterService
+        private characterService: CharacterService,
+        private zoneService: ZoneService
     ) {
         this.activatedRoute.queryParams
             .pipe(
@@ -65,6 +68,8 @@ export class PangeaComponent {
 
                 this.registerEchoSocket();
                 this.subscribeCharacter();
+                // todo: get the actual zoneId
+                this.getZoneCharacters(1);
             });
     }
 
@@ -100,6 +105,14 @@ export class PangeaComponent {
                     message: e.message.message,
                     user: e.user
                 });
+            });
+    }
+
+    private getZoneCharacters(zoneId): void {
+        this.zoneService
+            .getZoneCharacters(zoneId)
+            .subscribe((characters: any) => {
+                console.log('characters: ', characters);
             });
     }
 }
