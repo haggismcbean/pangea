@@ -19,7 +19,7 @@ body {
 	overflow: hidden;
 }
 
-h1, h2, h3 {
+.cta {
 	color: $text-title-color;
 	font-size: 14px;
 	line-height: 1.2em;
@@ -35,7 +35,7 @@ h4, p, div {
 	margin: 0;
 }
 
-h4 {
+.announcement {
 	color: $success-button;
 	margin: 14px 0 0 0;
 }

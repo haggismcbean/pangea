@@ -1,6 +1,6 @@
 <div class="box">
 	<p *ngFor="let message of messages"
-	   [ngStyle]="{color: message.color}">
+	   [class]="message.class">
 		{{message.text}}
 	</p>
 </div>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Message } from '../../models/message.model';
 
 @Component({
     selector: 'pan-feed',
@@ -8,5 +9,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     ],
 })
 export class FeedComponent {
-    @Input() public messages: Text[];
+    @Input() public messages: Message[];
+
+    constructor() {
+    	console.log('messages: ', this.messages);
+    }
 }
