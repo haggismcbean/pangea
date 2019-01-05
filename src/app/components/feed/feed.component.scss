@@ -1,0 +1,8 @@
+@import '../../styles/globals.scss';
+@import '../../styles/colours.scss';
+
+.feed {
+	border: 1px solid $border-color;
+	border-left-width: 12px;
+	padding: 1em;
+}

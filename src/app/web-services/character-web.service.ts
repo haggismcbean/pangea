@@ -24,4 +24,11 @@ export class CharacterWebService {
         return this.api
             .get(url);
     }
+
+    public attack(characterId: number): any {
+        const url = `character/${characterId}/attack`;
+
+        return this.api
+            .post(url, {});
+    }
 }

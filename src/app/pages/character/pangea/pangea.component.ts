@@ -115,4 +115,12 @@ export class PangeaComponent {
                 console.log('characters: ', characters);
             });
     }
+
+    public attack(): void {
+        this.characterService
+            .attack(2)
+            .subscribe((response: any) => {
+                console.log('response: ', response);
+            });
+    }
 }

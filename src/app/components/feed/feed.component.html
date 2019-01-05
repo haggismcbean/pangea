@@ -1,0 +1,6 @@
+<div class="box">
+	<p *ngFor="let message of messages"
+	   [ngStyle]="{color: message.color}">
+		{{message.text}}
+	</p>
+</div>

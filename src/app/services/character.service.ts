@@ -37,6 +37,11 @@ export class CharacterService {
         }
     }
 
+    public attack(characterId: number): Observable<any> {
+        return this.characterWebService
+            .attack(characterId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()

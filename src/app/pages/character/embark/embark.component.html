@@ -1,7 +1,8 @@
 <div class="embark-page">
-    <h1>Embark</h1>
 
-    <div class="character"
+    <pan-feed></pan-feed>
+
+    <div class="character box"
          *ngFor="let character of characters"
          (click)="enterPangea(character)">
         <h2>{{character.name}}</h2>
