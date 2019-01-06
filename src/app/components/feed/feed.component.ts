@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { Feed } from '../../models/feed.model';
 import { Message } from '../../models/message.model';
 
 @Component({
@@ -8,10 +11,18 @@ import { Message } from '../../models/message.model';
         './feed.component.scss',
     ],
 })
-export class FeedComponent {
-    @Input() public messages: Message[];
+export class FeedComponent implements OnInit {
+    @Input() public feed: Feed;
 
-    constructor() {
-    	console.log('messages: ', this.messages);
+    public messages: Message[] = [];
+
+    constructor() {}
+
+    public ngOnInit() {
+        this.feed
+            .messages
+            .subscribe((message) => {
+                this.messages.push(message);
+            });
     }
 }
