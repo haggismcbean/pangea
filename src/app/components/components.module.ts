@@ -3,11 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { FeedComponent } from './feed/feed.component';
-// import { InputComponent } from './input/input.component';
+import { InputComponent } from './input/input.component';
 
 const components = [
     FeedComponent,
-    // InputComponent,
+    InputComponent,
 ];
 
 @NgModule({

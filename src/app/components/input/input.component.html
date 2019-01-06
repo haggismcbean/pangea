@@ -1,0 +1,11 @@
+<div class="input">
+	<input type="text" name="input" (keydown)="onInputChange($event)"/>
+	<div class="hints"
+		 *ngFor="let hint of hints">
+		<span>{{hint.option}}</span>
+
+		<span *ngFor="let example of hint.examples">
+			[{{example}}]
+		</span>
+	</div>
+</div>
