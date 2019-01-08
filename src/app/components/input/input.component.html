@@ -1,5 +1,7 @@
 <div class="input">
-	<input type="text" name="input" (keydown)="onInputChange($event)"/>
+	<!-- <input type="text" name="input" [ngModel]="input" (keydown)="onInputChange($event)"/> -->
+	<span class="input__current">{{input}}</span>
+	<span class="input__suggestion">{{suggestion}}</span>
 	<div class="hints"
 		 *ngFor="let hint of hints">
 		<span>{{hint.option}}</span>
