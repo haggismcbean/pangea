@@ -169,11 +169,18 @@ export class InputComponent implements OnInit {
         this.handleInput(keyboardEvent);
     }
 
+    /////////////
+    // Backspace
+
     private handleBackspace() {
         this.input = this.input.slice(0, this.caretPosition - 1);
         this.hint = '';
         this.caretPosition--;
 
+        this.resetOptions();
+    }
+
+    private resetOptions() {
         if (_.last(this.optionsTree) && this.input.indexOf(_.last(this.optionsTree).name) === -1) {
             this.optionsTree.pop();
 
@@ -184,6 +191,9 @@ export class InputComponent implements OnInit {
             }
         }
     }
+
+    /////////////
+    // Any other key
 
     private handleInput(keyboardEvent: KeyboardEvent) {
         this.input += event.key;
