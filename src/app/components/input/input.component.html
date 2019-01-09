@@ -1,13 +1,18 @@
-<div class="input">
+<div class="input box">
 	<!-- <input type="text" name="input" [ngModel]="input" (keydown)="onInputChange($event)"/> -->
-	<span class="input__current">{{input}}</span>
-	<span class="input__suggestion">{{suggestion}}</span>
-	<div class="hints"
-		 *ngFor="let hint of hints">
-		<span>{{hint.option}}</span>
+	<div class="text">
+		<span class="input__current">>&nbsp;</span>
+		<span class="input__current">{{input}}</span>
+		<span class="input__suggestion">{{hint}}</span>
+	</div>
+	<div class="options">
+		<div class="option"
+			 *ngFor="let option of currentOptions">
+			<span>{{option.name}}</span>
 
-		<span *ngFor="let example of hint.examples">
-			[{{example}}]
-		</span>
+			<span *ngFor="let option of option.options">
+				[{{option.name}}]
+			</span>
+		</div>
 	</div>
 </div>
