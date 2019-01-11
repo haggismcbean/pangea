@@ -32,6 +32,14 @@ export class InputComponent implements OnInit {
     constructor() {}
 
     public ngOnInit() {
+        const landingOptions = this.setLandingOptions();
+
+        const interacts = this.getInteractOptions();
+        // this.options.push(interacts);
+
+        const movesTo = this.getMovesToOptions();
+        // this.options.push(movesTo);
+
         // this.hints.push({
         //     option: 'looks at',
         //     options: [
@@ -47,11 +55,6 @@ export class InputComponent implements OnInit {
         //         }
         //     ]
         // });
-        const interacts = this.getInteractOptions();
-        this.options.push(interacts);
-
-        const movesTo = this.getMovesToOptions();
-        this.options.push(movesTo);
 
         // this.hints.push({
         //     option: 'names',
@@ -96,6 +99,13 @@ export class InputComponent implements OnInit {
         //         'animal',
         //     ]
         // });
+    }
+
+    private setLandingOptions() {
+        const signUp = new Option('sign up');
+        const logIn = new Option('log in');
+        this.options.push(signUp);
+        this.options.push(logIn);
     }
 
     private getInteractOptions() {
@@ -207,6 +217,8 @@ export class InputComponent implements OnInit {
 
         if (this.hintedOption) {
             this.hint = this.getHint(this.hintedOption, this.input);
+        } else {
+            this.hint = '';
         }
     }
 

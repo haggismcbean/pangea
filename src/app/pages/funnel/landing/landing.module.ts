@@ -7,7 +7,7 @@ import { LandingComponent } from './landing.component';
 
 @NgModule({
     imports: [
-    	ComponentsModule,
+        ComponentsModule,
         landingRouting,
     ],
     providers: [

@@ -2,35 +2,35 @@
 @import '../../../styles/colours.scss';
 
 .landing-page {
-	width: 38em;
-	margin-left: auto;
-	margin-right: auto;
+    width: 38em;
+    margin-left: auto;
+    margin-right: auto;
 
-	max-height: calc(100% - 20px);
-	min-height: calc(100% - 20px);
+    max-height: calc(100% - 20px);
+    min-height: calc(100% - 20px);
 
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .feed {
-	overflow: scroll;
-	flex-grow: 1;
-	display: flex;
+    overflow: scroll;
+    flex-grow: 1;
+    display: flex;
     flex-direction: column;
     flex-basis: 0;
 }
 
 .input {
-	display: flex;
-	flex-direction: column;
-	height: 150px;
-	flex-basis: 150px;
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    flex-basis: 150px;
 }
 
 .log-in {
-	position: absolute;
-	top: 0;
-	right: 0;
-	margin-top: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0;
 }
