@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Feed } from '../../../models/feed.model';
 import { Message } from '../../../models/message.model';
+import { Option } from '../../../components/input/models/option.model';
 
 @Component({
     selector: 'pan-landing',
@@ -22,6 +23,7 @@ export class LandingComponent implements OnInit {
 
     public runningYears = 101;
     public feed: Feed;
+    public options: Option[] = [];
 
     constructor(
         private router: Router
@@ -30,6 +32,11 @@ export class LandingComponent implements OnInit {
     }
 
     public ngOnInit() {
+        this.setFeedMessages();
+        this.setInputOptions();
+    }
+
+    private setFeedMessages() {
         this.feed.addMessage(this.getBoringMessage());
         this.feed.addMessage(this.getAnnouncement(this.ANNOUNCEMENT));
         this.feed.addMessage(this.getCta(this.SIGN_UP_NOW));
@@ -76,6 +83,13 @@ export class LandingComponent implements OnInit {
         message.setText(text);
 
         return message;
+    }
+
+    private setInputOptions() {
+        const signUp = new Option('sign up');
+        const logIn = new Option('log in');
+        this.options.push(signUp);
+        this.options.push(logIn);
     }
 
     public signUp() {
