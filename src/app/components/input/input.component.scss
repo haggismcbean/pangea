@@ -1,6 +1,7 @@
 @import '../../styles/globals.scss';
 
 .input {
+	flex-grow: 1;
 	border-color: $input-border-color;
 	padding: 0;
 }
@@ -12,6 +13,7 @@
 
 .options {
 	padding: 1em;
+	overflow: auto
 }
 
 .input__suggestion {
