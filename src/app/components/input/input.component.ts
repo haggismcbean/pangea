@@ -16,6 +16,8 @@ export class InputComponent implements OnInit {
     public options: Option[] = [];
     public currentOptions: Option[] = this.options;
     public input = '';
+    public hint = '';
+    public hintedOption: Option;
 
     private caretPosition = 0;
     private optionsTree = [];
@@ -196,7 +198,7 @@ export class InputComponent implements OnInit {
     // Any other key
 
     private handleInput(keyboardEvent: KeyboardEvent) {
-        this.input += event.key;
+        this.input += keyboardEvent.key;
         this.caretPosition++;
 
         if (this.currentOptions) {
@@ -209,17 +211,17 @@ export class InputComponent implements OnInit {
     }
 
     private getHintedOption(options: Option[], input: string): Option {
-        const input = this.getAccountedForInput(input);
+        const clippedInput = this.getAccountedForInput(input);
         const option = _.find(options, function(_option) {
-            return _.startsWith(_option.name, input);
+            return _.startsWith(_option.name, clippedInput);
         });
 
         return option;
     }
 
     private getHint(option: Option, input: string): string {
-        const input = this.getAccountedForInput(input);
-        return _.replace(option.name, input, '');
+        const clippedInput = this.getAccountedForInput(input);
+        return _.replace(option.name, clippedInput, '');
     }
 
     private getAccountedForInput(input: string): string {
