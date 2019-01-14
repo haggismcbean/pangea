@@ -117,15 +117,15 @@ export class InputComponent implements OnInit {
     }
 
     private handlePromptEnter() {
-        this.input = '';
-        this.promptText = '';
-
         this.prompt
             .onPromptAnswered(this.input)
             .subscribe((response) => {
                 this.prompt = undefined;
                 return this.onEnterResponse(response);
             });
+
+        this.input = '';
+        this.promptText = '';
     }
 
     private handleOptionsEnter() {
