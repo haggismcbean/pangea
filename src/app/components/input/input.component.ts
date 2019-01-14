@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import * as _ from 'lodash';
 
-import { Option } from './models/option.model';
+import { Option } from '../../actions/option.model';
 
 @Component({
     selector: 'pan-input',
@@ -38,34 +38,34 @@ export class InputComponent implements OnInit {
     private handleKeypress(keyboardEvent: KeyboardEvent) {
         // if user presses delete
         if (keyboardEvent.key === 'Backspace') {
-            event.preventDefault();
+            keyboardEvent.preventDefault();
             this.handleBackspace();
             return;
         }
 
         // if user presses enter
         if (keyboardEvent.key === 'Enter') {
-            event.preventDefault();
-            // this.handleEnter(event);
+            keyboardEvent.preventDefault();
+            this.handleEnter();
             return;
         }
 
         // if user presses tab
         if (keyboardEvent.key === 'Tab') {
-            event.preventDefault();
+            keyboardEvent.preventDefault();
             this.completeSuggestion();
             return;
         }
 
         // if user presses left
         if (keyboardEvent.key === 'ArrowLeft') {
-            event.preventDefault();
+            keyboardEvent.preventDefault();
             return;
         }
 
         // if user presses right
         if (keyboardEvent.key === 'ArrowRight') {
-            event.preventDefault();
+            keyboardEvent.preventDefault();
             return;
         }
 
@@ -75,7 +75,7 @@ export class InputComponent implements OnInit {
         }
 
         // otherwise
-        event.preventDefault();
+        keyboardEvent.preventDefault();
         this.handleInput(keyboardEvent);
     }
 
@@ -99,6 +99,38 @@ export class InputComponent implements OnInit {
             } else {
                 this.currentOptions = _.last(this.optionsTree).options;
             }
+        }
+    }
+
+    /////////////
+    // Enter
+
+    private handleEnter() {
+        const clippedInput = this.getAccountedForInput(this.input);
+        _.replace(this.input, clippedInput, '');
+
+        _.last(this.optionsTree)
+            .onOptionSelected(clippedInput);
+
+        this.input = '';
+        this.hint = '';
+        this.caretPosition = this.input.length;
+        this.optionsTree = [];
+        this.currentOptions = this.options;
+        this.hintedOption = undefined;
+    }
+
+    /////////////
+    // Tab
+
+    private completeSuggestion() {
+        if (this.hint) {
+            this.input += this.hint + ' ';
+            this.hint = '';
+            this.caretPosition = this.input.length;
+            this.optionsTree.push(this.hintedOption);
+            this.currentOptions = this.hintedOption.options;
+            this.hintedOption = undefined;
         }
     }
 
@@ -142,15 +174,5 @@ export class InputComponent implements OnInit {
         }
 
         return _.replace(input, accountedForInput, '');
-    }
-
-    private completeSuggestion() {
-        if (this.hint) {
-            this.input += this.hint + ' ';
-            this.hint = '';
-            this.caretPosition = this.input.length;
-            this.optionsTree.push(this.hintedOption);
-            this.currentOptions = this.hintedOption.options;
-        }
     }
 }

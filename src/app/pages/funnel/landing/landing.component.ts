@@ -3,7 +3,9 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Feed } from '../../../models/feed.model';
 import { Message } from '../../../models/message.model';
-import { Option } from '../../../components/input/models/option.model';
+import { Option } from '../../../actions/option.model';
+
+import { LoginManager } from '../../../actions/login/login.manager';
 
 @Component({
     selector: 'pan-landing',
@@ -26,7 +28,8 @@ export class LandingComponent implements OnInit {
     public options: Option[] = [];
 
     constructor(
-        private router: Router
+        private router: Router,
+        private loginManager: LoginManager
     ) {
         this.feed = new Feed();
     }
@@ -87,16 +90,20 @@ export class LandingComponent implements OnInit {
 
     private setInputOptions() {
         const signUp = new Option('sign up');
-        const logIn = new Option('log in');
+        signUp.setSelectedCallback(this.signUp);
         this.options.push(signUp);
+
+        const logIn = this.loginManager.getLoginAction();
         this.options.push(logIn);
     }
 
-    public signUp() {
-        this.router.navigate(['/sign-up']);
+    public signUp(input: string) {
+        console.log(input);
+        // this.router.navigate(['/sign-up']);
     }
 
-    public signIn() {
-        this.router.navigate(['/sign-in']);
+    public signIn(input: string) {
+        console.log(input);
+        // this.router.navigate(['/sign-in']);
     }
 }
