@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
 import { Option } from '../../actions/option.model';
+import { Prompt } from '../../actions/prompt.model';
 
 @Component({
     selector: 'pan-input',
@@ -18,8 +19,10 @@ export class InputComponent implements OnInit {
     public currentOptions: Option[];
     public input = '';
     public hint = '';
+    public promptText = '';
     public hintedOption: Option;
 
+    private prompt: Prompt;
     private caretPosition = 0;
     private optionsTree = [];
     private currentOptionSuggestion = null;
@@ -106,11 +109,32 @@ export class InputComponent implements OnInit {
     // Enter
 
     private handleEnter() {
+        if (this.prompt) {
+            this.handlePromptEnter();
+        } else {
+            this.handleOptionsEnter();
+        }
+    }
+
+    private handlePromptEnter() {
+        this.input = '';
+        this.promptText = '';
+
+        this.prompt
+            .onPromptAnswered(this.input)
+            .subscribe((response) => {
+                this.prompt = undefined;
+                return this.onEnterResponse(response);
+            });
+    }
+
+    private handleOptionsEnter() {
         const clippedInput = this.getAccountedForInput(this.input);
         _.replace(this.input, clippedInput, '');
 
         _.last(this.optionsTree)
-            .onOptionSelected(clippedInput);
+            .onOptionSelected(clippedInput)
+            .subscribe((response) => this.onEnterResponse(response));
 
         this.input = '';
         this.hint = '';
@@ -118,6 +142,13 @@ export class InputComponent implements OnInit {
         this.optionsTree = [];
         this.currentOptions = this.options;
         this.hintedOption = undefined;
+    }
+
+    private onEnterResponse(response: Prompt | Option) {
+        if (response instanceof Prompt) {
+            this.prompt = response;
+            this.promptText = response.name;
+        }
     }
 
     /////////////

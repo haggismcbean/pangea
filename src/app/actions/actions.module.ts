@@ -11,7 +11,6 @@ import { LoginManager } from './login/login.manager';
     declarations: [
     ],
     exports: [
-        LoginManager
     ],
     entryComponents: [],
     schemas: [NO_ERRORS_SCHEMA],

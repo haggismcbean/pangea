@@ -93,8 +93,11 @@ export class LandingComponent implements OnInit {
         signUp.setSelectedCallback(this.signUp);
         this.options.push(signUp);
 
-        const logIn = this.loginManager.getLoginAction();
-        this.options.push(logIn);
+        this.loginManager
+            .getLoginAction()
+            .subscribe((login) => {
+                this.options.push(login);
+            });
     }
 
     public signUp(input: string) {

@@ -1,4 +1,4 @@
-import { Observable, pipe, zip, from, interval, of } from 'rxjs';
+import { Observable, pipe, of } from 'rxjs';
 import { map, concatMap, delay, pairwise } from 'rxjs/operators';
 
 import { Message } from './message.model';
