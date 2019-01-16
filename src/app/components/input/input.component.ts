@@ -27,6 +27,22 @@ export class InputComponent implements OnInit, OnChanges {
     private optionsTree = [];
     private currentOptionSuggestion = null;
 
+    private promptMode = {
+        handleEnter: this.handlePromptEnter.bind(this),
+        handleBackspace: this.handleBackspace.bind(this),
+        handleTab: _.noop,
+        handleInput: this.handleInput.bind(this)
+    };
+
+    private optionsMode = {
+        handleEnter: this.handleOptionsEnter.bind(this),
+        handleBackspace: this.handleOptionsBackspace.bind(this),
+        handleTab: this.handleOptionsTab.bind(this),
+        handleInput: this.handleOptionsInput.bind(this)
+    };
+
+    private mode = this.optionsMode;
+
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
         this.handleKeypress(event);
@@ -42,62 +58,62 @@ export class InputComponent implements OnInit, OnChanges {
         if (changes.prompt && changes.prompt.currentValue) {
             // this.prompt = changes.prompt.currentValue;
             this.promptText = changes.prompt.currentValue.name;
+            this.mode = this.promptMode;
+        } else {
+            this.mode = this.optionsMode;
         }
     }
 
     private handleKeypress(keyboardEvent: KeyboardEvent) {
+
+        // if user presses other special character
+        if (keyboardEvent.key === 'Shift' || keyboardEvent.key === 'Meta' || keyboardEvent.key === 'Control') {
+            return;
+        } else {
+            keyboardEvent.preventDefault();
+        }
+
         // if user presses delete
         if (keyboardEvent.key === 'Backspace') {
-            keyboardEvent.preventDefault();
-            this.handleBackspace();
+            this.mode.handleBackspace();
             return;
         }
 
         // if user presses enter
         if (keyboardEvent.key === 'Enter') {
-            keyboardEvent.preventDefault();
-            this.handleEnter();
+            this.mode.handleEnter();
             return;
         }
 
         // if user presses tab
         if (keyboardEvent.key === 'Tab') {
-            keyboardEvent.preventDefault();
-            this.completeSuggestion();
+            this.mode.handleTab();
             return;
         }
 
         // if user presses left
-        if (keyboardEvent.key === 'ArrowLeft') {
-            keyboardEvent.preventDefault();
-            return;
-        }
-
-        // if user presses right
-        if (keyboardEvent.key === 'ArrowRight') {
-            keyboardEvent.preventDefault();
-            return;
-        }
-
-        // if user presses other special character
-        if (keyboardEvent.key === 'Shift' || keyboardEvent.key === 'Meta' || keyboardEvent.key === 'Control') {
+        if (keyboardEvent.key === 'ArrowLeft' || keyboardEvent.key === 'ArrowRight') {
+            // TODO
             return;
         }
 
         // otherwise
-        keyboardEvent.preventDefault();
-        this.handleInput(keyboardEvent);
+        this.mode.handleInput(keyboardEvent);
     }
+
 
     /////////////
     // Backspace
+
+    private handleOptionsBackspace() {
+        this.handleBackspace();
+        this.resetOptions();
+    }
 
     private handleBackspace() {
         this.input = this.input.slice(0, this.caretPosition - 1);
         this.hint = '';
         this.caretPosition--;
-
-        this.resetOptions();
     }
 
     private resetOptions() {
@@ -114,24 +130,6 @@ export class InputComponent implements OnInit, OnChanges {
 
     /////////////
     // Enter
-
-    private handleEnter() {
-        if (this.prompt) {
-            this.handlePromptEnter();
-        } else {
-            this.handleOptionsEnter();
-        }
-    }
-
-    private handlePromptEnter() {
-        this.prompt
-            .answerStream
-            .next(this.input);
-
-        this.prompt = undefined;
-        this.input = '';
-        this.promptText = '';
-    }
 
     private handleOptionsEnter() {
         const clippedInput = this.getAccountedForInput(this.input);
@@ -150,17 +148,20 @@ export class InputComponent implements OnInit, OnChanges {
         this.hintedOption = undefined;
     }
 
-    private onEnterResponse(response: Prompt | Option) {
-        if (response instanceof Prompt) {
-            this.prompt = response;
-            this.promptText = response.name;
-        }
+    private handlePromptEnter() {
+        this.prompt
+            .answerStream
+            .next(this.input);
+
+        this.prompt = undefined;
+        this.input = '';
+        this.promptText = '';
     }
 
     /////////////
     // Tab
 
-    private completeSuggestion() {
+    private handleOptionsTab() {
         if (this.hint) {
             this.input += this.hint + ' ';
             this.hint = '';
@@ -174,9 +175,8 @@ export class InputComponent implements OnInit, OnChanges {
     /////////////
     // Any other key
 
-    private handleInput(keyboardEvent: KeyboardEvent) {
-        this.input += keyboardEvent.key;
-        this.caretPosition++;
+    private handleOptionsInput(keyboardEvent: KeyboardEvent) {
+        this.handleInput(keyboardEvent);
 
         if (this.currentOptions) {
             this.hintedOption = this.getHintedOption(this.currentOptions, this.input);
@@ -187,6 +187,11 @@ export class InputComponent implements OnInit, OnChanges {
         } else {
             this.hint = '';
         }
+    }
+
+    private handleInput(keyboardEvent: KeyboardEvent) {
+        this.input += keyboardEvent.key;
+        this.caretPosition++;
     }
 
     private getHintedOption(options: Option[], input: string): Option {
@@ -202,6 +207,9 @@ export class InputComponent implements OnInit, OnChanges {
         const clippedInput = this.getAccountedForInput(input);
         return _.replace(option.name, clippedInput, '');
     }
+
+    ////////////
+    // Utility
 
     private getAccountedForInput(input: string): string {
         let accountedForInput = '';
