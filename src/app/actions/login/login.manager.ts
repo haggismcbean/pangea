@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
+import { User } from '../../models/user.model';
 
 import { AuthenticationWebService } from '../../web-services/authentication-web.service';
 import { UserService } from '../../services/user.service';
@@ -12,6 +13,12 @@ import { ILoginResponseData } from '../../web-service-interfaces/i-login.authent
 
 @Injectable()
 export class LoginManager {
+    public userLoggedInStream;
+
+    private mainFeedStream;
+    private optionsStream;
+    private promptStream;
+
     private email: string;
 
     constructor(
@@ -19,32 +26,51 @@ export class LoginManager {
         private userService: UserService,
     ) {}
 
-    public addLoginAction(options): void {
-        const login = new Option('log in');
-        login.setSelectedCallback(this.onOptionSelected.bind(this));
+    public init(mainFeedStream, optionsStream, promptStream): void {
+        this.userLoggedInStream = new Subject();
 
-        options.push(login);
+        this.mainFeedStream = mainFeedStream;
+        this.optionsStream = optionsStream;
+        this.promptStream = promptStream;
+
+        const loginOption = new Option('log in');
+
+        loginOption
+            .selectedStream
+            .subscribe(() => {
+                this.onOptionSelected();
+            });
+
+        this.optionsStream.next(loginOption);
     }
 
-    public onOptionSelected(): Observable<Prompt> {
-        const email = new Prompt('email');
-        email.setAnsweredCallback(this.onEmailProvided.bind(this));
+    private onOptionSelected() {
+        const emailPrompt = new Prompt('email');
 
-        return of(email);
+        emailPrompt
+            .answerStream
+            .subscribe((email: string) => {
+                this.onEmailProvided(email);
+            });
+
+        this.promptStream.next(emailPrompt);
     }
 
-    public onEmailProvided(email: string): Observable<Prompt> {
-        console.log('email? ', email);
+    private onEmailProvided(email: string) {
         this.email = email;
-        const password = new Prompt('password');
-        password.setAnsweredCallback(this.onPasswordProvided.bind(this));
+        const passwordPrompt = new Prompt('password');
 
-        return of(password);
+        passwordPrompt
+            .answerStream
+            .subscribe((password: string) => {
+                this.onPasswordProvided(password);
+            });
+
+        this.promptStream.next(passwordPrompt);
     }
 
-    public onPasswordProvided(password: string): Observable<any> {
-        console.log('email: ', this.email, 'password: ', password);
-        return this.authenticationWebService
+    private onPasswordProvided(password: string) {
+        this.authenticationWebService
             .login({
                 email: this.email,
                 password: password,
@@ -55,6 +81,9 @@ export class LoginManager {
                     console.log('logged in mother fucker', loginResponseData);
                     return this.userService.getUser();
                 })
-            );
+            )
+            .subscribe((user: User) => {
+                this.userLoggedInStream.next(user);
+            });
     }
 }

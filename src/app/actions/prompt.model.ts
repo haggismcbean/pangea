@@ -1,14 +1,13 @@
+import { Subject } from 'rxjs';
+
 export class Prompt {
 
     public name: string;
-    public onPromptAnswered;
+    public answerStream: Subject<any>;
 
     constructor(name: string) {
         this.name = name;
-    }
 
-    public setAnsweredCallback(onPromptAnswered): Prompt {
-        this.onPromptAnswered = onPromptAnswered;
-        return this;
+        this.answerStream = new Subject();
     }
 }

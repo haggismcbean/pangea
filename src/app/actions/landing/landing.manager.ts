@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Feed } from '../../models/feed.model';
 import { Message } from '../../models/message.model';
@@ -13,21 +14,21 @@ export class LandingManager {
     private BECOME_CELEB = 'Become a celebrity!';
     private MESSAGE_THREE = 'Your every move will be followed by our drones and converted seamlessly into brainchip text. Your friends and loved ones back on earth will eagerly follow how you do. Will you be become leader of your tribe? Be a brave warrior in the face of impossible foes? Discover how to make fire or smelt a precious ore? Or will you be eaten by a two headed alien monster the day you land? Only one way to find out!';
     private CERTAIN_DEATH = 'A one way ticket to almost certain death!';
-    private MESSAGE_FOUR = 'You\'ll be signing your life away, but who wants that boring old life anyway? Had enough of toiling away your best years just so you can grow old and die and never be remembered for anything? Come and settle Pangea and make a name for yourself. The most popular text feed on earth for the past {{runningYears}} years running wants YOU to come and be a hero';
+    private MESSAGE_FOUR = 'You\'ll be signing your life away, but who wants that boring old life anyway? Had enough of toiling away your best years just so you can grow old and die and never be remembered for anything? Come and settle Pangea and make a name for yourself. The most popular text feed on earth for the past 3 months running wants YOU to come and be a hero';
 
-    public beginIntro(feed: Feed) {
-        feed.addMessage(this.getBoringMessage());
-        feed.addMessage(this.getAnnouncement(this.ANNOUNCEMENT));
-        feed.addMessage(this.getCta(this.SIGN_UP_NOW));
-        feed.addMessage(this.getMessage(this.MESSAGE_ONE));
-        feed.addMessage(this.getCta(this.SIGN_UP_NOW));
-        feed.addMessage(this.getMessage(this.MESSAGE_TWO));
-        feed.addMessage(this.getCta(this.BECOME_CELEB));
-        feed.addMessage(this.getMessage(this.MESSAGE_THREE));
-        feed.addMessage(this.getCta(this.CERTAIN_DEATH));
-        feed.addMessage(this.getMessage(this.MESSAGE_FOUR));
-        feed.addMessage(this.getAnnouncement(this.ANNOUNCEMENT));
-        feed.addMessage(this.getBoringMessage());
+    public init(mainFeedStream, optionsStream, promptStream) {
+        mainFeedStream.next(this.getBoringMessage());
+        mainFeedStream.next(this.getAnnouncement(this.ANNOUNCEMENT));
+        mainFeedStream.next(this.getCta(this.SIGN_UP_NOW));
+        mainFeedStream.next(this.getMessage(this.MESSAGE_ONE));
+        mainFeedStream.next(this.getCta(this.SIGN_UP_NOW));
+        mainFeedStream.next(this.getMessage(this.MESSAGE_TWO));
+        mainFeedStream.next(this.getCta(this.BECOME_CELEB));
+        mainFeedStream.next(this.getMessage(this.MESSAGE_THREE));
+        mainFeedStream.next(this.getCta(this.CERTAIN_DEATH));
+        mainFeedStream.next(this.getMessage(this.MESSAGE_FOUR));
+        mainFeedStream.next(this.getAnnouncement(this.ANNOUNCEMENT));
+        mainFeedStream.next(this.getBoringMessage());
     }
 
     public cancelIntro() {

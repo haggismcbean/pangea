@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, OnChanges, HostListener, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import * as _ from 'lodash';
@@ -13,8 +13,9 @@ import { Prompt } from '../../actions/prompt.model';
         './input.component.scss',
     ],
 })
-export class InputComponent implements OnInit {
+export class InputComponent implements OnInit, OnChanges {
     @Input() public options: Option[] = [];
+    @Input() public prompt: Prompt;
 
     public currentOptions: Option[];
     public input = '';
@@ -22,7 +23,6 @@ export class InputComponent implements OnInit {
     public promptText = '';
     public hintedOption: Option;
 
-    private prompt: Prompt;
     private caretPosition = 0;
     private optionsTree = [];
     private currentOptionSuggestion = null;
@@ -36,6 +36,13 @@ export class InputComponent implements OnInit {
 
     public ngOnInit() {
         this.currentOptions = this.options;
+    }
+
+    public ngOnChanges(changes) {
+        if (changes.prompt && changes.prompt.currentValue) {
+            // this.prompt = changes.prompt.currentValue;
+            this.promptText = changes.prompt.currentValue.name;
+        }
     }
 
     private handleKeypress(keyboardEvent: KeyboardEvent) {
@@ -118,12 +125,10 @@ export class InputComponent implements OnInit {
 
     private handlePromptEnter() {
         this.prompt
-            .onPromptAnswered(this.input)
-            .subscribe((response) => {
-                this.prompt = undefined;
-                return this.onEnterResponse(response);
-            });
+            .answerStream
+            .next(this.input);
 
+        this.prompt = undefined;
         this.input = '';
         this.promptText = '';
     }
@@ -133,14 +138,15 @@ export class InputComponent implements OnInit {
         _.replace(this.input, clippedInput, '');
 
         _.last(this.optionsTree)
-            .onOptionSelected(clippedInput)
-            .subscribe((response) => this.onEnterResponse(response));
+            .selectedStream
+            .next(clippedInput);
 
         this.input = '';
         this.hint = '';
         this.caretPosition = this.input.length;
         this.optionsTree = [];
-        this.currentOptions = this.options;
+        this.options = undefined;
+        this.currentOptions = undefined;
         this.hintedOption = undefined;
     }
 
