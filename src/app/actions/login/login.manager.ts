@@ -17,15 +17,13 @@ export class LoginManager {
     constructor(
         private authenticationWebService: AuthenticationWebService,
         private userService: UserService,
-    ) {
-        console.log('success!', this.authenticationWebService);
-    }
+    ) {}
 
-    public getLoginAction(): Observable<Option> {
+    public addLoginAction(options): void {
         const login = new Option('log in');
         login.setSelectedCallback(this.onOptionSelected.bind(this));
 
-        return of(login);
+        options.push(login);
     }
 
     public onOptionSelected(): Observable<Prompt> {
