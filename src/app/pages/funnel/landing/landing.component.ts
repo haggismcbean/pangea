@@ -40,31 +40,33 @@ export class LandingComponent implements OnInit {
         this.mainFeedStream
             .subscribe((message: Message) => {
                 this.feed.addMessage(message);
+
+                if (message.class === 'error') {
+                    this.setLandingOptions();
+                }
             });
 
         this.optionsStream
             .subscribe((option: Option) => {
                 this.options.push(option);
+                console.log(this.options);
             });
 
         this.promptStream
             .subscribe((prompt: Prompt) => {
                 this.prompt = prompt;
+                this.options = [];
             });
     }
 
     public ngOnInit() {
-        setTimeout(() => {
-            this.landingManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
-        });
-
-        this.setInputOptions();
+        this.setLandingText();
+        this.setLandingOptions();
 
         this.loginManager
             .userLoggedInStream
             .subscribe((user) => {
-                console.log('user logged in!');
-                console.log(user);
+                console.log('user logged in!', user);
             });
 
         this.registerManager
@@ -74,18 +76,16 @@ export class LandingComponent implements OnInit {
             });
     }
 
-    private setInputOptions() {
+    private setLandingText() {
+        setTimeout(() => {
+            this.landingManager
+                .init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        });
+    }
+
+    private setLandingOptions() {
+        console.log('setting landing options');
         this.loginManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
         this.registerManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
-    }
-
-    public signUp(input: string) {
-        console.log(input);
-        // this.router.navigate(['/sign-up']);
-    }
-
-    public signIn(input: string) {
-        console.log(input);
-        // this.router.navigate(['/sign-in']);
     }
 }

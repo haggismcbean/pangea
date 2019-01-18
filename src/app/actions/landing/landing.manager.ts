@@ -37,15 +37,6 @@ export class LandingManager {
         mainFeedStream.next(this.getAnnouncement(this.END_ANNOUNCEMENT));
     }
 
-    private getBoringMessage() {
-        const message = new Message(0);
-        message.setText(this.BORING_MESSAGE);
-        message.setClass('background-text');
-        message.setDate('');
-
-        return message;
-    }
-
     private getAnnouncement(text: string) {
         const message = new Message(0);
         message.setText(text);

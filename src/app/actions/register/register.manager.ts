@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of, pipe } from 'rxjs';
 
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
@@ -101,15 +101,17 @@ export class RegisterManager {
                 password: password,
                 password_confirmation: passwordConfirmation,
             })
-            .subscribe((registerResponseData) => {
-                this.userRegisteredStream
-                    .next(registerResponseData);
-            }, (rawError) => {
-                console.log('mate theres an error. better display it');
-                const error = new Message(0);
-                error.setText('error: ' + rawError.error);
-                error.setClass('error');
-                this.mainFeedStream.next(error);
-            });
+            .subscribe(
+                (registerResponseData) => {
+                    this.userRegisteredStream
+                        .next(registerResponseData);
+                }, (rawError) => {
+                    console.log('error');
+                    const error = new Message(0);
+                    error.setText('error: ' + rawError.error.error);
+                    error.setClass('error');
+                    this.mainFeedStream.next(error);
+                }
+            );
     }
 }

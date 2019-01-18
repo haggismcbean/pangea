@@ -62,6 +62,10 @@ export class InputComponent implements OnInit, OnChanges {
         } else {
             this.mode = this.optionsMode;
         }
+
+        if (changes.options && changes.options.currentValue) {
+            this.currentOptions = this.options;
+        }
     }
 
     private handleKeypress(keyboardEvent: KeyboardEvent) {
@@ -143,7 +147,6 @@ export class InputComponent implements OnInit, OnChanges {
         this.hint = '';
         this.caretPosition = this.input.length;
         this.optionsTree = [];
-        this.options = undefined;
         this.currentOptions = undefined;
         this.hintedOption = undefined;
     }
