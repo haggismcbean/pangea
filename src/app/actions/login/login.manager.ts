@@ -59,6 +59,7 @@ export class LoginManager {
     private onEmailProvided(email: string) {
         this.email = email;
         const passwordPrompt = new Prompt('password');
+        passwordPrompt.isPassword = true;
 
         passwordPrompt
             .answerStream

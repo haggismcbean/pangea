@@ -5,6 +5,7 @@ import { Subject, Observable, of } from 'rxjs';
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { User } from '../../models/user.model';
+import { Message } from '../../models/message.model';
 
 import { AuthenticationWebService } from '../../web-services/authentication-web.service';
 import { UserService } from '../../services/user.service';
@@ -68,6 +69,7 @@ export class RegisterManager {
 
     private onEmailProvided(name: string, email: string) {
         const passwordPrompt = new Prompt('password');
+        passwordPrompt.isPassword = true;
 
         passwordPrompt
             .answerStream
@@ -80,6 +82,7 @@ export class RegisterManager {
 
     private onPasswordProvided(name: string, email: string, password: string) {
         const confirmPasswordPrompt = new Prompt('confirm password');
+        confirmPasswordPrompt.isPassword = true;
 
         confirmPasswordPrompt
             .answerStream
@@ -99,9 +102,14 @@ export class RegisterManager {
                 password_confirmation: passwordConfirmation,
             })
             .subscribe((registerResponseData) => {
-                console.log('registered mother fucker', registerResponseData);
                 this.userRegisteredStream
                     .next(registerResponseData);
+            }, (rawError) => {
+                console.log('mate theres an error. better display it');
+                const error = new Message(0);
+                error.setText('error: ' + rawError.error);
+                error.setClass('error');
+                this.mainFeedStream.next(error);
             });
     }
 }
