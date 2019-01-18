@@ -8,6 +8,7 @@ import { Prompt } from '../../../actions/prompt.model';
 import { Message } from '../../../models/message.model';
 
 import { LandingManager } from '../../../actions/landing/landing.manager';
+import { RegisterManager } from '../../../actions/register/register.manager';
 import { LoginManager } from '../../../actions/login/login.manager';
 
 @Component({
@@ -27,6 +28,7 @@ export class LandingComponent implements OnInit {
     constructor(
         private router: Router,
         private loginManager: LoginManager,
+        private registerManager: RegisterManager,
         private landingManager: LandingManager
     ) {
         this.feed = new Feed();
@@ -61,10 +63,17 @@ export class LandingComponent implements OnInit {
                 console.log('user logged in!');
                 console.log(user);
             });
+
+        this.registerManager
+            .userRegisteredStream
+            .subscribe((response) => {
+                console.log('response: ', response);
+            });
     }
 
     private setInputOptions() {
         this.loginManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        this.registerManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
     }
 
     public signUp(input: string) {

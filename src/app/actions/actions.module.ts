@@ -1,6 +1,7 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { LandingManager } from './landing/landing.manager';
+import { RegisterManager } from './register/register.manager';
 import { LoginManager } from './login/login.manager';
 
 @NgModule({
@@ -8,6 +9,7 @@ import { LoginManager } from './login/login.manager';
     ],
     providers: [
         LandingManager,
+        RegisterManager,
         LoginManager
     ],
     declarations: [
