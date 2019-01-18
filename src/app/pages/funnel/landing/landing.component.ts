@@ -54,7 +54,10 @@ export class LandingComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.landingManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        setTimeout(() => {
+            this.landingManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        });
+
         this.setInputOptions();
 
         this.loginManager

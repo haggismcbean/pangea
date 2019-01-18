@@ -20,7 +20,7 @@ export class FeedComponent implements OnInit {
 
     public ngOnInit() {
         this.feed
-            .messages
+            .messageStream
             .subscribe((message) => {
                 this.messages.push(message);
             });

@@ -32,7 +32,7 @@ export class RegisterManager {
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
 
-        const registerOption = new Option('register');
+        const registerOption = new Option('sign up now');
 
         registerOption
             .selectedStream
