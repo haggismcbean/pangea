@@ -48,8 +48,7 @@ export class LandingComponent implements OnInit {
 
         this.optionsStream
             .subscribe((option: Option) => {
-                this.options.push(option);
-                console.log(this.options);
+                this.options = this.options.concat([option]);
             });
 
         this.promptStream
@@ -84,8 +83,8 @@ export class LandingComponent implements OnInit {
     }
 
     private setLandingOptions() {
-        console.log('setting landing options');
         this.loginManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
         this.registerManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        this.prompt = undefined;
     }
 }

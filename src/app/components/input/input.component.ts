@@ -56,14 +56,14 @@ export class InputComponent implements OnInit, OnChanges {
 
     public ngOnChanges(changes) {
         if (changes.prompt && changes.prompt.currentValue) {
-            // this.prompt = changes.prompt.currentValue;
             this.promptText = changes.prompt.currentValue.name;
             this.mode = this.promptMode;
         } else {
             this.mode = this.optionsMode;
         }
 
-        if (changes.options && changes.options.currentValue) {
+        if (changes.options && changes.options.currentValue && changes.options.currentValue.length > 0) {
+            this.mode = this.optionsMode;
             this.currentOptions = this.options;
         }
     }
@@ -139,15 +139,22 @@ export class InputComponent implements OnInit, OnChanges {
         const clippedInput = this.getAccountedForInput(this.input);
         _.replace(this.input, clippedInput, '');
 
-        _.last(this.optionsTree)
-            .selectedStream
-            .next(clippedInput);
+        const selectedOption = _.last(this.optionsTree);
+
+        if (selectedOption) {
+            selectedOption
+                .selectedStream
+                .next(clippedInput);
+
+            this.currentOptions = undefined;
+        } else {
+            this.currentOptions = this.options;
+        }
 
         this.input = '';
         this.hint = '';
         this.caretPosition = this.input.length;
         this.optionsTree = [];
-        this.currentOptions = undefined;
         this.hintedOption = undefined;
     }
 

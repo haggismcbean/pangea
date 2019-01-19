@@ -5,6 +5,7 @@ import { Subject, Observable, of } from 'rxjs';
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { User } from '../../models/user.model';
+import { Message } from '../../models/message.model';
 
 import { AuthenticationWebService } from '../../web-services/authentication-web.service';
 import { UserService } from '../../services/user.service';
@@ -79,12 +80,19 @@ export class LoginManager {
             .pipe(
                 map((loginResponseData: ILoginResponseData) => {
                     this.userService.newUser(loginResponseData);
-                    console.log('logged in mother fucker', loginResponseData);
                     return this.userService.getUser();
                 })
             )
-            .subscribe((user: User) => {
-                this.userLoggedInStream.next(user);
-            });
+            .subscribe(
+                (user: User) => {
+                    this.userLoggedInStream.next(user);
+                }, (rawError) => {
+                    const error = new Message(0);
+                    error.setText('error: ' + rawError.error.message);
+                    error.setClass('error');
+                    this.mainFeedStream.next(error);
+                }
+
+            );
     }
 }
