@@ -10,6 +10,11 @@ import { Message } from '../../../models/message.model';
 import { LandingManager } from '../../../actions/landing/landing.manager';
 import { RegisterManager } from '../../../actions/register/register.manager';
 import { LoginManager } from '../../../actions/login/login.manager';
+import { CharacterCreationManager } from '../../../actions/character-creation/character-creation.manager';
+
+// DEV
+import { AuthenticationWebService } from '../../../web-services/authentication-web.service';
+// END DEV
 
 @Component({
     selector: 'pan-landing',
@@ -29,7 +34,11 @@ export class LandingComponent implements OnInit {
         private router: Router,
         private loginManager: LoginManager,
         private registerManager: RegisterManager,
-        private landingManager: LandingManager
+        private landingManager: LandingManager,
+        private characterCreationManager: CharacterCreationManager,
+        // DEV
+        private authenticationWebService: AuthenticationWebService,
+        // END DEV
     ) {
         this.feed = new Feed();
 
@@ -71,9 +80,15 @@ export class LandingComponent implements OnInit {
         this.registerManager
             .userRegisteredStream
             .subscribe((response) => {
-                console.log('response: ', response);
+                this.initCharacterCreation();
             });
+
+        // DEV
+        this.devActions();
+        // END DEV
     }
+
+    // LANDING
 
     private setLandingText() {
         setTimeout(() => {
@@ -87,4 +102,40 @@ export class LandingComponent implements OnInit {
         this.registerManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
         this.prompt = undefined;
     }
+
+    // CHARACTER CREATION
+
+    private initCharacterCreation() {
+        this.characterCreationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+
+        this.characterCreationManager
+            .characterCreatedStream
+            .subscribe((response) => {
+                console.log('response: ', response);
+            });
+    }
+
+    // DEV
+    private devActions() {
+        // a private function to get us to where we want to be on page load.
+        this.authenticationWebService
+            .register({
+                name: 'name',
+                email: 'testaccount' + (Math.floor(Math.random() * 6234) + 1) + '@gmail.com',
+                password: 'password',
+                password_confirmation: 'password',
+            })
+            .subscribe(
+                (registerResponseData) => {
+                    this.characterCreationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+                }, (rawError) => {
+                    console.log('error: ', rawError);
+                    const error = new Message(0);
+                    error.setText('error: ' + rawError.error.error);
+                    error.setClass('error');
+                    this.mainFeedStream.next(error);
+                }
+            );
+    }
+    // END DEV
 }

@@ -17,15 +17,9 @@ export class AuthenticationWebService {
 
     public register(form) {
         const url = `register`;
-        const credentials = {
-            name: form.name,
-            email: form.email,
-            password: form.password,
-            password_confirmation: form.passwordConfirmation
-        };
 
         return this.api
-            .post(url, credentials);
+            .post(url, form);
     }
 
     public login(form): any {
