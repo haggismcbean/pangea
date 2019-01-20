@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { flatMap } from 'rxjs/operators';
 import { Subject, Observable, of } from 'rxjs';
 
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
-import { User } from '../../models/user.model';
 import { Message } from '../../models/message.model';
+import { Character } from '../../models/character.model';
 
 import { AuthenticationWebService } from '../../web-services/authentication-web.service';
+import { CharacterService } from '../../services/character.service';
 import { UserService } from '../../services/user.service';
 
 import { ILoginResponseData } from '../../web-service-interfaces/i-login.authentication-service';
@@ -24,6 +25,7 @@ export class LoginManager {
 
     constructor(
         private authenticationWebService: AuthenticationWebService,
+        private characterService: CharacterService,
         private userService: UserService,
     ) {}
 
@@ -78,14 +80,14 @@ export class LoginManager {
                 password: password,
             })
             .pipe(
-                map((loginResponseData: ILoginResponseData) => {
-                    this.userService.newUser(loginResponseData);
-                    return this.userService.getUser();
+                flatMap(() => {
+                    return this.characterService
+                        .getCharacters();
                 })
             )
             .subscribe(
-                (user: User) => {
-                    this.userLoggedInStream.next(user);
+                (characters: Character[]) => {
+                    return this.userLoggedInStream.next(characters[0]);
                 }, (rawError) => {
                     const error = new Message(0);
                     error.setText('error: ' + rawError.error.message);

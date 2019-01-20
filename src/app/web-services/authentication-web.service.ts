@@ -4,11 +4,15 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiService } from './api.service';
+import { UserService } from '../services/user.service';
+
+import { ILoginResponseData } from '../web-service-interfaces/i-login.authentication-service';
 
 @Injectable()
 export class AuthenticationWebService {
     constructor(
         private api: ApiService,
+        private userService: UserService
     ) {}
 
     public register(form) {
@@ -35,6 +39,9 @@ export class AuthenticationWebService {
             .post(url, credentials)
             .pipe(
                 map((body: any) => body.data)
+            )
+            .pipe(
+                map((user: ILoginResponseData) => this.userService.newUser(user))
             );
     }
 
