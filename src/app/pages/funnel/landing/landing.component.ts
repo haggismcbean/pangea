@@ -110,8 +110,8 @@ export class LandingComponent implements OnInit {
 
         this.characterCreationManager
             .characterCreatedStream
-            .subscribe((response) => {
-                console.log('response: ', response);
+            .subscribe((character) => {
+                console.log('character: ', character);
             });
     }
 
@@ -127,7 +127,7 @@ export class LandingComponent implements OnInit {
             })
             .subscribe(
                 (registerResponseData) => {
-                    this.characterCreationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+                    this.initCharacterCreation();
                 }, (rawError) => {
                     console.log('error: ', rawError);
                     const error = new Message(0);

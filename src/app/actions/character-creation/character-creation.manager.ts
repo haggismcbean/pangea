@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Subject, Observable, of, pipe } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
@@ -30,7 +30,7 @@ export class CharacterCreationManager {
         this.sendMessage('Application received', 'system');
         this.sendMessage('Loading applicant data', 'system');
 
-        // load a randomly generated user.
+        // load a randomly generated character.
         this.characterService
             .create()
             .subscribe((character) => {
@@ -45,20 +45,7 @@ export class CharacterCreationManager {
                 this.sendMessage('Bio:', 'system');
                 this.sendMessage(character.backstory, 'system');
 
-                const confirmPrompt = new Prompt('Confirm details (y/n)');
-
-                confirmPrompt
-                    .answerStream
-                    .subscribe((confirmation: string) => {
-                        console.log('dude, he confirmed alright');
-
-                        if (confirmation === 'y') {
-                            console.log('alerting subscriptions...');
-                            this.characterCreatedStream.next(character);
-                        }
-                    });
-
-                this.promptStream.next(confirmPrompt);
+                this.sendPrompt('Confirm details (y/n)', character);
             });
     }
 
@@ -68,5 +55,20 @@ export class CharacterCreationManager {
         message.setClass(messageClass);
 
         this.mainFeedStream.next(message);
+    }
+
+    private sendPrompt(promptText: string, character) {
+        const confirmPrompt = new Prompt(promptText);
+
+        confirmPrompt
+            .answerStream
+            .subscribe((confirmation: string) => {
+
+                if (confirmation === 'y') {
+                    this.characterCreatedStream.next(character);
+                }
+            });
+
+        this.promptStream.next(confirmPrompt);
     }
 }
