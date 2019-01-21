@@ -1,5 +1,7 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
+
+import * as _ from 'lodash';
 
 import { Feed } from '../../models/feed.model';
 import { Message } from '../../models/message.model';
@@ -16,6 +18,18 @@ export class FeedComponent implements OnInit {
 
     public messages: Message[] = [];
 
+    private keysMap = {};
+
+    @HostListener('window:keydown', ['$event'])
+    handleKeyDown(event: KeyboardEvent) {
+        this.handleKeypress(event);
+    }
+
+    @HostListener('window:keyup', ['$event'])
+    handleKeyUp(event: KeyboardEvent) {
+        this.handleKeypress(event);
+    }
+
     constructor() {}
 
     public ngOnInit() {
@@ -24,5 +38,24 @@ export class FeedComponent implements OnInit {
             .subscribe((message) => {
                 this.messages.push(message);
             });
+    }
+
+    private handleKeypress(event) {
+        this.keysMap[event.key] = event.type === 'keydown';
+
+        // Cmd + m or Ctrl + m
+        if (this.keysMap['Meta'] && this.keysMap['m'] || this.keysMap['Control'] && this.keysMap['m']) {
+            this.keysMap['m'] = false;
+
+            this.showNextMessage();
+        }
+    }
+
+    private showNextMessage() {
+        const nextMessage = _.find(this.messages, {isShowing: false});
+
+        if (nextMessage) {
+            nextMessage.isShowing = true;
+        }
     }
 }

@@ -23,6 +23,8 @@ export class InputComponent implements OnInit, OnChanges {
     public promptText = '';
     public hintedOption: Option;
 
+    private keysMap = {};
+
     private caretPosition = 0;
     private optionsTree = [];
     private currentOptionSuggestion = null;
@@ -48,6 +50,11 @@ export class InputComponent implements OnInit, OnChanges {
         this.handleKeypress(event);
     }
 
+    @HostListener('window:keyup', ['$event'])
+    handleKeyUp(event: KeyboardEvent) {
+        this.handleKeypress(event);
+    }
+
     constructor() {}
 
     public ngOnInit() {
@@ -69,6 +76,12 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     private handleKeypress(keyboardEvent: KeyboardEvent) {
+        this.keysMap[keyboardEvent.key] = keyboardEvent.type === 'keydown';
+
+        if (this.keysMap['Meta'] && this.keysMap['m'] || this.keysMap['Control'] && this.keysMap['m']) {
+            keyboardEvent.preventDefault();
+            return;
+        }
 
         // if user presses other special character
         if (keyboardEvent.key === 'Shift' || keyboardEvent.key === 'Meta' || keyboardEvent.key === 'Control') {

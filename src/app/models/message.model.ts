@@ -4,9 +4,11 @@ export class Message {
     public text: string;
     public class: string;
     public date: string;
+    public isShowing: boolean;
 
     constructor(id: number) {
         this.id = id;
+        this.isShowing = false;
     }
 
     public setText(text: string): Message {

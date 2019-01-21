@@ -1,6 +1,8 @@
 <div class="box">
-	<p *ngFor="let message of messages"
-	   [class]="message.class">
-		{{message.text}}
-	</p>
+    <div *ngFor="let message of messages">
+        <p *ngIf="message.isShowing"
+           [class]="message.class">
+            {{message.text}}
+        </p>
+    </div>
 </div>
