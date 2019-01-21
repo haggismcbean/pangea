@@ -1,8 +1,13 @@
-<div class="box">
+<div class="feed-component__container box">
     <div *ngFor="let message of messages">
         <p *ngIf="message.isShowing"
            [class]="message.class">
             {{message.text}}
         </p>
+    </div>
+
+    <div class="feed-component__unread-messages"
+         *ngIf="hasUnreadMessages">
+        Ctrl + m for next message
     </div>
 </div>

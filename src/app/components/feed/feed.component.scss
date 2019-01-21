@@ -1,5 +1,5 @@
 // @import '../../styles/globals.scss';
-// @import '../../styles/colours.scss';
+@import '../../styles/colours.scss';
 // 	border: 1px solid $border-color;
 // 	border-left-width: 12px;
 // 	padding: 1em;
@@ -7,4 +7,19 @@
 
 .box {
 	flex-grow: 1;
+}
+
+.feed-component__container {
+	position: relative;
+	padding-bottom: 2em;
+}
+
+.feed-component__unread-messages {
+	background: $text-normal-color;
+	color: $background;
+	position: absolute;
+	bottom: 0.5em;
+	left: 0.5em;
+	width: calc(100% - 1em);
+
 }

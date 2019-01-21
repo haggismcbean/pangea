@@ -17,6 +17,7 @@ export class FeedComponent implements OnInit {
     @Input() public feed: Feed;
 
     public messages: Message[] = [];
+    public hasUnreadMessages = false;
 
     private keysMap = {};
 
@@ -37,6 +38,7 @@ export class FeedComponent implements OnInit {
             .messageStream
             .subscribe((message) => {
                 this.messages.push(message);
+                this.hasUnreadMessages = true;
             });
     }
 
@@ -56,6 +58,10 @@ export class FeedComponent implements OnInit {
 
         if (nextMessage) {
             nextMessage.isShowing = true;
+        }
+
+        if (!_.find(this.messages, {isShowing: false})) {
+            this.hasUnreadMessages = false;
         }
     }
 }
