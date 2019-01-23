@@ -83,6 +83,10 @@ export class InputComponent implements OnInit, OnChanges {
             return;
         }
 
+        if (keyboardEvent.type === 'keydown') {
+            return;
+        }
+
         // if user presses other special character
         if (keyboardEvent.key === 'Shift' || keyboardEvent.key === 'Meta' || keyboardEvent.key === 'Control') {
             return;
