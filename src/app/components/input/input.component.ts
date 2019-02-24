@@ -132,7 +132,6 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     private handleBackspace() {
-        console.log('handling backspace', this.caretPosition);
         this.input = this.input.slice(0, this.caretPosition - 1);
         this.hint = '';
         this.caretPosition--;
