@@ -84,7 +84,7 @@ export class LandingComponent implements OnInit {
             });
 
         // DEV
-        this.devActions();
+        // this.devActions();
         // END DEV
     }
 

@@ -83,7 +83,7 @@ export class InputComponent implements OnInit, OnChanges {
             return;
         }
 
-        if (keyboardEvent.type === 'keydown') {
+        if (keyboardEvent.type === 'keyup') {
             return;
         }
 
@@ -108,6 +108,7 @@ export class InputComponent implements OnInit, OnChanges {
 
         // if user presses tab
         if (keyboardEvent.key === 'Tab') {
+            keyboardEvent.preventDefault();
             this.mode.handleTab();
             return;
         }
