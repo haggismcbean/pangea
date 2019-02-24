@@ -75,6 +75,7 @@ export class LandingComponent implements OnInit {
             .userLoggedInStream
             .subscribe((user) => {
                 console.log('user logged in!', user);
+
             });
 
         this.registerManager

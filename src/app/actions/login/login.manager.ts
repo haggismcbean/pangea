@@ -10,6 +10,7 @@ import { Character } from '../../models/character.model';
 import { AuthenticationWebService } from '../../web-services/authentication-web.service';
 import { CharacterService } from '../../services/character.service';
 import { UserService } from '../../services/user.service';
+import { WebSocketService } from '../../services/web-socket.service';
 
 import { ILoginResponseData } from '../../web-service-interfaces/i-login.authentication-service';
 
@@ -27,6 +28,7 @@ export class LoginManager {
         private authenticationWebService: AuthenticationWebService,
         private characterService: CharacterService,
         private userService: UserService,
+        private webSocketService: WebSocketService,
     ) {}
 
     public init(mainFeedStream, optionsStream, promptStream): void {
@@ -80,7 +82,9 @@ export class LoginManager {
                 password: password,
             })
             .pipe(
-                flatMap(() => {
+                flatMap((response: any) => {
+                    // TODO - that '1' needs to be the character id :P
+                    this.webSocketService.connect(response.token, 1);
                     return this.characterService
                         .getCharacters();
                 })
