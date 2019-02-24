@@ -96,6 +96,8 @@ export class InputComponent implements OnInit, OnChanges {
 
         // if user presses delete
         if (keyboardEvent.key === 'Backspace') {
+            keyboardEvent.preventDefault();
+            keyboardEvent.stopPropagation();
             this.mode.handleBackspace();
             return;
         }
@@ -118,8 +120,10 @@ export class InputComponent implements OnInit, OnChanges {
             return;
         }
 
-        // otherwise
-        this.mode.handleInput(keyboardEvent);
+        // otherwise (if a 'normal' key is pressed)
+        if (keyboardEvent.key.length === 1) {
+            this.mode.handleInput(keyboardEvent);
+        }
     }
 
 
@@ -132,10 +136,12 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     private handleBackspace() {
-        console.log('handling backspace', this.caretPosition);
         this.input = this.input.slice(0, this.caretPosition - 1);
         this.hint = '';
-        this.caretPosition--;
+
+        if (this.caretPosition > 0) {
+            this.caretPosition--;
+        }
     }
 
     private resetOptions() {
