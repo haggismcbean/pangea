@@ -5,6 +5,7 @@ export class Message {
     public class: string;
     public date: string;
     public isShowing: boolean;
+    public isClear: boolean;
 
     constructor(id: number) {
         this.id = id;

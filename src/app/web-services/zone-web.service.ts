@@ -31,4 +31,11 @@ export class ZoneWebService {
         return this.api
             .get(url);
     }
+
+    public getWakeUpText(zoneId: number): any {
+        const url = `zone/${zoneId}`;
+
+        return this.api
+            .get(url);
+    }
 }

@@ -37,8 +37,13 @@ export class FeedComponent implements OnInit {
         this.feed
             .messageStream
             .subscribe((message) => {
-                this.messages.push(message);
-                this.hasUnreadMessages = true;
+                if (message.isClear) {
+                    this.messages = [];
+                    this.hasUnreadMessages = false;
+                } else {
+                    this.messages.push(message);
+                    this.hasUnreadMessages = true;
+                }
             });
     }
 

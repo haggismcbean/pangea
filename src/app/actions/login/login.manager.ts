@@ -44,6 +44,11 @@ export class LoginManager {
             .selectedStream
             .subscribe(() => {
                 this.onOptionSelected();
+
+                // clear messages feed
+                const clearMessage = new Message('');
+                clearMessage.isClear = true;
+                this.mainFeedStream.next(clearMessage);
             });
 
         this.optionsStream.next(loginOption);

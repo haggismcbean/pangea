@@ -28,4 +28,9 @@ export class ZoneService {
         return this.zoneWebService
             .getZoneCharacters(zoneId);
     }
+
+    public getWakeUpText(zoneId: number): Observable<any> {
+        return this.zoneWebService
+            .getWakeUpText(zoneId);
+    }
 }

@@ -12,6 +12,8 @@ import { RegisterManager } from '../../../actions/register/register.manager';
 import { LoginManager } from '../../../actions/login/login.manager';
 import { CharacterCreationManager } from '../../../actions/character-creation/character-creation.manager';
 
+import { ZoneService } from '../../../services/zone.service';
+
 // DEV
 import { AuthenticationWebService } from '../../../web-services/authentication-web.service';
 // END DEV
@@ -36,6 +38,8 @@ export class LandingComponent implements OnInit {
         private registerManager: RegisterManager,
         private landingManager: LandingManager,
         private characterCreationManager: CharacterCreationManager,
+
+        private zoneService: ZoneService,
         // DEV
         private authenticationWebService: AuthenticationWebService,
         // END DEV
@@ -74,8 +78,7 @@ export class LandingComponent implements OnInit {
         this.loginManager
             .userLoggedInStream
             .subscribe((user) => {
-                console.log('user logged in!', user);
-
+                this.getWakeUpText();
             });
 
         this.registerManager
@@ -113,6 +116,34 @@ export class LandingComponent implements OnInit {
             .characterCreatedStream
             .subscribe((character) => {
                 console.log('character: ', character);
+            });
+    }
+
+    // WAKE UP TEXT
+
+    private getWakeUpText() {
+        this.zoneService
+            .getWakeUpText(1)
+            .subscribe((wakeUpText) => {
+                const intro = new Message(0);
+                intro.setText(wakeUpText.intro);
+                intro.setClass('');
+                this.mainFeedStream.next(intro);
+
+                const farNature = new Message(0);
+                farNature.setText(wakeUpText.farNature);
+                farNature.setClass('');
+                this.mainFeedStream.next(farNature);
+
+                const closeNature = new Message(0);
+                closeNature.setText(wakeUpText.closeNature);
+                closeNature.setClass('');
+                this.mainFeedStream.next(closeNature);
+
+                const drone = new Message(0);
+                drone.setText(wakeUpText.drone);
+                drone.setClass('');
+                this.mainFeedStream.next(drone);
             });
     }
 
