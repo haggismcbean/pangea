@@ -59,6 +59,10 @@ export class LandingComponent implements OnInit {
                 if (message.class === 'error') {
                     this.setLandingOptions();
                 }
+
+                if (message.class === 'reset') {
+                    this.setOptions();
+                }
             });
 
         this.optionsStream
@@ -152,6 +156,7 @@ export class LandingComponent implements OnInit {
 
     private setOptions() {
         // get characters
+        this.options = [];
         this.locationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
         // get plants
 

@@ -6,6 +6,9 @@ import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { Message } from '../../models/message.model';
 import { Character } from '../../models/character.model';
+import { CharacterService } from '../../services/character.service';
+
+import * as _ from 'lodash';
 
 @Injectable()
 export class LocationManager {
@@ -16,6 +19,7 @@ export class LocationManager {
     private promptStream;
 
     constructor(
+        private characterService: CharacterService
     ) {}
 
     public init(mainFeedStream, optionsStream, promptStream): void {
@@ -35,7 +39,32 @@ export class LocationManager {
         peopleOption
             .selectedStream
             .subscribe(() => {
-                console.log('people selected!');
+                // once the user decides to look at people, we have to get the list of people!
+                this.characterService
+                    .getCharacters()
+                    .subscribe((characters: Character[]) => {
+                        _.forEach(characters, (character) => {
+                            const characterOption = new Option(character.name);
+
+                            characterOption
+                                .selectedStream
+                                .subscribe(() => {
+                                    const characterDescription = new Message(0);
+                                    characterDescription.setText(character.appearance);
+
+                                    this.mainFeedStream
+                                        .next(characterDescription);
+
+                                    const resetMessage = new Message(0);
+                                    resetMessage.class = 'reset';
+
+                                    this.mainFeedStream
+                                        .next(resetMessage);
+                                });
+
+                            this.optionsStream.next(characterOption);
+                        });
+                    });
             });
 
         plantsOption

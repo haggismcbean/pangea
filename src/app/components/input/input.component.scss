@@ -17,7 +17,8 @@
 
 .options {
 	padding: 1em;
-	overflow: auto
+	overflow: auto;
+	max-height: 5em;
 }
 
 .input__suggestion {
