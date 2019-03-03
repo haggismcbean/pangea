@@ -46,7 +46,7 @@ export class LoginManager {
                 this.onOptionSelected();
 
                 // clear messages feed
-                const clearMessage = new Message('');
+                const clearMessage = new Message(0);
                 clearMessage.isClear = true;
                 this.mainFeedStream.next(clearMessage);
             });

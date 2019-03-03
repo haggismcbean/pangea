@@ -11,6 +11,7 @@ import { LandingManager } from '../../../actions/landing/landing.manager';
 import { RegisterManager } from '../../../actions/register/register.manager';
 import { LoginManager } from '../../../actions/login/login.manager';
 import { CharacterCreationManager } from '../../../actions/character-creation/character-creation.manager';
+import { LocationManager } from '../../../actions/location/location.manager';
 
 import { ZoneService } from '../../../services/zone.service';
 
@@ -38,6 +39,7 @@ export class LandingComponent implements OnInit {
         private registerManager: RegisterManager,
         private landingManager: LandingManager,
         private characterCreationManager: CharacterCreationManager,
+        private locationManager: LocationManager,
 
         private zoneService: ZoneService,
         // DEV
@@ -79,6 +81,7 @@ export class LandingComponent implements OnInit {
             .userLoggedInStream
             .subscribe((user) => {
                 this.getWakeUpText();
+                this.setOptions();
             });
 
         this.registerManager
@@ -145,6 +148,20 @@ export class LandingComponent implements OnInit {
                 drone.setClass('');
                 this.mainFeedStream.next(drone);
             });
+    }
+
+    private setOptions() {
+        // get characters
+        this.locationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        // get plants
+
+        // get animals
+
+        // hunt
+
+        // gather plants
+
+        // travel
     }
 
     // DEV

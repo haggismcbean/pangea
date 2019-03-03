@@ -4,6 +4,7 @@ import { LandingManager } from './landing/landing.manager';
 import { RegisterManager } from './register/register.manager';
 import { LoginManager } from './login/login.manager';
 import { CharacterCreationManager } from './character-creation/character-creation.manager';
+import { LocationManager } from './location/location.manager';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { CharacterCreationManager } from './character-creation/character-creatio
         LandingManager,
         RegisterManager,
         LoginManager,
-        CharacterCreationManager
+        CharacterCreationManager,
+        LocationManager
     ],
     declarations: [
     ],
