@@ -5,6 +5,7 @@ import { RegisterManager } from './register/register.manager';
 import { LoginManager } from './login/login.manager';
 import { CharacterCreationManager } from './character-creation/character-creation.manager';
 import { LocationManager } from './location/location.manager';
+import { MovementManager } from './movement/movement.manager';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { LocationManager } from './location/location.manager';
         RegisterManager,
         LoginManager,
         CharacterCreationManager,
-        LocationManager
+        LocationManager,
+        MovementManager
     ],
     declarations: [
     ],
