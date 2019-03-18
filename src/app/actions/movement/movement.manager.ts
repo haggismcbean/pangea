@@ -5,6 +5,8 @@ import { Subject, Observable, of } from 'rxjs';
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { Message } from '../../models/message.model';
+
+import { CharacterService } from '../../services/character.service';
 import { ZoneService } from '../../services/zone.service';
 
 import * as _ from 'lodash';
@@ -18,6 +20,7 @@ export class MovementManager {
     private promptStream;
 
     constructor(
+        private characterService: CharacterService,
         private zoneService: ZoneService
     ) {}
 
@@ -27,9 +30,12 @@ export class MovementManager {
         this.promptStream = promptStream;
 
         const moveToOption = new Option('move to');
+        const zoneId = this.characterService
+            .getCurrent()
+            .zoneId;
 
         this.zoneService
-            .getBorderingZones(1)
+            .getBorderingZones(zoneId)
             .subscribe((zones) => {
                 const zoneOptions = [];
 
@@ -66,7 +72,13 @@ export class MovementManager {
     private onZoneOptionSelect(zone): void {
         this.zoneService
             .changeZones(zone.id)
-            .subscribe((newZone) => {
+            .subscribe((response) => {
+                const newZone = response.targetZone;
+
+                const currentCharacter = this.characterService
+                    .getCurrent();
+                currentCharacter.zoneId = newZone.id;
+
                 const resetMessage = new Message(0);
                 resetMessage.class = 'reset';
 

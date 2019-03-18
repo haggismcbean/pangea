@@ -6,7 +6,9 @@ import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { Message } from '../../models/message.model';
 import { Character } from '../../models/character.model';
+
 import { CharacterService } from '../../services/character.service';
+import { ZoneService } from '../../services/zone.service';
 
 import * as _ from 'lodash';
 
@@ -19,13 +21,18 @@ export class LocationManager {
     private promptStream;
 
     constructor(
-        private characterService: CharacterService
+        private characterService: CharacterService,
+        private zoneService: ZoneService
     ) {}
 
     public init(mainFeedStream, optionsStream, promptStream): void {
         this.mainFeedStream = mainFeedStream;
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
+
+        const zoneId = this.characterService
+            .getCurrent()
+            .zoneId;
 
         const lookAtOption = new Option('look at');
 
@@ -40,8 +47,8 @@ export class LocationManager {
             .selectedStream
             .subscribe(() => {
                 // once the user decides to look at people, we have to get the list of people!
-                this.characterService
-                    .getCharacters()
+                this.zoneService
+                    .getZoneCharacters(zoneId)
                     .subscribe((characters: Character[]) => {
                         _.forEach(characters, (character) => {
                             const characterOption = new Option(character.name);

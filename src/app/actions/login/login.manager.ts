@@ -81,6 +81,8 @@ export class LoginManager {
     }
 
     private onPasswordProvided(password: string) {
+        let token;
+
         this.authenticationWebService
             .login({
                 email: this.email,
@@ -88,15 +90,22 @@ export class LoginManager {
             })
             .pipe(
                 flatMap((response: any) => {
-                    // TODO - that '1' needs to be the character id :P
-                    this.webSocketService.connect(response.token, 1);
+                    token = response.token;
+
                     return this.characterService
                         .getCharacters();
                 })
             )
             .subscribe(
                 (characters: Character[]) => {
-                    return this.userLoggedInStream.next(characters[0]);
+                    const character = characters[0];
+
+                    this.characterService
+                        .setCurrent(character);
+
+                    this.webSocketService.connect(token, character.id);
+
+                    return this.userLoggedInStream.next(character);
                 }, (rawError) => {
                     const error = new Message(0);
                     error.setText('error: ' + rawError.error.message);

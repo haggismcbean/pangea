@@ -86,7 +86,6 @@ export class LandingComponent implements OnInit {
         this.loginManager
             .userLoggedInStream
             .subscribe((user) => {
-                console.log('user: ', user);
                 this.getWakeUpText();
                 this.setOptions();
             });

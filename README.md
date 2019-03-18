@@ -78,3 +78,9 @@ Yes, that's me
 
 No, that's not me
 
+
+#### To Do List:
+
+[ ] Get a character's zoneId on log in (and store)
+[ ] Log in automatically if token in local storage (duh)
+

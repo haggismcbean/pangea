@@ -4,7 +4,7 @@ export class Character {
     public backstory: string;
     public personality: string;
     public birthday: string;
-    public created_at: string;
+    public createdAt: string;
     public forename: string;
     public gender: string;
     public height: number;
@@ -14,9 +14,10 @@ export class Character {
     public pronoun: string;
     public strength: number;
     public surname: string;
-    public updated_at: string;
-    public user_id: number;
+    public updatedAt: string;
+    public userId: number;
     public weight: number;
+    public zoneId: number;
 
     constructor(id: number) {
         this.id = id;

@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class CharacterService {
     private characters: Character[];
+    private current: Character;
 
     constructor(
         private characterWebService: CharacterWebService
@@ -22,6 +23,15 @@ export class CharacterService {
         } else {
             return this.fetchCharacters();
         }
+    }
+
+    public getCurrent(): Character {
+        return this.current;
+    }
+
+    public setCurrent(character: Character): Character {
+        this.current = character;
+        return this.current;
     }
 
     public getCharacter(characterId: number): Observable<Character> {
@@ -78,7 +88,7 @@ export class CharacterService {
         character.backstory = _character.backstory;
         character.personality = _character.personality;
         character.birthday = _character.birthday;
-        character.created_at = _character.created_at;
+        character.createdAt = _character.created_at;
         character.forename = _character.forename;
         character.gender = _character.gender;
         character.height = _character.height;
@@ -87,9 +97,10 @@ export class CharacterService {
         character.pronoun = _character.pronoun;
         character.strength = _character.strength;
         character.surname = _character.surname;
-        character.updated_at = _character.updated_at;
-        character.user_id = _character.user_id;
+        character.updatedAt = _character.updated_at;
+        character.userId = _character.user_id;
         character.weight = _character.weight;
+        character.zoneId = _character.zone_id;
 
         return character;
     }
