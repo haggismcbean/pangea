@@ -5,6 +5,7 @@ import { Subject, Observable, of } from 'rxjs';
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { Message } from '../../models/message.model';
+import { ZoneService } from '../../services/zone.service';
 
 import * as _ from 'lodash';
 
@@ -16,6 +17,10 @@ export class MovementManager {
     private optionsStream;
     private promptStream;
 
+    constructor(
+        private zoneService: ZoneService
+    ) {}
+
     public init(mainFeedStream, optionsStream, promptStream): void {
         this.mainFeedStream = mainFeedStream;
         this.optionsStream = optionsStream;
@@ -23,37 +28,56 @@ export class MovementManager {
 
         const moveToOption = new Option('move to');
 
-        const northOption = new Option('north');
-        const eastOption = new Option('east');
-        const southOption = new Option('south');
-        const westOption = new Option('west');
+        this.zoneService
+            .getBorderingZones(1)
+            .subscribe((zones) => {
+                const zoneOptions = [];
 
-        moveToOption.setOptions([northOption, eastOption, southOption, westOption]);
+                _.each(zones.borderZones, (zone, zoneName) => {
+                    if (zone) {
+                        const newZone = new Option(zoneName);
+                        newZone
+                            .selectedStream
+                            .subscribe(() => {
+                                this.onZoneOptionSelect(zone);
+                            });
 
-        northOption
-            .selectedStream
-            .subscribe(() => {
-                console.log('move north');
-            });
+                        zoneOptions.push(newZone);
+                    }
+                });
 
-        eastOption
-            .selectedStream
-            .subscribe(() => {
-                console.log('move north');
-            });
+                _.each(zones.zones, (zone) => {
+                    const newZone = new Option(zone.name);
+                    newZone
+                        .selectedStream
+                        .subscribe(() => {
+                            this.onZoneOptionSelect(zone);
+                        });
 
-        southOption
-            .selectedStream
-            .subscribe(() => {
-                console.log('move north');
-            });
+                    zoneOptions.push(newZone);
+                });
 
-        westOption
-            .selectedStream
-            .subscribe(() => {
-                console.log('move north');
+                moveToOption.setOptions(zoneOptions);
             });
 
         this.optionsStream.next(moveToOption);
+    }
+
+    private onZoneOptionSelect(zone): void {
+        this.zoneService
+            .changeZones(zone.id)
+            .subscribe((newZone) => {
+                const resetMessage = new Message(0);
+                resetMessage.class = 'reset';
+
+                this.mainFeedStream
+                    .next(resetMessage);
+
+                const newZoneDescription = new Message(0);
+                newZoneDescription.setText(newZone.description);
+
+                this.mainFeedStream
+                    .next(newZoneDescription);
+            });
     }
 }
