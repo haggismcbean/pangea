@@ -14,6 +14,7 @@ import { CharacterCreationManager } from '../../../actions/character-creation/ch
 import { LocationManager } from '../../../actions/location/location.manager';
 import { MovementManager } from '../../../actions/movement/movement.manager';
 
+import { CharacterService } from '../../../services/character.service';
 import { ZoneService } from '../../../services/zone.service';
 
 // DEV
@@ -43,6 +44,7 @@ export class LandingComponent implements OnInit {
         private locationManager: LocationManager,
         private movementManager: MovementManager,
 
+        private characterService: CharacterService,
         private zoneService: ZoneService,
         // DEV
         private authenticationWebService: AuthenticationWebService,
@@ -131,8 +133,10 @@ export class LandingComponent implements OnInit {
     // WAKE UP TEXT
 
     private getWakeUpText() {
+        const character = this.characterService.getCurrent();
+
         this.zoneService
-            .getWakeUpText(1)
+            .getWakeUpText(character.zoneId)
             .subscribe((wakeUpText) => {
                 const intro = new Message(0);
                 intro.setText(wakeUpText.intro);
