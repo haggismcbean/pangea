@@ -38,20 +38,26 @@ export class LoginManager {
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
 
-        const loginOption = new Option('log in');
+        this.characterService
+            .getCharacters()
+            .subscribe(
+                (characters: Character[]) => {
+                    this.clearMessageFeed();
+                    this.setCurrentCharacter(characters);
+                },
+                (error) => {
+                    const loginOption = new Option('log in');
 
-        loginOption
-            .selectedStream
-            .subscribe(() => {
-                this.onOptionSelected();
+                    loginOption
+                        .selectedStream
+                        .subscribe(() => {
+                            this.onOptionSelected();
+                            this.clearMessageFeed();
+                        });
 
-                // clear messages feed
-                const clearMessage = new Message(0);
-                clearMessage.isClear = true;
-                this.mainFeedStream.next(clearMessage);
-            });
+                    this.optionsStream.next(loginOption);
+                });
 
-        this.optionsStream.next(loginOption);
     }
 
     private onOptionSelected() {
@@ -81,8 +87,6 @@ export class LoginManager {
     }
 
     private onPasswordProvided(password: string) {
-        let token;
-
         this.authenticationWebService
             .login({
                 email: this.email,
@@ -90,23 +94,15 @@ export class LoginManager {
             })
             .pipe(
                 flatMap((response: any) => {
-                    token = response.token;
-
                     return this.characterService
                         .getCharacters();
                 })
             )
             .subscribe(
                 (characters: Character[]) => {
-                    const character = characters[0];
-
-                    this.characterService
-                        .setCurrent(character);
-
-                    this.webSocketService.connect(token, character.id);
-
-                    return this.userLoggedInStream.next(character);
-                }, (rawError) => {
+                    this.setCurrentCharacter(characters);
+                },
+                (rawError) => {
                     const error = new Message(0);
                     error.setText('error: ' + rawError.error.message);
                     error.setClass('error');
@@ -114,5 +110,22 @@ export class LoginManager {
                 }
 
             );
+    }
+
+    private setCurrentCharacter(characters: Character[]) {
+        const character = characters[0];
+
+        this.characterService
+            .setCurrent(character);
+
+        this.webSocketService.connect(this.userService.getUser().token, character.id);
+
+        return this.userLoggedInStream.next(character);
+    }
+
+    private clearMessageFeed() {
+        const clearMessage = new Message(0);
+        clearMessage.isClear = true;
+        this.mainFeedStream.next(clearMessage);
     }
 }
