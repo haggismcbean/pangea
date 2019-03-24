@@ -5,6 +5,7 @@ import { CharacterService } from './character.service';
 import { AuthGuardService } from './auth-guard.service';
 import { WebSocketService } from './web-socket.service';
 import { ZoneService } from './zone.service';
+import { PlantService } from './plant.service';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { ZoneService } from './zone.service';
         CharacterService,
         AuthGuardService,
         WebSocketService,
-        ZoneService
+        ZoneService,
+        PlantService
     ],
     declarations: [
     ],

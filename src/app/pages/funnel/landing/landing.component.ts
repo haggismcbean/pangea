@@ -13,6 +13,7 @@ import { LoginManager } from '../../../actions/login/login.manager';
 import { CharacterCreationManager } from '../../../actions/character-creation/character-creation.manager';
 import { LocationManager } from '../../../actions/location/location.manager';
 import { MovementManager } from '../../../actions/movement/movement.manager';
+import { LabourManager } from '../../../actions/labour/labour.manager';
 
 import { CharacterService } from '../../../services/character.service';
 import { ZoneService } from '../../../services/zone.service';
@@ -43,6 +44,7 @@ export class LandingComponent implements OnInit {
         private characterCreationManager: CharacterCreationManager,
         private locationManager: LocationManager,
         private movementManager: MovementManager,
+        private labourManager: LabourManager,
 
         private characterService: CharacterService,
         private zoneService: ZoneService,
@@ -165,7 +167,9 @@ export class LandingComponent implements OnInit {
 
         // get characters
         this.locationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        
         // get plants
+        this.labourManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
 
         // get animals
 

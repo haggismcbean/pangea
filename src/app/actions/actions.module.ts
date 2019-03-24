@@ -6,6 +6,7 @@ import { LoginManager } from './login/login.manager';
 import { CharacterCreationManager } from './character-creation/character-creation.manager';
 import { LocationManager } from './location/location.manager';
 import { MovementManager } from './movement/movement.manager';
+import { LabourManager } from './labour/labour.manager';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { MovementManager } from './movement/movement.manager';
         LoginManager,
         CharacterCreationManager,
         LocationManager,
-        MovementManager
+        MovementManager,
+        LabourManager
     ],
     declarations: [
     ],

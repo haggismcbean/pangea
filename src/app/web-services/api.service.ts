@@ -36,6 +36,17 @@ export class ApiService {
             .post<any>(url, data);
     }
 
+    public put(url, data?) {
+        url = `${this.baseUrl}/${url}` + this.getApiToken(url);
+
+        if (!data) {
+            data = {};
+        }
+
+        return this.http
+            .put<any>(url, data);
+    }
+
     private getApiToken(url) {
         const user = this.userService.getUser();
 

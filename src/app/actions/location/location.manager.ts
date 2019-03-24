@@ -77,7 +77,49 @@ export class LocationManager {
         plantsOption
             .selectedStream
             .subscribe(() => {
-                console.log('plantsOption selected!');
+                this.zoneService
+                    .getZonePlants(zoneId)
+                    .subscribe((plants: any[]) => {
+                        _.forEach(plants, (plant) => {
+                            const plantOption = new Option(`${plant.typeName} ${plant.id}`);
+
+                            plantOption
+                                .selectedStream
+                                .subscribe(() => {
+                                    const leafDescription = new Message(0);
+                                    leafDescription.setText(plant.leafAppearance);
+
+                                    const flowerDescription = new Message(0);
+                                    flowerDescription.setText(plant.flowerAppearance);
+
+                                    const seedDescription = new Message(0);
+                                    seedDescription.setText(plant.seedAppearance);
+
+                                    const woodDescription = new Message(0);
+                                    woodDescription.setText(plant.woodAppearance);
+
+                                    this.mainFeedStream
+                                        .next(leafDescription);
+
+                                    this.mainFeedStream
+                                        .next(flowerDescription);
+
+                                    this.mainFeedStream
+                                        .next(seedDescription);
+
+                                    this.mainFeedStream
+                                        .next(woodDescription);
+
+                                    const resetMessage = new Message(0);
+                                    resetMessage.class = 'reset';
+
+                                    this.mainFeedStream
+                                        .next(resetMessage);
+                                });
+
+                            this.optionsStream.next(plantOption);
+                        });
+                    });
             });
 
         animalsOption
