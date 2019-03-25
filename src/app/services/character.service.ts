@@ -47,6 +47,11 @@ export class CharacterService {
         }
     }
 
+    public getInventory(): Observable<any> {
+        return this.characterWebService
+            .inventory(this.current.id);
+    }
+
     public create(): Observable<Character> {
         return this.characterWebService
             .create()

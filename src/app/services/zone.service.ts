@@ -34,6 +34,11 @@ export class ZoneService {
             .getZonePlants(zoneId);
     }
 
+    public getZoneInventory(zoneId: number): Observable<any> {
+        return this.zoneWebService
+            .getZoneInventory(zoneId);
+    }
+
     public getWakeUpText(zoneId: number): Observable<any> {
         return this.zoneWebService
             .getWakeUpText(zoneId);

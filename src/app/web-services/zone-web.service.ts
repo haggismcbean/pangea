@@ -39,6 +39,13 @@ export class ZoneWebService {
             .get(url);
     }
 
+    public getZoneInventory(zoneId: number): any {
+        const url = `zone/${zoneId}/inventory`;
+
+        return this.api
+            .get(url);
+    }
+
     public getWakeUpText(zoneId: number): any {
         const url = `zone/${zoneId}`;
 

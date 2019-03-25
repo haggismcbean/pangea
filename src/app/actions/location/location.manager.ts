@@ -38,10 +38,10 @@ export class LocationManager {
 
         const peopleOption = new Option('people');
         const plantsOption = new Option('plants');
-        const animalsOption = new Option('animals');
-        const toolsOption = new Option('tools');
+        const locationOption = new Option('loose items');
+        const inventoryOption = new Option('inventory');
 
-        lookAtOption.setOptions([peopleOption, plantsOption, animalsOption, toolsOption]);
+        lookAtOption.setOptions([peopleOption, plantsOption, locationOption, inventoryOption]);
 
         peopleOption
             .selectedStream
@@ -122,16 +122,66 @@ export class LocationManager {
                     });
             });
 
-        animalsOption
+        locationOption
             .selectedStream
             .subscribe(() => {
-                console.log('animalsOption selected!');
+                this.zoneService
+                    .getZoneInventory(zoneId)
+                    .subscribe((items: any[]) => {
+                        _.forEach(items, (item) => {
+                            const itemOption = new Option(`${item.name} ${item.id}`);
+
+                            itemOption
+                                .selectedStream
+                                .subscribe(() => {
+                                    console.log('item: ', item);
+                                    const itemDescription = new Message(0);
+                                    itemDescription.setText(item.description);
+
+                                    this.mainFeedStream
+                                        .next(itemDescription);
+
+                                    const resetMessage = new Message(0);
+                                    resetMessage.class = 'reset';
+
+                                    this.mainFeedStream
+                                        .next(resetMessage);
+                                });
+
+                            this.optionsStream.next(itemOption);
+                        });
+                    });
             });
 
-        toolsOption
+        inventoryOption
             .selectedStream
             .subscribe(() => {
-                console.log('toolsOption selected!');
+                this.characterService
+                    .getInventory(zoneId)
+                    .subscribe((items: any[]) => {
+                        _.forEach(items, (item) => {
+                            const itemOption = new Option(`${item.name} ${item.id}`);
+
+                            itemOption
+                                .selectedStream
+                                .subscribe(() => {
+                                    console.log('item: ', item);
+                                    const itemDescription = new Message(0);
+                                    itemDescription.setText(item.description);
+
+                                    this.mainFeedStream
+                                        .next(itemDescription);
+
+                                    const resetMessage = new Message(0);
+                                    resetMessage.class = 'reset';
+
+                                    this.mainFeedStream
+                                        .next(resetMessage);
+                                });
+
+                            this.optionsStream.next(itemOption);
+                        });
+                    });
             });
 
         this.optionsStream.next(lookAtOption);

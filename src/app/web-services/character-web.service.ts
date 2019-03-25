@@ -25,6 +25,13 @@ export class CharacterWebService {
             .get(url);
     }
 
+    public inventory(characterId): any {
+        const url = `character/${characterId}/inventory`;
+
+        return this.api
+            .get(url);
+    }
+
     public attack(characterId: number): any {
         const url = `character/${characterId}/attack`;
 
