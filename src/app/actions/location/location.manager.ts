@@ -134,7 +134,6 @@ export class LocationManager {
                             itemOption
                                 .selectedStream
                                 .subscribe(() => {
-                                    console.log('item: ', item);
                                     const itemDescription = new Message(0);
                                     itemDescription.setText(item.description);
 
@@ -165,7 +164,6 @@ export class LocationManager {
                             itemOption
                                 .selectedStream
                                 .subscribe(() => {
-                                    console.log('item: ', item);
                                     const itemDescription = new Message(0);
                                     itemDescription.setText(item.description);
 
