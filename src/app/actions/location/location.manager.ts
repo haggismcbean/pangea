@@ -176,11 +176,7 @@ export class LocationManager {
         amountPrompt
             .answerStream
             .subscribe((confirmation: string) => {
-                if (Number(confirmation) > $item.count || Number(confirmation) < 0) {
-                    this.resetOptions();
-                } else {
-                    //TODO - inventory management
-                }
+                
             });
 
         this.promptStream.next(amountPrompt);
@@ -217,11 +213,7 @@ export class LocationManager {
         amountPrompt
             .answerStream
             .subscribe((confirmation: string) => {
-                if (Number(confirmation) > $item.count || Number(confirmation) < 0) {
-                    this.resetOptions();
-                } else {
-                    //TODO - inventory management
-                }
+                
             });
 
         this.promptStream.next(amountPrompt);
