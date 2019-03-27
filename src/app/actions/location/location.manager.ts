@@ -137,6 +137,8 @@ export class LocationManager {
         this.zoneService
             .getZoneInventory(this.zoneId)
             .subscribe((items: any[]) => {
+                this.showItemsAsMessages(items, 'the location');
+
                 _.forEach(items, (item) => {
                     const itemOption = new Option(`${item.name} ${item.id}`);
 
@@ -175,8 +177,22 @@ export class LocationManager {
 
         amountPrompt
             .answerStream
-            .subscribe((confirmation: string) => {
-                
+            .subscribe((amount: string) => {
+                const itemQuantity = Number(amount);
+
+                if (itemQuantity < 0 || itemQuantity > item.count) {
+                    this.resetOptions();
+                    return;
+                }
+
+                item.count -= itemQuantity;
+
+                this.zoneService
+                    .pickUp(item.id, itemQuantity)
+                    .subscribe(
+                        (response) => this.handleItemMoveSuccess('put down', item, response),
+                        (error) => this.resetOptions()
+                    );
             });
 
         this.promptStream.next(amountPrompt);
@@ -186,19 +202,21 @@ export class LocationManager {
         this.characterService
             .getInventory()
             .subscribe((items: any[]) => {
+                this.showItemsAsMessages(items, 'your inventory');
+
                 _.forEach(items, (item) => {
                     const itemOption = new Option(`${item.name} ${item.id}`);
 
                     const descriptionOption = new Option('description');
-                    const pickUpOption = new Option('pick up');
+                    const putDownOption = new Option('put down');
 
-                    itemOption.setOptions([descriptionOption, pickUpOption]);
+                    itemOption.setOptions([descriptionOption, putDownOption]);
 
                     itemOption
                         .selectedStream
                         .subscribe(() => this.handleItemDescriptionOptionSelected(item));
 
-                    pickUpOption
+                    putDownOption
                         .selectedStream
                         .subscribe(() => this.handleItemPutDownOptionSelected(item));
 
@@ -212,11 +230,60 @@ export class LocationManager {
 
         amountPrompt
             .answerStream
-            .subscribe((confirmation: string) => {
-                
+            .subscribe((amount: string) => {
+                const itemQuantity = Number(amount);
+
+                if (itemQuantity < 0 || itemQuantity > item.count) {
+                    this.resetOptions();
+                    return;
+                }
+
+                item.count -= itemQuantity;
+
+                this.characterService
+                    .putDown(item.id, itemQuantity)
+                    .subscribe(
+                        (response) => this.handleItemMoveSuccess('put down', item, response),
+                        (error) => this.resetOptions()
+                    );
             });
 
         this.promptStream.next(amountPrompt);
+    }
+
+    private handleItemMoveSuccess(movementName, item, response) {
+        const itemDescription = new Message(0);
+
+        if (movementName === 'put down') {
+            itemDescription.setText(
+                `You put some some ${item.name}s down on the ground. There are ${item.count} left in your inventory`
+            );
+        } else {
+            itemDescription.setText(
+                `You pick some some ${item.name}s up off the ground. There are ${item.count} left on the ground`
+            );
+        }
+
+        this.mainFeedStream
+            .next(itemDescription);
+
+        this.resetOptions();
+    }
+
+    private showItemsAsMessages(items, placeName) {
+        const placeMessage = new Message(0);
+        placeMessage.setText(`======== Items in ${placeName} ========`);
+
+        this.mainFeedStream
+            .next(placeMessage);
+
+        _.forEach(items, (item) => {
+            const itemMessage = new Message(0);
+            itemMessage.setText(`${item.count} units of ${item.name} ${item.id}`);
+
+            this.mainFeedStream
+                .next(itemMessage);
+        });
     }
 
     private resetOptions() {

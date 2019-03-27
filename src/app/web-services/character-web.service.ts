@@ -38,4 +38,14 @@ export class CharacterWebService {
         return this.api
             .post(url, {});
     }
+
+    public putDown(itemId: number, amount: number): any {
+        const url = `character/put_down`;
+
+        return this.api
+            .put(url, {
+                itemId: itemId,
+                itemQuantity: amount
+            });
+    }
 }

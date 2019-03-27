@@ -52,4 +52,14 @@ export class ZoneWebService {
         return this.api
             .get(url);
     }
+
+    public pickUp(itemId: number, amount: number): any {
+        const url = `zone/pick_up`;
+
+        return this.api
+            .put(url, {
+                itemId: itemId,
+                itemQuantity: amount
+            });
+    }
 }

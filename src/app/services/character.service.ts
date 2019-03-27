@@ -67,6 +67,11 @@ export class CharacterService {
             .attack(characterId);
     }
 
+    public putDown(itemId: number, amount: number): Observable<any> {
+        return this.characterWebService
+            .putDown(itemId, amount);
+    }
+
 
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
