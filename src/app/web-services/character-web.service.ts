@@ -48,4 +48,11 @@ export class CharacterWebService {
                 itemQuantity: amount
             });
     }
+
+    public getCraftableItems(characterId: number) {
+        const url = `character/${characterId}/get_craftables`;
+
+        return this.api
+            .get(url);
+    }
 }

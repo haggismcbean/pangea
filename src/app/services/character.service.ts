@@ -72,6 +72,10 @@ export class CharacterService {
             .putDown(itemId, amount);
     }
 
+    public getCraftableItems(): Observable<any> {
+        return this.characterWebService
+            .getCraftableItems(this.current.id);
+    }
 
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
