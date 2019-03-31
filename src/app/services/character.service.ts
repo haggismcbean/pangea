@@ -77,6 +77,11 @@ export class CharacterService {
             .getCraftableItems(this.current.id);
     }
 
+    public craftRecipe(recipeId: number): Observable<any> {
+        return this.characterWebService
+            .craftRecipe(recipeId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()

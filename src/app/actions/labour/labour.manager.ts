@@ -176,12 +176,11 @@ export class LabourManager {
     }
 
     private createItemJob(item, recipe) {
-        console.log('item to craft: ', item, recipe);
-        // I guess first we decide what to put in with the item
-
-        // And then we craft the fuck out of it!
-
-        // this.characterService
-        //     .craftItem(item.id);
+        // The finished message will be in the webhook
+        this.characterService
+            .craftRecipe(recipe.id)
+            .subscribe((response) => {
+                console.log('response: ', response);
+            });
     }
 }

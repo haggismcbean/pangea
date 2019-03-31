@@ -55,4 +55,13 @@ export class CharacterWebService {
         return this.api
             .get(url);
     }
+
+    public craftRecipe(recipeId: number) {
+        const url = `character/create_new_activity`;
+
+        return this.api
+            .put(url, {
+                recipeId: recipeId
+            });
+    }
 }
