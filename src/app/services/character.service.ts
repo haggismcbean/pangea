@@ -82,6 +82,11 @@ export class CharacterService {
             .craftRecipe(recipeId);
     }
 
+    public addItemToActivity(activityId, itemId, amount): Observable<any> {
+        return this.characterWebService
+            .addItemToActivity(activityId, itemId, amount);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()

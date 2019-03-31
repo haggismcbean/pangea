@@ -64,4 +64,15 @@ export class CharacterWebService {
                 recipeId: recipeId
             });
     }
+
+    public addItemToActivity(activityId: number, itemId: number, amount: number) {
+        const url = `character/add_item_to_activity`;
+
+        return this.api
+            .post(url, {
+                activityId: activityId,
+                itemId: itemId,
+                amount: amount
+            });
+    }
 }

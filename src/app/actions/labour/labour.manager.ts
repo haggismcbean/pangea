@@ -40,9 +40,10 @@ export class LabourManager {
         const labourOption = new Option('do');
 
         const foragingOption = new Option('foraging');
-        const craftingOption = new Option('crafting');
+        const craftingOption = new Option('new item');
+        const addResourcesOption = new Option('add to activity');
 
-        labourOption.setOptions([foragingOption, craftingOption]);
+        labourOption.setOptions([foragingOption, craftingOption, addResourcesOption]);
 
         foragingOption
             .selectedStream
@@ -51,6 +52,10 @@ export class LabourManager {
         craftingOption
             .selectedStream
             .subscribe(() => this.onCraftingSelect());
+
+        addResourcesOption
+            .selectedStream
+            .subscribe(() => this.onAddResourcesSelect());
 
         this.optionsStream.next(labourOption);
     }
@@ -182,5 +187,80 @@ export class LabourManager {
             .subscribe((response) => {
                 console.log('response: ', response);
             });
+    }
+
+    private onAddResourcesSelect() {
+        this.zoneService
+            .getActivities(this.zoneId)
+            .subscribe((activities) => {
+                _.forEach(activities, (activity) => {
+                    const itemMessage = new Message(0);
+                    itemMessage.setText(`${activity.item.name}`);
+
+                    this.mainFeedStream
+                        .next(itemMessage);
+
+                    const activityOption = new Option(activity.item.name);
+
+                    const activityIngredientOptions = [];
+
+                    _.forEach(activity.ingredients, (ingredient) => {
+                        const ingredientMessage = new Message(0);
+                        const ingredientName = ingredient.item || ingredient.item_type;
+                        ingredientMessage.setText(
+                            `${ingredientName}: ${ingredient.quantity_added} out of ${ingredient.quantity_required} added`
+                        );
+
+                        this.mainFeedStream
+                            .next(ingredientMessage);
+
+                        if (ingredient.quantity_required > ingredient.quantity_added) {
+                            const ingredientOption = new Option(ingredientName);
+
+                            ingredientOption
+                                .selectedStream
+                                .subscribe(() => this.onAddToActivitySelected(activity, ingredient));
+
+                            activityIngredientOptions.push(ingredientOption);
+                        }
+                    });
+
+                    activityOption.setOptions(activityIngredientOptions);
+                    this.optionsStream.next(activityOption);
+                });
+            });
+    }
+
+    private onAddToActivitySelected(activity, ingredient) {
+        const amountPrompt = new Prompt('How much of this resource do you want to add?');
+
+        amountPrompt
+            .answerStream
+            .subscribe((amount) => {
+                this.characterService
+                    .getInventory()
+                    .subscribe((inventoryItems) => {
+                        const itemToAdd = _.find(inventoryItems, (inventoryItem) => {
+                            return inventoryItem.name === ingredient.item_type || inventoryItem.id === ingredient.item_id;
+                        });
+
+                        if (!itemToAdd) {
+                            const errorMessage = new Message(0);
+                            errorMessage.setText(`Cannot find any of that item in your inventory`);
+
+                            this.mainFeedStream
+                                .next(errorMessage);
+                            return;
+                        }
+
+                        this.characterService
+                            .addItemToActivity(activity.id, itemToAdd.id, amount)
+                            .subscribe((response) => {
+                                console.log('response: ', response);
+                            });
+                    });
+            });
+
+        this.promptStream.next(amountPrompt);
     }
 }
