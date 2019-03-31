@@ -48,4 +48,9 @@ export class ZoneService {
         return this.zoneWebService
             .pickUp(itemId, amount);
     }
+
+    public getActivities(zoneId: number): Observable<any> {
+        return this.zoneWebService
+            .getActivities(zoneId);
+    }
 }

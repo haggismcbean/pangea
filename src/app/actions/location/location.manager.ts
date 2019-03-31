@@ -40,8 +40,9 @@ export class LocationManager {
         const plantsOption = new Option('plants');
         const locationOption = new Option('loose items');
         const inventoryOption = new Option('inventory');
+        const activitiesOption = new Option('activities');
 
-        lookAtOption.setOptions([peopleOption, plantsOption, locationOption, inventoryOption]);
+        lookAtOption.setOptions([peopleOption, plantsOption, locationOption, inventoryOption, activitiesOption]);
 
         peopleOption
             .selectedStream
@@ -58,6 +59,10 @@ export class LocationManager {
         inventoryOption
             .selectedStream
             .subscribe(() => this.handleInventoryOptionSelected());
+
+        activitiesOption
+            .selectedStream
+            .subscribe(() => this.handleActivitiesOptionSelected());
 
         this.optionsStream.next(lookAtOption);
     }
@@ -157,6 +162,8 @@ export class LocationManager {
 
                     this.optionsStream.next(itemOption);
                 });
+
+                this.resetOptions();
             });
     }
 
@@ -222,6 +229,8 @@ export class LocationManager {
 
                     this.optionsStream.next(itemOption);
                 });
+
+                this.resetOptions();
             });
     }
 
@@ -292,5 +301,36 @@ export class LocationManager {
 
         this.mainFeedStream
             .next(resetMessage);
+    }
+
+    private handleActivitiesOptionSelected() {
+        this.zoneService
+            .getActivities(this.zoneId)
+            .subscribe((activities) => {
+                const activitiesMessage = new Message(0);
+                activitiesMessage.setText('===== Activities in current location =====');
+
+                this.mainFeedStream
+                    .next(activitiesMessage);
+
+                _.forEach(activities, (activity) => {
+                    const activityMessage = new Message(0);
+                    activityMessage.setText(`${activity.item.name}: ${activity.progress} percent complete`);
+
+                    this.mainFeedStream
+                        .next(activityMessage);
+
+                    _.forEach(activity.ingredients, (ingredient) => {
+                        const itemMessage = new Message(0);
+                        const itemName = ingredient.item || ingredient.item_type;
+                        itemMessage.setText(`${itemName}: ${ingredient.quantity_added} out of ${ingredient.quantity_required} added`);
+
+                        this.mainFeedStream
+                            .next(itemMessage);
+                    });
+                });
+
+                this.resetOptions();
+            });
     }
 }

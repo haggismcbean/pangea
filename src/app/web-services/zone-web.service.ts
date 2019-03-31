@@ -62,4 +62,11 @@ export class ZoneWebService {
                 itemQuantity: amount
             });
     }
+
+    public getActivities(zoneId: number) {
+        const url = `zone/${zoneId}/activities`;
+
+        return this.api
+            .get(url);
+    }
 }
