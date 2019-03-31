@@ -42,8 +42,9 @@ export class LabourManager {
         const foragingOption = new Option('foraging');
         const craftingOption = new Option('new item');
         const addResourcesOption = new Option('add to activity');
+        const workOnActivityOption = new Option('work on activity');
 
-        labourOption.setOptions([foragingOption, craftingOption, addResourcesOption]);
+        labourOption.setOptions([foragingOption, craftingOption, addResourcesOption, workOnActivityOption]);
 
         foragingOption
             .selectedStream
@@ -56,6 +57,10 @@ export class LabourManager {
         addResourcesOption
             .selectedStream
             .subscribe(() => this.onAddResourcesSelect());
+
+        workOnActivityOption
+            .selectedStream
+            .subscribe(() => this.onWorkOnActivitySelect());
 
         this.optionsStream.next(labourOption);
     }
@@ -262,5 +267,27 @@ export class LabourManager {
             });
 
         this.promptStream.next(amountPrompt);
+    }
+
+    private onWorkOnActivitySelect() {
+        this.zoneService
+            .getActivities(this.zoneId)
+            .subscribe((activities) => {
+                _.forEach(activities, (activity) => {
+                    const activityOption = new Option(activity.item.name);
+
+                    activityOption
+                        .selectedStream
+                        .subscribe(() => {
+                            this.characterService
+                                .workOnActivity(activity.id)
+                                .subscribe((response) => {
+                                    console.log('resposne: ', response);
+                                });
+                        });
+
+                    this.optionsStream.next(activityOption);
+                });
+            });
     }
 }

@@ -75,4 +75,22 @@ export class CharacterWebService {
                 amount: amount
             });
     }
+
+    public workOnActivity(activityId: number) {
+        const url = `character/work_on_activity`;
+
+        return this.api
+            .post(url, {
+                activityId: activityId
+            });
+    }
+
+    public stopWorkingOnActivity(activityId: number) {
+        const url = `character/stop_working_on_activity`;
+
+        return this.api
+            .post(url, {
+                activityId: activityId
+            });
+    }
 }

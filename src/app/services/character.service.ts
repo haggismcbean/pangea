@@ -87,6 +87,16 @@ export class CharacterService {
             .addItemToActivity(activityId, itemId, amount);
     }
 
+    public workOnActivity(activityId): Observable<any> {
+        return this.characterWebService
+            .workOnActivity(activityId);
+    }
+
+    public stopWorkingOnActivity(activityId): Observable<any> {
+        return this.characterWebService
+            .stopWorkingOnActivity(activityId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()
