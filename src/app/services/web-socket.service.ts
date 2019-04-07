@@ -12,8 +12,6 @@ export class WebSocketService {
     }
 
     public connect(token, channelId): void {
-        console.log('time to make some magic');
-
         const echo = new Echo({
             broadcaster: 'socket.io',
             host: 'http://local.pangea-api.com:6001',

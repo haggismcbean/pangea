@@ -160,7 +160,7 @@ export class LabourManager {
 
     private createRecipeOptionName(recipe) {
         if (!recipe.ingredients || recipe.ingredients.length === 0) {
-            return;
+            return 'no ingredients';
         }
 
         const name = recipe.ingredients
