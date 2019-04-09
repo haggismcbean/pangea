@@ -57,7 +57,7 @@ export class CharacterWebService {
     }
 
     public craftRecipe(recipeId: number) {
-        const url = `character/create_new_activity`;
+        const url = `activity/create_new_activity`;
 
         return this.api
             .put(url, {
@@ -66,7 +66,7 @@ export class CharacterWebService {
     }
 
     public addItemToActivity(activityId: number, itemId: number, amount: number) {
-        const url = `character/add_item_to_activity`;
+        const url = `activity/add_item_to_activity`;
 
         return this.api
             .post(url, {
@@ -77,7 +77,7 @@ export class CharacterWebService {
     }
 
     public workOnActivity(activityId: number) {
-        const url = `character/work_on_activity`;
+        const url = `activity/work_on_activity`;
 
         return this.api
             .post(url, {
@@ -86,7 +86,7 @@ export class CharacterWebService {
     }
 
     public stopWorkingOnActivity(activityId: number) {
-        const url = `character/stop_working_on_activity`;
+        const url = `activity/stop_working_on_activity`;
 
         return this.api
             .post(url, {

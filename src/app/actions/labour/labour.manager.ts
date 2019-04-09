@@ -205,35 +205,43 @@ export class LabourManager {
                     this.mainFeedStream
                         .next(itemMessage);
 
-                    const activityOption = new Option(activity.item.name);
-
-                    const activityIngredientOptions = [];
-
-                    _.forEach(activity.ingredients, (ingredient) => {
-                        const ingredientMessage = new Message(0);
-                        const ingredientName = ingredient.item || ingredient.item_type;
-                        ingredientMessage.setText(
-                            `${ingredientName}: ${ingredient.quantity_added} out of ${ingredient.quantity_required} added`
-                        );
-
-                        this.mainFeedStream
-                            .next(ingredientMessage);
-
-                        if (ingredient.quantity_required > ingredient.quantity_added) {
-                            const ingredientOption = new Option(ingredientName);
-
-                            ingredientOption
-                                .selectedStream
-                                .subscribe(() => this.onAddToActivitySelected(activity, ingredient));
-
-                            activityIngredientOptions.push(ingredientOption);
-                        }
-                    });
-
-                    activityOption.setOptions(activityIngredientOptions);
-                    this.optionsStream.next(activityOption);
+                    this.createActivityOption(activity);
                 });
             });
+    }
+
+    private createActivityOption(activity) {
+        const activityOption = new Option(activity.item.name);
+
+        const activityIngredientOptions = [];
+
+        _.forEach(activity.ingredients, (ingredient) => {
+            this.createIngredientOption(ingredient);
+        });
+
+        activityOption.setOptions(activityIngredientOptions);
+        this.optionsStream.next(activityOption);
+    }
+
+    private createIngredientOption(ingredient) {
+        const ingredientMessage = new Message(0);
+        const ingredientName = ingredient.item || ingredient.item_type;
+        ingredientMessage.setText(
+            `${ingredientName}: ${ingredient.quantity_added} out of ${ingredient.quantity_required} added`
+        );
+
+        this.mainFeedStream
+            .next(ingredientMessage);
+
+        if (ingredient.quantity_required > ingredient.quantity_added) {
+            const ingredientOption = new Option(ingredientName);
+
+            ingredientOption
+                .selectedStream
+                .subscribe(() => this.onAddToActivitySelected(activity, ingredient));
+
+            activityIngredientOptions.push(ingredientOption);
+        }
     }
 
     private onAddToActivitySelected(activity, ingredient) {
