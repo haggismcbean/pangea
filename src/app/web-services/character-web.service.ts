@@ -93,4 +93,13 @@ export class CharacterWebService {
                 activityId: activityId
             });
     }
+
+    public hunt(itemId: number) {
+        const url = `character/hunt`;
+
+        return this.api
+            .post(url, {
+                itemId: itemId
+            });
+    }
 }

@@ -40,15 +40,26 @@ export class LabourManager {
         const labourOption = new Option('do');
 
         const foragingOption = new Option('foraging');
+        const huntingOption = new Option('hunting');
         const craftingOption = new Option('new item');
         const addResourcesOption = new Option('add to activity');
         const workOnActivityOption = new Option('work on activity');
 
-        labourOption.setOptions([foragingOption, craftingOption, addResourcesOption, workOnActivityOption]);
+        labourOption.setOptions([
+            foragingOption,
+            huntingOption,
+            craftingOption,
+            addResourcesOption,
+            workOnActivityOption
+        ]);
 
         foragingOption
             .selectedStream
             .subscribe(() => this.onForagingSelect());
+
+        huntingOption
+            .selectedStream
+            .subscribe(() => this.onHuntingSelect());
 
         craftingOption
             .selectedStream
@@ -121,6 +132,15 @@ export class LabourManager {
             .subscribe(() => this.gatherPlantPart(plant.id, optionName));
 
         return plantOption;
+    }
+
+    private onHuntingSelect() {
+        // TODO - get item rather than just always use a spear!!
+        this.characterService
+            .hunt(7)
+            .subscribe((response) => {
+                console.log('response from hunting');
+            });
     }
 
     private onCraftingSelect() {
@@ -216,14 +236,15 @@ export class LabourManager {
         const activityIngredientOptions = [];
 
         _.forEach(activity.ingredients, (ingredient) => {
-            this.createIngredientOption(ingredient);
+            const ingredientOption = this.createIngredientOption(activity, ingredient);
+            activityIngredientOptions.push(ingredientOption);
         });
 
         activityOption.setOptions(activityIngredientOptions);
         this.optionsStream.next(activityOption);
     }
 
-    private createIngredientOption(ingredient) {
+    private createIngredientOption(activity, ingredient) {
         const ingredientMessage = new Message(0);
         const ingredientName = ingredient.item || ingredient.item_type;
         ingredientMessage.setText(
@@ -240,7 +261,7 @@ export class LabourManager {
                 .selectedStream
                 .subscribe(() => this.onAddToActivitySelected(activity, ingredient));
 
-            activityIngredientOptions.push(ingredientOption);
+            return ingredientOption;
         }
     }
 

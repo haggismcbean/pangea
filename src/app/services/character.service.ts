@@ -97,6 +97,11 @@ export class CharacterService {
             .stopWorkingOnActivity(activityId);
     }
 
+    public hunt(itemId): Observable<any> {
+        return this.characterWebService
+            .hunt(itemId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()
