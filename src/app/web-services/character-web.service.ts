@@ -102,4 +102,14 @@ export class CharacterWebService {
                 itemId: itemId
             });
     }
+
+    public cancelActivity(itemId: number) {
+        const url = `activity/cancel_activity`;
+
+        return this.api
+            .post(url, {
+                itemId: itemId
+            });
+
+    }
 }

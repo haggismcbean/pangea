@@ -138,8 +138,22 @@ export class LabourManager {
         // TODO - get item rather than just always use a spear!!
         this.characterService
             .hunt(7)
+            .subscribe((huntActivity) => {
+                const cancelHuntOption = new Option('cancel');
+
+                cancelHuntOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(huntActivity));
+
+                this.optionsStream.next(cancelHuntOption);
+            });
+    }
+
+    private cancelHunt(huntActivity) {
+        this.characterService
+            .cancelActivity(huntActivity.id)
             .subscribe((response) => {
-                console.log('response from hunting');
+                console.log('response: ', response);
             });
     }
 

@@ -102,6 +102,11 @@ export class CharacterService {
             .hunt(itemId);
     }
 
+    public cancelActivity(activityId): Observable<any> {
+        return this.characterWebService
+            .cancelActivity(activityId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()
