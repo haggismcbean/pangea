@@ -102,6 +102,11 @@ export class CharacterService {
             .hunt(itemId);
     }
 
+    public farm(itemId): Observable<any> {
+        return this.characterWebService
+            .farm(itemId);
+    }
+
     public cancelActivity(activityId): Observable<any> {
         return this.characterWebService
             .cancelActivity(activityId);

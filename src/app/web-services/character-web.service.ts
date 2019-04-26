@@ -103,6 +103,15 @@ export class CharacterWebService {
             });
     }
 
+    public farm(itemId: number) {
+        const url = `character/farm`;
+
+        return this.api
+            .post(url, {
+                itemId: itemId
+            });
+    }
+
     public cancelActivity(itemId: number) {
         const url = `activity/cancel_activity`;
 

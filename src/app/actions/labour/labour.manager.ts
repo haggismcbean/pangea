@@ -41,6 +41,7 @@ export class LabourManager {
 
         const foragingOption = new Option('foraging');
         const huntingOption = new Option('hunting');
+        const farmingOption = new Option('farming');
         const craftingOption = new Option('new item');
         const addResourcesOption = new Option('add to activity');
         const workOnActivityOption = new Option('work on activity');
@@ -48,6 +49,7 @@ export class LabourManager {
         labourOption.setOptions([
             foragingOption,
             huntingOption,
+            farmingOption,
             craftingOption,
             addResourcesOption,
             workOnActivityOption
@@ -60,6 +62,10 @@ export class LabourManager {
         huntingOption
             .selectedStream
             .subscribe(() => this.onHuntingSelect());
+
+        farmingOption
+            .selectedStream
+            .subscribe(() => this.onFarmingSelect());
 
         craftingOption
             .selectedStream
@@ -154,6 +160,21 @@ export class LabourManager {
             .cancelActivity(huntActivity.id)
             .subscribe((response) => {
                 console.log('response: ', response);
+            });
+    }
+
+    private onFarmingSelect() {
+        // TODO - get item rather than just always use a spear!!
+        this.characterService
+            .farm(5)
+            .subscribe((farmActivity) => {
+                const cancelFarmOption = new Option('cancel');
+
+                cancelFarmOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(farmActivity));
+
+                this.optionsStream.next(cancelFarmOption);
             });
     }
 
