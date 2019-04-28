@@ -253,26 +253,31 @@ export class LabourManager {
         this.zoneService
             .getActivities(this.zoneId)
             .subscribe((activities) => {
+
                 _.forEach(activities, (activity) => {
-                    const itemMessage = new Message(0);
-                    itemMessage.setText(`${activity.item.name}`);
+                    if (activity.item && activity.ingredients && activity.ingredients.length > 0) {
+                        const itemMessage = new Message(0);
+                        itemMessage.setText(`${activity.item.name}`);
 
-                    this.mainFeedStream
-                        .next(itemMessage);
+                        this.mainFeedStream
+                            .next(itemMessage);
 
-                    this.createActivityOption(activity);
+                        this.createActivityOption(activity);
+                    }
                 });
             });
     }
 
     private createActivityOption(activity) {
         const activityOption = new Option(activity.item.name);
-
         const activityIngredientOptions = [];
 
         _.forEach(activity.ingredients, (ingredient) => {
             const ingredientOption = this.createIngredientOption(activity, ingredient);
-            activityIngredientOptions.push(ingredientOption);
+
+            if (ingredientOption) {
+                activityIngredientOptions.push(ingredientOption);
+            }
         });
 
         activityOption.setOptions(activityIngredientOptions);
@@ -309,8 +314,15 @@ export class LabourManager {
                 this.characterService
                     .getInventory()
                     .subscribe((inventoryItems) => {
+                        console.log(inventoryItems);
                         const itemToAdd = _.find(inventoryItems, (inventoryItem) => {
-                            return inventoryItem.name === ingredient.item_type || inventoryItem.id === ingredient.item_id;
+                            if (ingredient.item_id === null) {
+                                return inventoryItem.name === ingredient.item_type;
+                            }
+
+                            if (ingredient.item_type === null) {
+                                return inventoryItem.id === ingredient.item_id;
+                            }
                         });
 
                         if (!itemToAdd) {
@@ -338,6 +350,10 @@ export class LabourManager {
             .getActivities(this.zoneId)
             .subscribe((activities) => {
                 _.forEach(activities, (activity) => {
+                    if (!activity.item) {
+                        return;
+                    }
+
                     const activityOption = new Option(activity.item.name);
 
                     activityOption
