@@ -103,8 +103,8 @@ export class CharacterWebService {
             });
     }
 
-    public farm(itemId: number) {
-        const url = `character/farm`;
+    public createPlot(itemId: number) {
+        const url = `character/createPlot`;
 
         return this.api
             .post(url, {

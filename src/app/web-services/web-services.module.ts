@@ -7,6 +7,7 @@ import { ApiService } from './api.service';
 import { AuthenticationWebService } from './authentication-web.service';
 import { CharacterWebService } from './character-web.service';
 import { WebhookService } from './webhook.service';
+import { FarmWebService } from './farm-web.service';
 import { ZoneWebService } from './zone-web.service';
 import { PlantWebService } from './plant-web.service';
 
@@ -20,6 +21,7 @@ import { PlantWebService } from './plant-web.service';
         AuthenticationWebService,
         WebhookService,
         CharacterWebService,
+        FarmWebService,
         ZoneWebService,
         PlantWebService
     ],

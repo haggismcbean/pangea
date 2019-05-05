@@ -6,6 +6,7 @@ import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { Message } from '../../models/message.model';
 
+import { FarmService } from '../../services/farm.service';
 import { PlantService } from '../../services/plant.service';
 import { CharacterService } from '../../services/character.service';
 import { ZoneService } from '../../services/zone.service';
@@ -23,6 +24,7 @@ export class LabourManager {
     private zoneId: number;
 
     constructor(
+        private farmService: FarmService,
         private plantService: PlantService,
         private characterService: CharacterService,
         private zoneService: ZoneService
@@ -41,7 +43,7 @@ export class LabourManager {
 
         const foragingOption = new Option('foraging');
         const huntingOption = new Option('hunting');
-        const farmingOption = new Option('farming');
+        const farmOption = new Option('farming');
         const craftingOption = new Option('new item');
         const addResourcesOption = new Option('add to activity');
         const workOnActivityOption = new Option('work on activity');
@@ -49,7 +51,7 @@ export class LabourManager {
         labourOption.setOptions([
             foragingOption,
             huntingOption,
-            farmingOption,
+            farmOption,
             craftingOption,
             addResourcesOption,
             workOnActivityOption
@@ -63,9 +65,9 @@ export class LabourManager {
             .selectedStream
             .subscribe(() => this.onHuntingSelect());
 
-        farmingOption
+        farmOption
             .selectedStream
-            .subscribe(() => this.onFarmingSelect());
+            .subscribe(() => this.onfarmSelect());
 
         craftingOption
             .selectedStream
@@ -163,10 +165,135 @@ export class LabourManager {
             });
     }
 
-    private onFarmingSelect() {
-        // TODO - get item rather than just always use a spear!!
-        this.characterService
-            .farm(5)
+    private onfarmSelect() {
+        console.log('on farm select');
+        // TODO - show options more intelligently
+        const createOption = new Option('create');
+        const ploughOption = new Option('plough');
+        const plantOption = new Option('plant');
+        const tillOption = new Option('till');
+        const fertilizeOption = new Option('fertilize');
+        const harvestOption = new Option('harvest');
+
+        createOption
+            .selectedStream
+            .subscribe(() => {
+                this.onCreatePlotSelect();
+            });
+
+        ploughOption
+            .selectedStream
+            .subscribe(() => {
+                this.onPloughPlotSelect();
+            });
+
+        plantOption
+            .selectedStream
+            .subscribe(() => {
+                this.onPlantPlotSelect();
+            });
+
+        tillOption
+            .selectedStream
+            .subscribe(() => {
+                this.onTillPlotSelect();
+            });
+
+        fertilizeOption
+            .selectedStream
+            .subscribe(() => {
+                this.onFertilizePlotSelect();
+            });
+
+        harvestOption
+            .selectedStream
+            .subscribe(() => {
+                this.onHarvestPlotSelect();
+            });
+
+        this.optionsStream.next(createOption);
+        this.optionsStream.next(ploughOption);
+        this.optionsStream.next(plantOption);
+        this.optionsStream.next(tillOption);
+        this.optionsStream.next(fertilizeOption);
+        this.optionsStream.next(harvestOption);
+    }
+
+    private onCreatePlotSelect() {
+        // TODO = get item properly
+        this.farmService
+            .createPlot(5)
+            .subscribe((farmActivity) => {
+                const cancelFarmOption = new Option('cancel');
+
+                cancelFarmOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(farmActivity));
+
+                this.optionsStream.next(cancelFarmOption);
+            });
+    }
+
+    private onPloughPlotSelect() {
+        // TODO - get item properly
+        this.farmService
+            .ploughPlot(5)
+            .subscribe((farmActivity) => {
+                const cancelFarmOption = new Option('cancel');
+
+                cancelFarmOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(farmActivity));
+
+                this.optionsStream.next(cancelFarmOption);
+            });
+    }
+
+    private onPlantPlotSelect() {
+        this.farmService
+            .plantPlot(5)
+            .subscribe((farmActivity) => {
+                const cancelFarmOption = new Option('cancel');
+
+                cancelFarmOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(farmActivity));
+
+                this.optionsStream.next(cancelFarmOption);
+            });
+    }
+
+    private onTillPlotSelect() {
+        this.farmService
+            .tillPlot(5)
+            .subscribe((farmActivity) => {
+                const cancelFarmOption = new Option('cancel');
+
+                cancelFarmOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(farmActivity));
+
+                this.optionsStream.next(cancelFarmOption);
+            });
+    }
+
+    private onFertilizePlotSelect() {
+        this.farmService
+            .fertilizePlot(5)
+            .subscribe((farmActivity) => {
+                const cancelFarmOption = new Option('cancel');
+
+                cancelFarmOption
+                    .selectedStream
+                    .subscribe(() => this.cancelHunt(farmActivity));
+
+                this.optionsStream.next(cancelFarmOption);
+            });
+    }
+
+    private onHarvestPlotSelect() {
+        this.farmService
+            .harvestPlot(5)
             .subscribe((farmActivity) => {
                 const cancelFarmOption = new Option('cancel');
 
