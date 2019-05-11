@@ -7,6 +7,7 @@ import { AuthGuardService } from './auth-guard.service';
 import { WebSocketService } from './web-socket.service';
 import { ZoneService } from './zone.service';
 import { PlantService } from './plant.service';
+import { MineService } from './mine.service';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { PlantService } from './plant.service';
         AuthGuardService,
         WebSocketService,
         ZoneService,
-        PlantService
+        PlantService,
+        MineService
     ],
     declarations: [
     ],

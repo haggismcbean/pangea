@@ -10,6 +10,7 @@ import { FarmService } from '../../services/farm.service';
 import { PlantService } from '../../services/plant.service';
 import { CharacterService } from '../../services/character.service';
 import { ZoneService } from '../../services/zone.service';
+import { MineService } from '../../services/mine.service';
 
 import * as _ from 'lodash';
 
@@ -27,7 +28,8 @@ export class LabourManager {
         private farmService: FarmService,
         private plantService: PlantService,
         private characterService: CharacterService,
-        private zoneService: ZoneService
+        private zoneService: ZoneService,
+        private mineService: MineService
     ) {}
 
     public init(mainFeedStream, optionsStream, promptStream): void {
@@ -44,6 +46,7 @@ export class LabourManager {
         const foragingOption = new Option('foraging');
         const huntingOption = new Option('hunting');
         const farmOption = new Option('farming');
+        const mineOption = new Option('mining');
         const craftingOption = new Option('new item');
         const addResourcesOption = new Option('add to activity');
         const workOnActivityOption = new Option('work on activity');
@@ -52,6 +55,7 @@ export class LabourManager {
             foragingOption,
             huntingOption,
             farmOption,
+            mineOption,
             craftingOption,
             addResourcesOption,
             workOnActivityOption
@@ -67,7 +71,12 @@ export class LabourManager {
 
         farmOption
             .selectedStream
-            .subscribe(() => this.onfarmSelect());
+            .subscribe(() => this.onFarmSelect());
+
+        mineOption
+            .selectedStream
+            .subscribe(() => this.onMineSelect());
+
 
         craftingOption
             .selectedStream
@@ -165,8 +174,7 @@ export class LabourManager {
             });
     }
 
-    private onfarmSelect() {
-        console.log('on farm select');
+    private onFarmSelect() {
         // TODO - show options more intelligently
         const createOption = new Option('create');
         const ploughOption = new Option('plough');
@@ -302,6 +310,58 @@ export class LabourManager {
                     .subscribe(() => this.cancelHunt(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            });
+    }
+
+    private onMineSelect() {
+        const createOption = new Option('create');
+        const mineOption = new Option('mine');
+        const reinforceOption = new Option('reinforce');
+
+        createOption
+            .selectedStream
+            .subscribe(() => {
+                this.onCreateMineSelect();
+            });
+
+        mineOption
+            .selectedStream
+            .subscribe(() => {
+                this.onMineMineSelect();
+            });
+
+        reinforceOption
+            .selectedStream
+            .subscribe(() => {
+                this.onReinforceMineSelect();
+            });
+
+        this.optionsStream.next(createOption);
+        this.optionsStream.next(mineOption);
+        this.optionsStream.next(reinforceOption);
+    }
+
+    private onCreateMineSelect() {
+        this.mineService
+            .createMine()
+            .subscribe((mineActivity) => {
+                console.log('creating mine: ', mineActivity);
+            });
+    }
+
+    private onMineMineSelect() {
+        this.mineService
+            .mineMine()
+            .subscribe((mineActivity) => {
+                console.log('mining mine: ', mineActivity);
+            });
+    }
+
+    private onReinforceMineSelect() {
+        this.mineService
+            .reinforceMine()
+            .subscribe((mineActivity) => {
+                console.log('reinforcing mine: ', mineActivity);
             });
     }
 

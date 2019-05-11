@@ -10,6 +10,7 @@ import { WebhookService } from './webhook.service';
 import { FarmWebService } from './farm-web.service';
 import { ZoneWebService } from './zone-web.service';
 import { PlantWebService } from './plant-web.service';
+import { MineWebService } from './mine-web.service';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { PlantWebService } from './plant-web.service';
         CharacterWebService,
         FarmWebService,
         ZoneWebService,
-        PlantWebService
+        PlantWebService,
+        MineWebService,
     ],
     declarations: [
     ],
