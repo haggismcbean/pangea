@@ -18,11 +18,13 @@ export class MineWebService {
             .post(url);
     }
 
-    public mineMine() {
+    public mineMine(stoneId) {
         const url = `mine/mine`;
 
         return this.api
-            .post(url);
+            .post(url, {
+                stoneId: stoneId
+            });
     }
 
     public reinforceMine() {
@@ -30,5 +32,12 @@ export class MineWebService {
 
         return this.api
             .post(url);
+    }
+
+    public getAccessibleStones() {
+        const url = `mine/stones`;
+
+        return this.api
+            .get(url);
     }
 }

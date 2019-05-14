@@ -18,13 +18,18 @@ export class MineService {
             .createMine();
     }
 
-    public mineMine(): Observable<any> {
+    public mineMine(stoneId): Observable<any> {
         return this.mineWebService
-            .mineMine();
+            .mineMine(stoneId);
     }
 
     public reinforceMine(): Observable<any> {
         return this.mineWebService
             .reinforceMine();
+    }
+
+    public getAccessibleStones(): Observable<any> {
+        return this.mineWebService
+            .getAccessibleStones();
     }
 }

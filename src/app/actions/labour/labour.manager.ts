@@ -351,9 +351,23 @@ export class LabourManager {
 
     private onMineMineSelect() {
         this.mineService
-            .mineMine()
-            .subscribe((mineActivity) => {
-                console.log('mining mine: ', mineActivity);
+            .getAccessibleStones()
+            .subscribe((stones) => {
+                _.forEach(stones, (stone) => {
+                    const stoneOption = new Option(stone.name);
+
+                    stoneOption
+                        .selectedStream
+                        .subscribe(() => {
+                            this.mineService
+                                .mineMine(stone.id)
+                                .subscribe((mineActivity) => {
+                                    console.log('you did something!', mineActivity);
+                                });
+                        });
+
+                    this.optionsStream.next(stoneOption);
+                });
             });
     }
 
