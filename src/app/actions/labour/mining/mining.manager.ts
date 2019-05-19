@@ -90,7 +90,10 @@ export class MiningManager {
                         .selectedStream
                         .subscribe(() => {
                             this.mineService
-                                .mineMine(stone.item_id)
+                                .mineMine({
+                                    itemId: stone.item_id,
+                                    itemType: stone.item_type
+                                })
                                 .subscribe((mineActivity) => {
                                     console.log('you did something!', mineActivity);
                                 });

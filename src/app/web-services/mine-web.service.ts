@@ -18,12 +18,13 @@ export class MineWebService {
             .post(url);
     }
 
-    public mineMine(stoneId) {
+    public mineMine(item) {
         const url = `mine/mine`;
 
         return this.api
             .post(url, {
-                stoneId: stoneId
+                itemId: item.itemId,
+                itemType: item.itemType,
             });
     }
 
