@@ -69,4 +69,11 @@ export class ZoneWebService {
         return this.api
             .get(url);
     }
+
+    public explore(zoneId: number) {
+        const url = `zone/explore`;
+
+        return this.api
+            .post(url);
+    }
 }

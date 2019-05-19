@@ -15,6 +15,7 @@ import { MiningManager } from './labour/mining/mining.manager';
 import { CraftingManager } from './labour/crafting/crafting.manager';
 import { AddToActivityManager } from './labour/add-to-activity/add-to-activity.manager';
 import { WorkOnActivityManager } from './labour/work-on-activity/work-on-activity.manager';
+import { ExploringManager } from './labour/exploring/exploring.manager';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { WorkOnActivityManager } from './labour/work-on-activity/work-on-activit
         MiningManager,
         CraftingManager,
         AddToActivityManager,
-        WorkOnActivityManager
+        WorkOnActivityManager,
+        ExploringManager
     ],
     declarations: [
     ],

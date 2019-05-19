@@ -17,6 +17,7 @@ import { MiningManager } from './mining/mining.manager';
 import { CraftingManager } from './crafting/crafting.manager';
 import { AddToActivityManager } from './add-to-activity/add-to-activity.manager';
 import { WorkOnActivityManager } from './work-on-activity/work-on-activity.manager';
+import { ExploringManager } from './exploring/exploring.manager';
 
 import * as _ from 'lodash';
 
@@ -41,7 +42,8 @@ export class LabourManager {
         private miningManager: MiningManager,
         private craftingManager: CraftingManager,
         private addToActivityManager: AddToActivityManager,
-        private workOnActivityManager: WorkOnActivityManager
+        private workOnActivityManager: WorkOnActivityManager,
+        private exploringManager: ExploringManager
     ) {}
 
     public init(mainFeedStream, optionsStream, promptStream): void {
@@ -62,6 +64,7 @@ export class LabourManager {
         this.craftingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.addToActivityManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.workOnActivityManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
+        this.exploringManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
 
         this.optionsStream.next(labourOption);
     }
