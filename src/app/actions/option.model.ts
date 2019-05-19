@@ -13,7 +13,22 @@ export class Option {
     }
 
     public setOptions(options: Option[]): Option {
-        this.options = options;
+        if (this.options) {
+            this.options = this.options.concat(options);
+        } else {
+            this.options = options;
+        }
+
+        return this;
+    }
+
+    public setOption(option: Option): Option {
+        if (this.options) {
+            this.options.push(option);
+        } else {
+            this.options = [option];
+        }
+
         return this;
     }
 }

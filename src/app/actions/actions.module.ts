@@ -8,6 +8,14 @@ import { LocationManager } from './location/location.manager';
 import { MovementManager } from './movement/movement.manager';
 import { LabourManager } from './labour/labour.manager';
 
+import { ForagingManager } from './labour/foraging/foraging.manager';
+import { HuntingManager } from './labour/hunting/hunting.manager';
+import { FarmingManager } from './labour/farming/farming.manager';
+import { MiningManager } from './labour/mining/mining.manager';
+import { CraftingManager } from './labour/crafting/crafting.manager';
+import { AddToActivityManager } from './labour/add-to-activity/add-to-activity.manager';
+import { WorkOnActivityManager } from './labour/work-on-activity/work-on-activity.manager';
+
 @NgModule({
     imports: [
     ],
@@ -18,7 +26,14 @@ import { LabourManager } from './labour/labour.manager';
         CharacterCreationManager,
         LocationManager,
         MovementManager,
-        LabourManager
+        LabourManager,
+        ForagingManager,
+        HuntingManager,
+        FarmingManager,
+        MiningManager,
+        CraftingManager,
+        AddToActivityManager,
+        WorkOnActivityManager
     ],
     declarations: [
     ],
