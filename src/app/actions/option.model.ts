@@ -5,6 +5,7 @@ export class Option {
     public name: string;
     public options: Option[];
     public selectedStream: Subject<any>;
+    public isConcat = false;
 
     constructor(name: string) {
         this.name = name;

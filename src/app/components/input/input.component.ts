@@ -159,7 +159,7 @@ export class InputComponent implements OnInit, OnChanges {
 
         const selectedOption = _.last(this.optionsTree);
 
-        if (selectedOption) {
+        if (selectedOption && this.isEndNode(selectedOption)) {
             selectedOption
                 .selectedStream
                 .next(clippedInput);
@@ -248,5 +248,9 @@ export class InputComponent implements OnInit, OnChanges {
         }
 
         return _.replace(input, accountedForInput, '');
+    }
+
+    private isEndNode(option) {
+        return !option.options || option.options.length === 0;
     }
 }

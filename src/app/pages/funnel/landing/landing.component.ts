@@ -73,7 +73,15 @@ export class LandingComponent implements OnInit {
 
         this.optionsStream
             .subscribe((option: Option) => {
+                console.log(option);
+                if (!option.isConcat) {
+                    console.log('clearing');
+                    this.options = [];
+                }
+
                 this.options = this.options.concat([option]);
+
+                console.log('options: ', this.options);
             });
 
         this.promptStream

@@ -26,7 +26,6 @@ export class Feed {
             .pipe(
                 pairwise(),
                 concatMap(messages => {
-                    console.log('doing something');
                     const lastMessage = messages[0];
                     const currentMessage = messages[1];
 

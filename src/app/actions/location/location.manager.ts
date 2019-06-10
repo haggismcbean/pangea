@@ -64,6 +64,8 @@ export class LocationManager {
             .selectedStream
             .subscribe(() => this.handleActivitiesOptionSelected());
 
+        lookAtOption.isConcat = true;
+
         this.optionsStream.next(lookAtOption);
     }
 

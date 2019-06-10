@@ -66,6 +66,8 @@ export class LabourManager {
         this.workOnActivityManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.exploringManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
 
+        labourOption.isConcat = true;
+
         this.optionsStream.next(labourOption);
     }
 }

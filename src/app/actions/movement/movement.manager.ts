@@ -66,6 +66,8 @@ export class MovementManager {
                 moveToOption.setOptions(zoneOptions);
             });
 
+        moveToOption.isConcat = true;
+
         this.optionsStream.next(moveToOption);
     }
 

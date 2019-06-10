@@ -25,7 +25,6 @@ export class FeedComponent implements OnInit {
         this.feed
             .messageStream
             .subscribe((message) => {
-                console.log('message received!', message);
                 if (message.isClear) {
                     this.messages = [];
                     this.hasUnreadMessages = false;
