@@ -33,14 +33,16 @@ export class InputComponent implements OnInit, OnChanges {
         handleEnter: this.handlePromptEnter.bind(this),
         handleBackspace: this.handleBackspace.bind(this),
         handleTab: _.noop,
-        handleInput: this.handleInput.bind(this)
+        handleInput: this.handleInput.bind(this),
+        handleEscape: this.handleEscape.bind(this)
     };
 
     private optionsMode = {
         handleEnter: this.handleOptionsEnter.bind(this),
         handleBackspace: this.handleOptionsBackspace.bind(this),
         handleTab: this.handleOptionsTab.bind(this),
-        handleInput: this.handleOptionsInput.bind(this)
+        handleInput: this.handleOptionsInput.bind(this),
+        handleEscape: this.handleEscape.bind(this)
     };
 
     private mode = this.optionsMode;
@@ -110,6 +112,13 @@ export class InputComponent implements OnInit, OnChanges {
         if (keyboardEvent.key === 'Tab') {
             keyboardEvent.preventDefault();
             this.mode.handleTab();
+            return;
+        }
+
+        // if user presses escape
+        if (keyboardEvent.key === 'Escape') {
+            keyboardEvent.preventDefault();
+            this.mode.handleEscape();
             return;
         }
 
@@ -199,6 +208,17 @@ export class InputComponent implements OnInit, OnChanges {
             this.currentOptions = this.hintedOption.options;
             this.hintedOption = undefined;
         }
+    }
+
+    /////////////
+    // Escape
+
+    private handleEscape() {
+        this.input = '';
+        this.hint = '';
+        this.promptText = '';
+        this.caretPosition = 0;
+        this.currentOptions = this.options;
     }
 
     /////////////
