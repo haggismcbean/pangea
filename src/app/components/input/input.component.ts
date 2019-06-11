@@ -77,6 +77,22 @@ export class InputComponent implements OnInit, OnChanges {
         }
     }
 
+    public onOptionClicked(option: Option) {
+        if (option.options && option.options.length > 0) {
+            return;
+        }
+
+        const clippedInput = this.getAccountedForInput(this.input);
+
+        option
+            .selectedStream
+            .next(clippedInput);
+
+        this.currentOptions = undefined;
+
+        this.resetInput();
+    }
+
     private handleKeypress(keyboardEvent: KeyboardEvent) {
         this.keysMap[keyboardEvent.key] = keyboardEvent.type === 'keydown';
 
@@ -178,11 +194,7 @@ export class InputComponent implements OnInit, OnChanges {
             this.currentOptions = this.options;
         }
 
-        this.input = '';
-        this.hint = '';
-        this.caretPosition = this.input.length;
-        this.optionsTree = [];
-        this.hintedOption = undefined;
+        this.resetInput();
     }
 
     private handlePromptEnter() {
@@ -214,10 +226,7 @@ export class InputComponent implements OnInit, OnChanges {
     // Escape
 
     private handleEscape() {
-        this.input = '';
-        this.hint = '';
-        this.promptText = '';
-        this.caretPosition = 0;
+        this.resetInput();
         this.currentOptions = this.options;
     }
 
@@ -272,5 +281,14 @@ export class InputComponent implements OnInit, OnChanges {
 
     private isEndNode(option) {
         return !option.options || option.options.length === 0;
+    }
+
+    private resetInput() {
+        this.input = '';
+        this.hint = '';
+        this.promptText = '';
+        this.caretPosition = this.input.length;
+        this.optionsTree = [];
+        this.hintedOption = undefined;
     }
 }

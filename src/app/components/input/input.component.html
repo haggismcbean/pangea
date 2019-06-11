@@ -1,18 +1,24 @@
 <div class="input box">
-	<div class="text">
-		<span class="input__current">{{promptText}}>&nbsp;</span>
-		<span class="input__current"
-			  [ngClass]="{'input__current--password': (prompt && prompt.isPassword)}">{{input}}</span>
-		<span class="input__suggestion">{{hint}}</span>
-	</div>
-	<div class="options">
-		<div class="option"
-			 *ngFor="let option of currentOptions">
-			<span>{{option.name}}</span>
+    <div class="text">
+        <span class="input__current">{{promptText}}>&nbsp;</span>
+        <span class="input__current"
+              [ngClass]="{'input__current--password': (prompt && prompt.isPassword)}">{{input}}</span>
+        <span class="input__suggestion">{{hint}}</span>
+    </div>
+    <div class="options">
+        <div class="option"
+             *ngFor="let option of currentOptions">
+            <span class="option__root option__text"
+                  (click)="onOptionClicked(option)">
+                {{option.name}}</span>
 
-			<span *ngFor="let option of option.options">
-				[{{option.name}}]
-			</span>
-		</div>
-	</div>
+            <div class="option__container"
+                 *ngFor="let option of option.options"
+                 (click)="onOptionClicked(option)">
+                <span>[</span>
+                <span class="option__text">{{option.name}}</span>
+                <span>]</span>
+            </div>
+        </div>
+    </div>
 </div>

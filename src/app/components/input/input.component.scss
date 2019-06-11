@@ -25,3 +25,19 @@
 	background: $text-normal-color;
 	color: $background;
 }
+
+.option__root {
+	margin-right: 0.5em;
+}
+
+.option__container {
+	margin-right: 0.5em;
+	display: inline;
+}
+
+.option__text {
+	&:hover {
+		cursor: pointer;
+		text-decoration: underline;
+	}
+}
