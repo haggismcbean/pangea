@@ -12,8 +12,8 @@ import { LandingModule } from './pages/funnel/landing/landing.module';
 import { WebServicesModule } from './web-services/web-services.module';
 
 const appRoutes: Routes = [
-  { path: '',   redirectTo: '/landing', pathMatch: 'full' },
-  { path: '**', component: LandingComponent },
+    { path: '',   redirectTo: '/landing', pathMatch: 'full' },
+    { path: '**', component: LandingComponent },
 ];
 
 @NgModule({

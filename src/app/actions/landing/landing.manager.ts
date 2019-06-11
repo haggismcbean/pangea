@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 
 import { Feed } from '../../models/feed.model';
 import { Message } from '../../models/message.model';
+import { DelayedMessages } from '../../models/delayed-messages.model';
 
 @Injectable()
 export class LandingManager {
@@ -25,16 +26,22 @@ export class LandingManager {
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
 
-        mainFeedStream.next(this.getAnnouncement(this.ANNOUNCEMENT));
-        mainFeedStream.next(this.getCta(this.SIGN_UP_NOW));
-        mainFeedStream.next(this.getMessage(this.MESSAGE_ONE));
-        mainFeedStream.next(this.getCta(this.SIGN_UP_NOW));
-        mainFeedStream.next(this.getMessage(this.MESSAGE_TWO));
-        mainFeedStream.next(this.getCta(this.BECOME_CELEB));
-        mainFeedStream.next(this.getMessage(this.MESSAGE_THREE));
-        mainFeedStream.next(this.getCta(this.CERTAIN_DEATH));
-        mainFeedStream.next(this.getMessage(this.MESSAGE_FOUR));
-        mainFeedStream.next(this.getAnnouncement(this.END_ANNOUNCEMENT));
+        this.delayedMessages = new DelayedMessages(mainFeedStream);
+
+        this.delayedMessages.addMessage(this.getAnnouncement(this.ANNOUNCEMENT));
+        this.delayedMessages.addMessage(this.getCta(this.SIGN_UP_NOW));
+        this.delayedMessages.addMessage(this.getMessage(this.MESSAGE_ONE));
+        this.delayedMessages.addMessage(this.getCta(this.SIGN_UP_NOW));
+        this.delayedMessages.addMessage(this.getMessage(this.MESSAGE_TWO));
+        this.delayedMessages.addMessage(this.getCta(this.BECOME_CELEB));
+        this.delayedMessages.addMessage(this.getMessage(this.MESSAGE_THREE));
+        this.delayedMessages.addMessage(this.getCta(this.CERTAIN_DEATH));
+        this.delayedMessages.addMessage(this.getMessage(this.MESSAGE_FOUR));
+        this.delayedMessages.addMessage(this.getAnnouncement(this.END_ANNOUNCEMENT));
+    }
+
+    public cancelMessages() {
+        this.delayedMessages.cancelMessages();
     }
 
     private getAnnouncement(text: string) {

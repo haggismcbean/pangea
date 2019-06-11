@@ -75,13 +75,10 @@ export class LandingComponent implements OnInit {
             .subscribe((option: Option) => {
                 console.log(option);
                 if (!option.isConcat) {
-                    console.log('clearing');
                     this.options = [];
                 }
 
                 this.options = this.options.concat([option]);
-
-                console.log('options: ', this.options);
             });
 
         this.promptStream
@@ -98,6 +95,7 @@ export class LandingComponent implements OnInit {
         this.loginManager
             .userLoggedInStream
             .subscribe((user) => {
+                this.landingManager.cancelMessages();
                 this.getWakeUpText();
                 this.setOptions();
             });
