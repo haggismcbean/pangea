@@ -6,6 +6,7 @@ import { Feed } from '../../../models/feed.model';
 import { Option } from '../../../actions/option.model';
 import { Prompt } from '../../../actions/prompt.model';
 import { Message } from '../../../models/message.model';
+import { DelayedMessages } from '../../../models/delayed-messages.model';
 
 import { LandingManager } from '../../../actions/landing/landing.manager';
 import { RegisterManager } from '../../../actions/register/register.manager';
@@ -146,25 +147,27 @@ export class LandingComponent implements OnInit {
         this.zoneService
             .getWakeUpText(character.zoneId)
             .subscribe((wakeUpText) => {
+                const delayedMessages = new DelayedMessages(this.mainFeedStream);
+
                 const intro = new Message(0);
                 intro.setText(wakeUpText.intro);
                 intro.setClass('');
-                this.mainFeedStream.next(intro);
+                delayedMessages.addMessage(intro);
 
                 const farNature = new Message(0);
                 farNature.setText(wakeUpText.farNature);
                 farNature.setClass('');
-                this.mainFeedStream.next(farNature);
+                delayedMessages.addMessage(farNature);
 
                 const closeNature = new Message(0);
                 closeNature.setText(wakeUpText.closeNature);
                 closeNature.setClass('');
-                this.mainFeedStream.next(closeNature);
+                delayedMessages.addMessage(closeNature);
 
                 const drone = new Message(0);
                 drone.setText(wakeUpText.drone);
                 drone.setClass('');
-                this.mainFeedStream.next(drone);
+                delayedMessages.addMessage(drone);
             });
     }
 
