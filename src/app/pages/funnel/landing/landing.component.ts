@@ -31,7 +31,9 @@ import { AuthenticationWebService } from '../../../web-services/authentication-w
 export class LandingComponent implements OnInit {
     public feed: Feed;
     public options: Option[] = [];
+    public originalOptions: Option[] = [];
     public prompt: Prompt;
+
 
     private mainFeedStream;
     private optionsStream;
@@ -124,6 +126,7 @@ export class LandingComponent implements OnInit {
         this.loginManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
         this.registerManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
         this.prompt = undefined;
+        this.originalOptions = this.options;
     }
 
     // CHARACTER CREATION
@@ -187,6 +190,8 @@ export class LandingComponent implements OnInit {
 
         // travel
         this.movementManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+
+        this.originalOptions = this.options;
     }
 
     // DEV

@@ -16,6 +16,7 @@ import { Prompt } from '../../actions/prompt.model';
 export class InputComponent implements OnInit, OnChanges {
     @Input() public options: Option[] = [];
     @Input() public prompt: Prompt;
+    @Input() public originalOptions: Option[] = [];
 
     public currentOptions: Option[];
     public input = '';
@@ -28,8 +29,6 @@ export class InputComponent implements OnInit, OnChanges {
     private caretPosition = 0;
     private optionsTree = [];
     private currentOptionSuggestion = null;
-
-    private originalOptions;
 
     private promptMode = {
         handleEnter: this.handlePromptEnter.bind(this),
@@ -76,7 +75,6 @@ export class InputComponent implements OnInit, OnChanges {
         if (changes.options && changes.options.currentValue && changes.options.currentValue.length > 0) {
             this.mode = this.optionsMode;
             this.currentOptions = this.options;
-            this.originalOptions = this.options;
         }
     }
 
