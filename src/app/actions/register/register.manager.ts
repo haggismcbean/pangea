@@ -40,6 +40,8 @@ export class RegisterManager {
                 this.onNameProvided('placeholder');
             });
 
+        registerOption.isConcat = true;
+
         this.optionsStream.next(registerOption);
     }
 

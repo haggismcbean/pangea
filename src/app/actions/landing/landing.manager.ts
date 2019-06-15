@@ -21,6 +21,8 @@ export class LandingManager {
     private optionsStream;
     private promptStream;
 
+    private delayedMessages;
+
     public init(mainFeedStream, optionsStream, promptStream) {
         this.mainFeedStream = mainFeedStream;
         this.optionsStream = optionsStream;

@@ -55,6 +55,8 @@ export class LoginManager {
                             this.clearMessageFeed();
                         });
 
+                    loginOption.isConcat = true;
+
                     this.optionsStream.next(loginOption);
                 });
 

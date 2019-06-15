@@ -29,6 +29,8 @@ export class InputComponent implements OnInit, OnChanges {
     private optionsTree = [];
     private currentOptionSuggestion = null;
 
+    private originalOptions;
+
     private promptMode = {
         handleEnter: this.handlePromptEnter.bind(this),
         handleBackspace: this.handleBackspace.bind(this),
@@ -74,11 +76,13 @@ export class InputComponent implements OnInit, OnChanges {
         if (changes.options && changes.options.currentValue && changes.options.currentValue.length > 0) {
             this.mode = this.optionsMode;
             this.currentOptions = this.options;
+            this.originalOptions = this.options;
         }
     }
 
     public onOptionClicked(option: Option) {
         if (option.options && option.options.length > 0) {
+            this.currentOptions = option.options;
             return;
         }
 
@@ -227,7 +231,15 @@ export class InputComponent implements OnInit, OnChanges {
 
     private handleEscape() {
         this.resetInput();
-        this.currentOptions = this.options;
+
+        this.promptText = '';
+        this.hintedOption = null;
+
+        this.optionsTree = [];
+        this.currentOptionSuggestion = null;
+
+        this.mode = this.optionsMode;
+        this.currentOptions = this.originalOptions;
     }
 
     /////////////
