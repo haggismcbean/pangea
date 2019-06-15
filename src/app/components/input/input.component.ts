@@ -194,11 +194,13 @@ export class InputComponent implements OnInit, OnChanges {
                 .next(clippedInput);
 
             this.currentOptions = undefined;
+            this.resetInput();
         } else {
             this.currentOptions = this.options;
+            this.input = '';
+            this.hint = '';
+            this.caretPosition = 0;
         }
-
-        this.resetInput();
     }
 
     private handlePromptEnter() {

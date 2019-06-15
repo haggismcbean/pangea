@@ -52,7 +52,6 @@ export class LoginManager {
                         .selectedStream
                         .subscribe(() => {
                             this.onOptionSelected();
-                            this.clearMessageFeed();
                         });
 
                     loginOption.isConcat = true;
@@ -102,6 +101,7 @@ export class LoginManager {
             )
             .subscribe(
                 (characters: Character[]) => {
+                    this.clearMessageFeed();
                     this.setCurrentCharacter(characters);
                 },
                 (rawError) => {
