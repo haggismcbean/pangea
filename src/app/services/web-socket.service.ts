@@ -4,11 +4,14 @@ import { CanActivate, Router } from '@angular/router';
 import * as Echo from 'laravel-echo';
 import * as io from 'socket.io-client';
 
+import { Message } from '../models/message.model';
+
 @Injectable()
 export class WebSocketService {
+    private mainFeedStream;
 
-    constructor(
-    ) {
+    public addFeedStream(feedStream): void {
+        this.mainFeedStream = feedStream;
     }
 
     public connect(token, channelId): void {
@@ -28,10 +31,14 @@ export class WebSocketService {
          echo.private('chat.' + channelId)
             .listen('MessageSent', (e) => {
                 console.log('web socket message received!', e);
-                // this.messages.push({
-                //     message: e.message.message,
-                //     user: e.user
-                // });
+
+                if (this.mainFeedStream) {
+                    const message = new Message(0);
+                    message.setText(e.message.message);
+
+                    this.mainFeedStream
+                        .next(message);
+                }
             });
     }
 }

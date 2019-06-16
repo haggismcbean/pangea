@@ -120,6 +120,7 @@ export class LoginManager {
         this.characterService
             .setCurrent(character);
 
+        this.webSocketService.addFeedStream(this.mainFeedStream);
         this.webSocketService.connect(this.userService.getUser().token, character.id);
 
         return this.userLoggedInStream.next(character);

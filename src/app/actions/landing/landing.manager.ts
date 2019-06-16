@@ -43,7 +43,9 @@ export class LandingManager {
     }
 
     public cancelMessages() {
-        this.delayedMessages.cancelMessages();
+        if (this.delayedMessages) {
+            this.delayedMessages.cancelMessages();
+        }
     }
 
     private getAnnouncement(text: string) {
