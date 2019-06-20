@@ -42,9 +42,12 @@ export class DelayedMessages {
                 if (this.isCancelled) {
                     return;
                 }
-                
+
                 this.messageStream.next(message);
             });
+
+        const fillerMessage = new Message(0);
+        this.addMessage(fillerMessage);
     }
 
     public addMessage(message: Message): DelayedMessages {
