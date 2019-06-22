@@ -39,27 +39,20 @@ export class MovementManager {
             .subscribe((zones) => {
                 const zoneOptions = [];
 
-                _.each(zones.borderZones, (zone, zoneName) => {
-                    if (zone) {
-                        const newZone = new Option(zoneName);
-                        newZone
-                            .selectedStream
-                            .subscribe(() => {
-                                this.onZoneOptionSelect(zone);
-                            });
+                if (zones.parentZone) {
+                    const newZone = this.createZoneOption(zones.parentZone);
+                    zoneOptions.push(newZone);
+                }
 
+                _.each(zones.siblingZones, (zone) => {
+                    if (zone) {
+                        const newZone = this.createZoneOption(zone);
                         zoneOptions.push(newZone);
                     }
                 });
 
-                _.each(zones.zones, (zone) => {
-                    const newZone = new Option(zone.name);
-                    newZone
-                        .selectedStream
-                        .subscribe(() => {
-                            this.onZoneOptionSelect(zone);
-                        });
-
+                _.each(zones.childZones, (zone) => {
+                    const newZone = this.createZoneOption(zone);
                     zoneOptions.push(newZone);
                 });
 
@@ -69,6 +62,17 @@ export class MovementManager {
         moveToOption.isConcat = true;
 
         this.optionsStream.next(moveToOption);
+    }
+
+    private createZoneOption(zone): Option {
+        const newZone = new Option(zone.name);
+        newZone
+            .selectedStream
+            .subscribe(() => {
+                this.onZoneOptionSelect(zone);
+            });
+
+        return newZone;
     }
 
     private onZoneOptionSelect(zone): void {

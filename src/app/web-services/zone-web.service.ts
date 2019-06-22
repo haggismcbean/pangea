@@ -46,13 +46,21 @@ export class ZoneWebService {
             .get(url);
     }
 
-    public getWakeUpText(zoneId: number): any {
+    public getDescription(zoneId: number): any {
         const url = `zone/${zoneId}`;
 
         return this.api
             .get(url);
     }
 
+    public getWakeUpText(zoneId: number): any {
+        const url = `zone/${zoneId}/wake_up_text`;
+
+        return this.api
+            .get(url);
+    }
+
+    // TODO - Move into crafting
     public pickUp(itemId: number, amount: number): any {
         const url = `zone/pick_up`;
 
@@ -63,6 +71,7 @@ export class ZoneWebService {
             });
     }
 
+    // TODO - Move into crafting
     public getActivities(zoneId: number) {
         const url = `zone/${zoneId}/activities`;
 
@@ -70,6 +79,7 @@ export class ZoneWebService {
             .get(url);
     }
 
+    // TODO - Move somewhere as well?
     public explore(zoneId: number) {
         const url = `zone/explore`;
 

@@ -145,6 +145,7 @@ export class LandingComponent implements OnInit {
 
     private getWakeUpText() {
         const character = this.characterService.getCurrent();
+        console.log('character: ', character);
 
         this.zoneService
             .getWakeUpText(character.zoneId)
@@ -155,6 +156,11 @@ export class LandingComponent implements OnInit {
                 intro.setText(wakeUpText.intro);
                 intro.setClass('');
                 delayedMessages.addMessage(intro);
+
+                const location = new Message(0);
+                location.setText('You find yourself in ' + wakeUpText.zone.description);
+                location.setClass('');
+                delayedMessages.addMessage(location);
 
                 const farNature = new Message(0);
                 farNature.setText(wakeUpText.farNature);
@@ -176,19 +182,13 @@ export class LandingComponent implements OnInit {
     private setOptions() {
         this.options = [];
 
-        // get characters
+        // look at
         this.locationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
-        
-        // get plants
+
+        // do
         this.labourManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
 
-        // get animals
-
-        // hunt
-
-        // gather plants
-
-        // travel
+        // move to
         this.movementManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
 
         this.originalOptions = this.options;
