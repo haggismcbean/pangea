@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { InputModule } from './input/input.module';
 import { FeedComponent } from './feed/feed.component';
 
+import { LocationModule } from '../panels/location/location.module';
+
 const components = [
     FeedComponent,
 ];
@@ -13,6 +15,7 @@ const components = [
     imports: [
         FormsModule,
         CommonModule,
+        LocationModule,
         InputModule,
     ],
     declarations: [

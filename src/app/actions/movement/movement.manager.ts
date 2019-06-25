@@ -44,9 +44,9 @@ export class MovementManager {
                     zoneOptions.push(newZone);
                 }
 
-                _.each(zones.siblingZones, (zone) => {
+                _.each(zones.siblingZones, (zone, zoneName) => {
                     if (zone) {
-                        const newZone = this.createZoneOption(zone);
+                        const newZone = this.createZoneOption(zone, zoneName);
                         zoneOptions.push(newZone);
                     }
                 });
@@ -64,8 +64,8 @@ export class MovementManager {
         this.optionsStream.next(moveToOption);
     }
 
-    private createZoneOption(zone): Option {
-        const newZone = new Option(zone.name);
+    private createZoneOption(zone, zoneName?): Option {
+        const newZone = new Option(zoneName || zone.name);
         newZone
             .selectedStream
             .subscribe(() => {

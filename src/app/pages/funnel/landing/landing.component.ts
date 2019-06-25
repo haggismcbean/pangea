@@ -137,7 +137,6 @@ export class LandingComponent implements OnInit {
         this.characterCreationManager
             .characterCreatedStream
             .subscribe((character) => {
-                console.log('character: ', character);
             });
     }
 
@@ -145,7 +144,6 @@ export class LandingComponent implements OnInit {
 
     private getWakeUpText() {
         const character = this.characterService.getCurrent();
-        console.log('character: ', character);
 
         this.zoneService
             .getWakeUpText(character.zoneId)
