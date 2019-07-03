@@ -1,30 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { CLOUDY, FOGGY, HEAVY_RAIN } from './constants/weather';
-
-import hljs from 'highlight.js/lib/highlight';
+import { weather } from './constants/weather';
 
 @Component({
     selector: 'pan-location',
     templateUrl: './location.component.html',
     styleUrls: ['./location.component.scss']
 })
-export class LocationComponent {
+export class LocationComponent implements OnInit {
 
     public weatherGlyph;
 
     constructor() {
-        const weatherHighlighting = {
-            case_insensitive: true,
-            keywords: {
-                grey: '- _',
-                blue: 'ʻ ‚',
-            },
-            contains: []
-        };
+    }
 
-        hljs.registerLanguage('weather', () => weatherHighlighting);
-        this.weatherGlyph = hljs.highlight('weather', FOGGY);
+    ngOnInit() {
+    	console.log(weather);
+        this.weatherGlyph = weather.THUNDER_STORMS;
         console.log(this.weatherGlyph);
     }
 }
