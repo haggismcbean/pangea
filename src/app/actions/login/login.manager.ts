@@ -121,11 +121,10 @@ export class LoginManager {
         // find first character that is alive.
         const character = _.find(characters, { isDead: false });
 
-        // DEV : WHILST DEVELOPING RETRY LOGIC, I HAVE TO HIDE THESE IF BRACKETS. RESTORE LATER!!
-        // if (!character) {
+        if (!character) {
             // in the case that all our characters are dead, we are set to the last dead character
             character = _.findLast(characters, { isDead: true });
-        // }
+        }
 
         this.characterService
             .setCurrent(character);
