@@ -97,9 +97,16 @@ export class LandingComponent implements OnInit {
         this.loginManager
             .userLoggedInStream
             .subscribe((user) => {
+                const character = this.characterService.getCurrent();
                 this.landingManager.cancelMessages();
-                this.getWakeUpText();
-                this.setOptions();
+
+                if (character.isDead) {
+                    this.getDeathText(character);
+                    this.setDeadOptions();
+                } else {
+                    this.getWakeUpText(character);
+                    this.setOptions();
+                }
             });
 
         this.registerManager
@@ -142,14 +149,7 @@ export class LandingComponent implements OnInit {
 
     // WAKE UP TEXT
 
-    private getWakeUpText() {
-        const character = this.characterService.getCurrent();
-
-        if (character.isDead) {
-            this.getDeathText(character);
-            return;
-        }
-
+    private getWakeUpText(character) {
         this.zoneService
             .getWakeUpText(character.zoneId)
             .subscribe((wakeUpText) => {
@@ -182,22 +182,6 @@ export class LandingComponent implements OnInit {
             });
     }
 
-    private getDeathText(character) {
-        this.characterService
-            .getDeathMessage(character.id)
-            .subscribe((deathMessages) => {
-                const death = new Message(0);
-                death.setText(deathMessages[0].message);
-                death.setClass('');
-                this.mainFeedStream.next(death);
-
-
-                // okay, now we need to restart!
-
-                // so first we can fade the original message, and then we set up some kind of 'sign up now' thing again
-            });
-    }
-
     private setOptions() {
         this.options = [];
 
@@ -211,6 +195,34 @@ export class LandingComponent implements OnInit {
         this.movementManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
 
         this.originalOptions = this.options;
+    }
+
+    private getDeathText(character) {
+        this.characterService
+            .getDeathMessage(character.id)
+            .subscribe((deathMessages) => {
+                const death = new Message(0);
+                death.setText(deathMessages[0].message);
+                death.setClass('');
+                this.mainFeedStream.next(death);
+            });
+    }
+
+    private setDeadOptions() {
+        this.options = [];
+
+        const restartOption = new Option('start again');
+
+        restartOption
+            .selectedStream
+            .subscribe(() => {
+                const clearMessage = new Message(0);
+                clearMessage.isClear = true;
+                this.mainFeedStream.next(clearMessage);
+                this.initCharacterCreation();
+            });
+
+        this.optionsStream.next(restartOption);
     }
 
     // DEV
