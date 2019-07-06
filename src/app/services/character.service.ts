@@ -107,6 +107,11 @@ export class CharacterService {
             .cancelActivity(activityId);
     }
 
+    public getDeathMessage(characterId: number): Observable<any> {
+        return this.characterWebService
+            .getDeathMessage(characterId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()

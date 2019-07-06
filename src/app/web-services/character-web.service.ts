@@ -121,4 +121,13 @@ export class CharacterWebService {
             });
 
     }
+
+    public getDeathMessage(characterId: number) {
+        const url = `character/${characterId}/death_message`;
+
+        return this.api
+            .get(url, {
+                characterId: characterId
+            });
+    }
 }

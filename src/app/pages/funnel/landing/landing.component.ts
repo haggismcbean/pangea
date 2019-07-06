@@ -145,6 +145,11 @@ export class LandingComponent implements OnInit {
     private getWakeUpText() {
         const character = this.characterService.getCurrent();
 
+        if (character.isDead) {
+            this.getDeathText(character);
+            return;
+        }
+
         this.zoneService
             .getWakeUpText(character.zoneId)
             .subscribe((wakeUpText) => {
@@ -174,6 +179,22 @@ export class LandingComponent implements OnInit {
                 drone.setText(wakeUpText.drone);
                 drone.setClass('');
                 delayedMessages.addMessage(drone);
+            });
+    }
+
+    private getDeathText(character) {
+        this.characterService
+            .getDeathMessage(character.id)
+            .subscribe((deathMessages) => {
+                const death = new Message(0);
+                death.setText(deathMessages[0].message);
+                death.setClass('');
+                this.mainFeedStream.next(death);
+
+
+                // okay, now we need to restart!
+
+                // so first we can fade the original message, and then we set up some kind of 'sign up now' thing again
             });
     }
 
