@@ -1,0 +1,77 @@
+Okay so I'm not sure any of this nice styling will add any 'game' to the game.
+
+I need players dying, a sense of danger, a sense of urgency. 
+
+If you fall asleep outside, you die. Done.
+
+https://terminalcss.xyz/dark/
+
+Useful ascii characters
+┌─┬┐
+├─┼┤
+└─┴┘
+
+
+location
+ - weather
+ - location description
+ - loose items
+ - # of people
+ - # of activities
+ - # of plants, or mine status, or farm status, or sthing,
+                                                                ┌─────────────┐
+┌──────────────────────────────┬────────────────────────────────┤   Location  ├─────────────────────────────────────────────┐
+│            Weather           │                                └─────────────┘                                             │
+├──────────────────────────────┤                                                                                            │
+│    \  /       Partly cloudy  │                                                                                            │
+│  _ /"".-.     23..25 °C      │                                                                                            │
+│    \_(   ).   ↘ 7-8 km/h     │                                                                                            │
+│    /(___(__)  10 km          │                                                                                            │
+│               0.0 mm | 0%    │                                                                                            │
+└──────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+
+Inventory
+ - status
+ - items
+                                                                ┌─────────────┐
+┌──────────────────────────────┬─────────────┬──────────────────┤  Inventory  ├─────────────────────────────────────────────┐
+│            Status            │ Made Items  │                  └─────────────┘                                             │
+├──────────────────────────────┼─────────────┘                                                                              │
+│ You are hungry               │ 2 well made pieces of cheese                                                               │
+│ You are cold                 │                                                                                            │
+│ You are lonely               │                                                                                            │
+│ You are tired                │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+├──────────────────────────────┼─────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│           Clothing           │ Raw Items   │                                                                              │
+├──────────────────────────────┼─────────────┘                                                                              │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+│                              │                                                                                            │
+└──────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
+
+People
+ - people
+ - clothing & jewellery
+ - awake
+
+Plants
+ - plants with nice colours
+ - shows what parts are harvestable
+
+Activities
+ - activity 
+ - % complete
+ - people working on it
+
+Feed
+ - Events as they're happening :P

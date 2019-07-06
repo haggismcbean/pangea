@@ -15,8 +15,6 @@ export class LocationComponent implements OnInit {
     }
 
     ngOnInit() {
-    	console.log(weather);
         this.weatherGlyph = weather.THUNDER_STORMS;
-        console.log(this.weatherGlyph);
     }
 }

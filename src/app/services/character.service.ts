@@ -145,6 +145,7 @@ export class CharacterService {
         character.userId = _character.user_id;
         character.weight = _character.weight;
         character.zoneId = _character.zone_id;
+        character.isDead = !!_character.is_dead;
 
         return character;
     }

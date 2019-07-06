@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { flatMap } from 'rxjs/operators';
 import { Subject, Observable, of } from 'rxjs';
 
+import * as _ from 'lodash';
+
 import { Option } from '../option.model';
 import { Prompt } from '../prompt.model';
 import { Message } from '../../models/message.model';
@@ -13,6 +15,7 @@ import { UserService } from '../../services/user.service';
 import { WebSocketService } from '../../services/web-socket.service';
 
 import { ILoginResponseData } from '../../web-service-interfaces/i-login.authentication-service';
+
 
 @Injectable()
 export class LoginManager {
@@ -115,7 +118,8 @@ export class LoginManager {
     }
 
     private setCurrentCharacter(characters: Character[]) {
-        const character = characters[0];
+        // find first character that is alive.
+        const character = _.find(characters, { isDead: false });
 
         this.characterService
             .setCurrent(character);
