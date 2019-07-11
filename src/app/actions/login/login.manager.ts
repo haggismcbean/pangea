@@ -119,7 +119,7 @@ export class LoginManager {
 
     private setCurrentCharacter(characters: Character[]) {
         // find first character that is alive.
-        const character = _.find(characters, { isDead: false });
+        let character = _.find(characters, { isDead: false });
 
         if (!character) {
             // in the case that all our characters are dead, we are set to the last dead character
