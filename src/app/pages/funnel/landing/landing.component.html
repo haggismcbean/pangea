@@ -1,10 +1,23 @@
 <div class="landing-page">
-    <pan-feed class="feed"
-              [feed]="feed"
-    ></pan-feed>
+	<div class="panels">
+		<!-- Main Text Feed -->
+	    <pan-feed class="feed"
+	              [feed]="feed"
+	               *ngIf="false"
+	    ></pan-feed>
+
+	    <!-- Location -->
+	    <pan-location *ngIf="false">
+	    </pan-location>
+
+	    <!-- Plants -->
+	    <pan-plants>
+	    </pan-plants>
+	</div>
     <pan-input class="input"
                [options]="options"
                [originalOptions]="originalOptions"
                [prompt]="prompt"
     ></pan-input>
+
 </div>
