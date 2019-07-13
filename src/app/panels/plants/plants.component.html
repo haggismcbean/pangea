@@ -1,14 +1,44 @@
-<form>
-	<fieldset>
-		<legend>Plants</legend>
-		<div class="form-group">
-			Trees
-		</div>
-		<div class="form-group">
-			Flowers
-		</div>
-		<div class="form-group">
-			Shrubs
+<form class="table">
+	<fieldset class="fieldset">
+		<legend class="header">
+			Plants
+		</legend>
+		<div *ngFor="let plantGroup of plantGroups">
+			<span class="plant-type">{{plantGroup}}s</span>
+
+			<div *ngFor="let plant of groupedPlants[plantGroup]">
+				<span class="plant-name"
+					  (click)="plant.isShowing = !plant.isShowing"
+					  [ngClass]="{'has-plant-showing': !!plant.isShowing}">
+					{{plant.customName || 'unknown ' + plantGroup}}
+				</span>
+				<span (click)="name(plant)">
+					[name]
+				</span>
+				<span (click)="share(plant)">
+					[share]
+				</span>
+
+				<ul class="plant-details"
+					*ngIf="plant.isShowing">
+					<li class="plant-detail"
+						*ngIf="plant.woodAppearance">
+						{{plant.woodAppearance}}
+					</li>
+					<li class="plant-detail"
+						*ngIf="plant.leafAppearance">
+						{{plant.leafAppearance}}
+					</li>
+					<li class="plant-detail"
+						*ngIf="plant.flowerAppearance">
+						{{plant.flowerAppearance}}
+					</li>
+					<li class="plant-detail"
+						*ngIf="plant.seedAppearance">
+						{{plant.seedAppearance}}
+					</li>
+				</ul>
+			</div>
 		</div>
 	</fieldset>
 </form>

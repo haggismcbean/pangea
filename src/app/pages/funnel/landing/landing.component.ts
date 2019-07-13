@@ -6,6 +6,7 @@ import { Feed } from '../../../models/feed.model';
 import { Option } from '../../../actions/option.model';
 import { Prompt } from '../../../actions/prompt.model';
 import { Message } from '../../../models/message.model';
+import { Character } from '../../../models/character.model';
 import { DelayedMessages } from '../../../models/delayed-messages.model';
 
 import { LandingManager } from '../../../actions/landing/landing.manager';
@@ -33,6 +34,7 @@ export class LandingComponent implements OnInit {
     public options: Option[] = [];
     public originalOptions: Option[] = [];
     public prompt: Prompt;
+    public character: Character;
 
 
     private mainFeedStream;
@@ -97,14 +99,15 @@ export class LandingComponent implements OnInit {
         this.loginManager
             .userLoggedInStream
             .subscribe((user) => {
-                const character = this.characterService.getCurrent();
+                this.character = this.characterService.getCurrent();
+
                 this.landingManager.cancelMessages();
 
-                if (character.isDead) {
-                    this.getDeathText(character);
+                if (this.character.isDead) {
+                    this.getDeathText(this.character);
                     this.setDeadOptions();
                 } else {
-                    this.getWakeUpText(character);
+                    this.getWakeUpText(this.character);
                     this.setOptions();
                 }
             });
