@@ -12,12 +12,23 @@ export class PlantWebService {
     ) {}
 
     public gather(plant: any) {
-        const url = `gather`;
+        const url = `plant/gather`;
 
         return this.api
             .put(url, {
                 plantId: plant.plantId,
                 plantPiece: plant.plantPiece
+            });
+    }
+
+    public name(plant: any, newName: string) {
+        console.log('makin request', plant, newName);
+        const url = `plant/name`;
+
+        return this.api
+            .post(url, {
+                plantId: plant.id,
+                name: newName
             });
     }
 }

@@ -37,9 +37,9 @@ export class LandingComponent implements OnInit {
     public character: Character;
 
 
-    private mainFeedStream;
-    private optionsStream;
-    private promptStream;
+    public mainFeedStream;
+    public optionsStream;
+    public promptStream;
 
     constructor(
         private router: Router,

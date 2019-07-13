@@ -12,12 +12,12 @@
 					  [ngClass]="{'has-plant-showing': !!plant.isShowing}">
 					{{plant.customName || 'unknown ' + plantGroup}}
 				</span>
-				<span (click)="name(plant)">
-					[name]
-				</span>
-				<span (click)="share(plant)">
-					[share]
-				</span>
+				<span class="link"
+					  *ngIf="plant.isShowing"
+					  (click)="name(plant)">[name]</span>
+				<span class="link"
+					  *ngIf="plant.customName"
+					  (click)="share(plant)">[share]</span>
 
 				<ul class="plant-details"
 					*ngIf="plant.isShowing">

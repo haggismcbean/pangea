@@ -13,6 +13,12 @@ export class PlantService {
     ) {}
 
     public gather(plant: any) {
-        return this.plantWebService.gather(plant);
+        return this.plantWebService
+            .gather(plant);
+    }
+
+    public name(plant: any, newName: string) {
+        return this.plantWebService
+            .name(plant, newName);
     }
 }

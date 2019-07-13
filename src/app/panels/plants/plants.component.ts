@@ -1,8 +1,11 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { ZoneService } from '../../services/zone.service';
+import { PlantService } from '../../services/plant.service';
 import { CharacterService } from '../../services/character.service';
 
 import { Character } from '../../models/character.model';
+import { Prompt } from '../../actions/prompt.model';
+import { Option } from '../../actions/option.model';
 
 import * as _ from 'lodash';
 
@@ -13,6 +16,8 @@ import * as _ from 'lodash';
 })
 export class PlantsComponent implements OnInit, OnChanges {
     @Input() public character: Character;
+    @Input() public promptStream;
+    @Input() public optionsStream;
 
     public plantGroups;
     public groupedPlants;
@@ -21,6 +26,7 @@ export class PlantsComponent implements OnInit, OnChanges {
 
     constructor(
         private zoneService: ZoneService,
+        private plantService: PlantService,
         private characterService: CharacterService
     ) {
     }
@@ -44,5 +50,28 @@ export class PlantsComponent implements OnInit, OnChanges {
 
     public isShowing(plant) {
         return plant === this.showingPlant;
+    }
+
+    public name(plant) {
+        // do a prompt!
+        this.sendPrompt('Enter plant name', plant);
+    }
+
+    private sendPrompt(promptText: string, plant) {
+        const plantPrompt = new Prompt(promptText);
+
+        plantPrompt
+            .answerStream
+            .subscribe((name: string) => {
+                this.plantService
+                    .name(plant, name)
+                    .subscribe();
+            });
+
+        this.promptStream.next(plantPrompt);
+    }
+
+    public share() {
+        // have to choose user/s somehow
     }
 }
