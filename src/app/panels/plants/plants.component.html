@@ -12,6 +12,20 @@
 					  [ngClass]="{'has-plant-showing': !!plant.isShowing}">
 					{{plant.customName || 'unknown ' + plantGroup}}
 				</span>
+				<span class="plant-tags">
+					<span class="plant-tag__flowering"
+						  *ngIf="plant.flowerAppearance">
+						Flowering
+					</span>
+					<span class="plant-tag__fruiting"
+						  *ngIf="plant.fruitAppearance">
+						Fruiting
+					</span>
+					<span class="plant-tag__seeding"
+						  *ngIf="plant.seedAppearance">
+						Seeding
+					</span>
+				</span>
 				<span class="link"
 					  *ngIf="plant.isShowing"
 					  (click)="name(plant)">[name]</span>
@@ -36,6 +50,10 @@
 					<li class="plant-detail"
 						*ngIf="plant.seedAppearance">
 						{{plant.seedAppearance}}
+					</li>
+					<li class="plant-detail"
+						*ngIf="plant.fruitAppearance">
+						{{plant.fruitAppearance}}
 					</li>
 				</ul>
 			</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { ZoneService } from '../../services/zone.service';
 import { PlantService } from '../../services/plant.service';
 import { CharacterService } from '../../services/character.service';
@@ -14,7 +14,7 @@ import * as _ from 'lodash';
     templateUrl: './plants.component.html',
     styleUrls: ['./plants.component.scss']
 })
-export class PlantsComponent implements OnInit, OnChanges {
+export class PlantsComponent implements OnChanges {
     @Input() public character: Character;
     @Input() public promptStream;
     @Input() public optionsStream;
@@ -46,10 +46,6 @@ export class PlantsComponent implements OnInit, OnChanges {
                     this.groupedPlants = groupedPlants;
                 });
         }
-    }
-
-    public isShowing(plant) {
-        return plant === this.showingPlant;
     }
 
     public name(plant) {
