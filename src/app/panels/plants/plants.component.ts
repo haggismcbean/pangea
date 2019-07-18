@@ -23,6 +23,7 @@ export class PlantsComponent implements OnChanges {
     public groupedPlants;
 
     private zoneId;
+    private plants;
 
     constructor(
         private zoneService: ZoneService,
@@ -33,19 +34,50 @@ export class PlantsComponent implements OnChanges {
 
     ngOnChanges(changes) {
         if (changes.character && this.character) {
-            this.zoneService
-                .getZonePlants(this.character.zoneId)
-                .subscribe((plants: any[]) => {
-                    console.log(plants);
-
-                    // okay so first we split them into different types
-                    const groupedPlants = _.groupBy(plants, plant => plant.typeName);
-
-                    console.log(groupedPlants);
-                    this.plantGroups = Object.keys(groupedPlants);
-                    this.groupedPlants = groupedPlants;
-                });
+            this.getPlants();
         }
+    }
+
+    private getPlants() {
+        this.zoneService
+            .getZonePlants(this.character.zoneId)
+            .subscribe((plants: any[]) => {
+                this.plants = plants;
+
+                // okay so first we split them into different types
+                const groupedPlants = _.groupBy(plants, plant => plant.typeName);
+
+                console.log(groupedPlants);
+                this.plantGroups = Object.keys(groupedPlants);
+                this.groupedPlants = groupedPlants;
+
+                this.getGatheredPlants();
+            });
+    }
+
+    private getGatheredPlants() {
+        this.characterService
+            .getInventory()
+            .subscribe((items: any[]) => {
+                this.assignInventoryPlantsToPlant(items);
+
+            });
+    }
+
+    private assignInventoryPlantsToPlant(inventoryItems) {
+        _.forEach(this.plants, (plant) => {
+            if (!plant.inventory) {
+                plant.inventory = {};
+            }
+
+            const inventoryPlant = _.find(inventoryItems, (item) => {
+                return item.item_type === 'plant' && item.type_id === plant.id;
+            });
+
+            if (inventoryPlant) {
+                plant.inventory[inventoryPlant.name] = inventoryPlant;
+            }
+        });
     }
 
     public name(plant) {
@@ -68,6 +100,34 @@ export class PlantsComponent implements OnChanges {
     }
 
     public share() {
+        // TODO
         // have to choose user/s somehow
+    }
+
+    public gather(plant, plantPiece) {
+        // TODO - gather more than one at a time!
+
+        this.plantService
+            .gather({
+                plantId: plant.id,
+                plantPiece: plantPiece
+            })
+            .subscribe((response) => {
+                console.log('response: ', response);
+                // TODO - increment inventory count!
+            });
+    }
+
+    public eat(plant, plantPiece) {
+        // TODO - we can only eat plants that we have in our inventory!
+
+        this.plantService
+            .eat({
+                plantId: plant.id,
+                plantPiece: plantPiece
+            })
+            .subscribe((response) => {
+                console.log('response', response);
+            });
     }
 }

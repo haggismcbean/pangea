@@ -28,7 +28,10 @@
 				</span>
 				<span class="link"
 					  *ngIf="plant.isShowing"
-					  (click)="name(plant)">[name]</span>
+					  (click)="name(plant)">
+					<span *ngIf="!plant.customName">[name]</span>
+					<span *ngIf="plant.customName">[rename]</span>
+				</span>
 				<span class="link"
 					  *ngIf="plant.customName"
 					  (click)="share(plant)">[share]</span>
@@ -38,22 +41,62 @@
 					<li class="plant-detail"
 						*ngIf="plant.woodAppearance">
 						{{plant.woodAppearance}}
+						<span class="link"
+							  (click)="gather(plant, 'wood')">
+							[gather]
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.leafAppearance">
 						{{plant.leafAppearance}}
+						<span class="link"
+							  (click)="gather(plant, 'leaf')">
+							[gather]
+						</span>
+						<span class="link"
+							  (click)="eat(plant, 'leaf')"
+							  *ngIf="plant.inventory.leaf">
+							[eat]
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.flowerAppearance">
 						{{plant.flowerAppearance}}
+						<span class="link"
+							  (click)="gather(plant, 'flower')">
+							[gather]
+						</span>
+						<span class="link"
+							  (click)="eat(plant, 'flower')"
+							  *ngIf="plant.inventory.flower">
+							[eat]
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.seedAppearance">
 						{{plant.seedAppearance}}
+						<span class="link"
+							  (click)="gather(plant, 'seed')">
+							[gather]
+						</span>
+						<span class="link"
+							  (click)="eat(plant, 'seed')"
+							  *ngIf="plant.inventory.seed">
+							[eat]
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.fruitAppearance">
 						{{plant.fruitAppearance}}
+						<span class="link"
+							  (click)="gather(plant, 'fruit')">
+							[gather]
+						</span>
+						<span class="link"
+							  (click)="eat(plant, 'fruit')"
+							  *ngIf="plant.inventory.fruit">
+							[eat]
+						</span>
 					</li>
 				</ul>
 			</div>
