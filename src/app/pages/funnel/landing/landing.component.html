@@ -1,25 +1,26 @@
 <div class="landing-page">
 	<div class="panels">
-		<!-- Main Text Feed -->
-	    <pan-feed class="feed"
-	              [feed]="feed"
-	               *ngIf="false"
-	    ></pan-feed>
-
 	    <!-- Location -->
 	    <pan-location *ngIf="false">
 	    </pan-location>
 
 	    <!-- Plants -->
-	    <pan-plants [character]="character"
+	    <pan-plants *ngIf="panel === 'plants'"
+	    		    [character]="character"
 	    			[promptStream]="promptStream"
 	    			[optionsStream]="optionsStream">
 	    </pan-plants>
+
+		<!-- Main Text Feed -->
+	    <pan-feed class="feed"
+	              [feed]="feed"
+	    ></pan-feed>
 	</div>
     <pan-input class="input"
                [options]="options"
                [originalOptions]="originalOptions"
                [prompt]="prompt"
+               [panelStream]="panelStream"
     ></pan-input>
 
 </div>

@@ -17,6 +17,7 @@ export class InputComponent implements OnInit, OnChanges {
     @Input() public options: Option[] = [];
     @Input() public prompt: Prompt;
     @Input() public originalOptions: Option[] = [];
+    @Input() public panelStream;
 
     public currentOptions: Option[];
     public input = '';
@@ -240,6 +241,8 @@ export class InputComponent implements OnInit, OnChanges {
 
         this.mode = this.optionsMode;
         this.currentOptions = this.originalOptions;
+
+        this.panelStream.next('');
     }
 
     /////////////

@@ -10,7 +10,6 @@ import { PlantService } from '../../services/plant.service';
 import { CharacterService } from '../../services/character.service';
 import { ZoneService } from '../../services/zone.service';
 
-import { ForagingManager } from './foraging/foraging.manager';
 import { HuntingManager } from './hunting/hunting.manager';
 import { FarmingManager } from './farming/farming.manager';
 import { MiningManager } from './mining/mining.manager';
@@ -36,7 +35,6 @@ export class LabourManager {
         private characterService: CharacterService,
         private zoneService: ZoneService,
 
-        private foragingManager: ForagingManager,
         private huntingManager: HuntingManager,
         private farmingManager: FarmingManager,
         private miningManager: MiningManager,
@@ -46,10 +44,11 @@ export class LabourManager {
         private exploringManager: ExploringManager
     ) {}
 
-    public init(mainFeedStream, optionsStream, promptStream): void {
+    public init(mainFeedStream, optionsStream, promptStream, panelStream): void {
         this.mainFeedStream = mainFeedStream;
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
+        this.panelStream = panelStream;
 
         this.zoneId = this.characterService
             .getCurrent()
@@ -57,7 +56,6 @@ export class LabourManager {
 
         const labourOption = new Option('do');
 
-        this.foragingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.huntingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.farmingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.miningManager.init(mainFeedStream, optionsStream, promptStream, labourOption);

@@ -36,10 +36,12 @@ export class LandingComponent implements OnInit {
     public prompt: Prompt;
     public character: Character;
 
-
     public mainFeedStream;
     public optionsStream;
     public promptStream;
+    public panelStream;
+
+    public panel: string;
 
     constructor(
         private router: Router,
@@ -62,6 +64,7 @@ export class LandingComponent implements OnInit {
         this.mainFeedStream = new Subject();
         this.optionsStream = new Subject();
         this.promptStream = new Subject();
+        this.panelStream = new Subject();
 
         this.mainFeedStream
             .subscribe((message: Message) => {
@@ -89,6 +92,12 @@ export class LandingComponent implements OnInit {
             .subscribe((prompt: Prompt) => {
                 this.prompt = prompt;
                 this.options = [];
+            });
+
+        this.panelStream
+            .subscribe((panel: string) => {
+                console.log('panel: ', panel);
+                this.panel = panel;
             });
     }
 
@@ -189,10 +198,10 @@ export class LandingComponent implements OnInit {
         this.options = [];
 
         // look at
-        this.locationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        this.locationManager.init(this.mainFeedStream, this.optionsStream, this.promptStream, this.panelStream);
 
         // do
-        this.labourManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);
+        this.labourManager.init(this.mainFeedStream, this.optionsStream, this.promptStream, this.panelStream);
 
         // move to
         this.movementManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);

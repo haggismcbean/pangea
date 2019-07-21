@@ -25,10 +25,11 @@ export class LocationManager {
         private zoneService: ZoneService
     ) {}
 
-    public init(mainFeedStream, optionsStream, promptStream): void {
+    public init(mainFeedStream, optionsStream, promptStream, panelStream): void {
         this.mainFeedStream = mainFeedStream;
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
+        this.panelStream = panelStream;
 
         this.zoneId = this.characterService
             .getCurrent()
@@ -97,47 +98,7 @@ export class LocationManager {
     }
 
     private handlePlantsOptionSelected() {
-        this.zoneService
-            .getZonePlants(this.zoneId)
-            .subscribe((plants: any[]) => {
-                _.forEach(plants, (plant) => {
-                    const plantOption = new Option(`${plant.typeName} ${plant.id}`);
-
-                    plantOption
-                        .selectedStream
-                        .subscribe(() => this.handlePlantOptionSelected(plant));
-
-                    this.optionsStream.next(plantOption);
-                });
-            });
-    }
-
-    private handlePlantOptionSelected(plant) {
-        const leafDescription = new Message(0);
-        leafDescription.setText(plant.leafAppearance);
-
-        const flowerDescription = new Message(0);
-        flowerDescription.setText(plant.flowerAppearance);
-
-        const seedDescription = new Message(0);
-        seedDescription.setText(plant.seedAppearance);
-
-        const woodDescription = new Message(0);
-        woodDescription.setText(plant.woodAppearance);
-
-        this.mainFeedStream
-            .next(leafDescription);
-
-        this.mainFeedStream
-            .next(flowerDescription);
-
-        this.mainFeedStream
-            .next(seedDescription);
-
-        this.mainFeedStream
-            .next(woodDescription);
-
-        this.resetOptions();
+        this.panelStream.next('plants');
     }
 
     private handleLocationOptionSelected() {
