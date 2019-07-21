@@ -47,7 +47,6 @@ export class PlantsComponent implements OnChanges {
                 // okay so first we split them into different types
                 const groupedPlants = _.groupBy(plants, plant => plant.typeName);
 
-                console.log(groupedPlants);
                 this.plantGroups = Object.keys(groupedPlants);
                 this.groupedPlants = groupedPlants;
 
@@ -118,14 +117,10 @@ export class PlantsComponent implements OnChanges {
             });
     }
 
-    public eat(plant, plantPiece) {
+    public eat(inventoryItem) {
         // TODO - we can only eat plants that we have in our inventory!
-
-        this.plantService
-            .eat({
-                plantId: plant.id,
-                plantPiece: plantPiece
-            })
+        this.characterService
+            .eat(inventoryItem.id)
             .subscribe((response) => {
                 console.log('response', response);
             });

@@ -54,7 +54,7 @@
 							[gather]
 						</span>
 						<span class="link"
-							  (click)="eat(plant, 'leaf')"
+							  (click)="eat(plant.inventory.leaf)"
 							  *ngIf="plant.inventory.leaf">
 							[eat]
 						</span>
@@ -67,7 +67,7 @@
 							[gather]
 						</span>
 						<span class="link"
-							  (click)="eat(plant, 'flower')"
+							  (click)="eat(plant.inventory.flower)"
 							  *ngIf="plant.inventory.flower">
 							[eat]
 						</span>
@@ -80,7 +80,7 @@
 							[gather]
 						</span>
 						<span class="link"
-							  (click)="eat(plant, 'seed')"
+							  (click)="eat(plant.inventory.seed)"
 							  *ngIf="plant.inventory.seed">
 							[eat]
 						</span>
@@ -93,7 +93,7 @@
 							[gather]
 						</span>
 						<span class="link"
-							  (click)="eat(plant, 'fruit')"
+							  (click)="eat(plant.inventory.fruit)"
 							  *ngIf="plant.inventory.fruit">
 							[eat]
 						</span>

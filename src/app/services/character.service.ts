@@ -112,6 +112,11 @@ export class CharacterService {
             .getDeathMessage(characterId);
     }
 
+    public eat(itemId: number) {
+        return this.characterWebService
+            .eat(itemId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()

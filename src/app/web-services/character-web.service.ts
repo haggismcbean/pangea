@@ -130,4 +130,13 @@ export class CharacterWebService {
                 characterId: characterId
             });
     }
+
+    public eat(itemId) {
+        const url = `character/eat`;
+
+        return this.api
+            .post(url, {
+                itemId: itemId
+            });
+    }
 }

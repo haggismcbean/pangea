@@ -22,7 +22,6 @@ export class PlantWebService {
     }
 
     public name(plant: any, newName: string) {
-        console.log('makin request', plant, newName);
         const url = `plant/name`;
 
         return this.api
