@@ -45,6 +45,9 @@
 							  (click)="gather(plant, 'wood')">
 							[gather]
 						</span>
+						<span *ngIf="plant.inventory.wood">
+							({{plant.inventory.wood.count}} in inventory)
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.leafAppearance">
@@ -57,6 +60,9 @@
 							  (click)="eat(plant.inventory.leaf)"
 							  *ngIf="plant.inventory.leaf">
 							[eat]
+						</span>
+						<span *ngIf="plant.inventory.leaf">
+							({{plant.inventory.leaf.count}} in inventory)
 						</span>
 					</li>
 					<li class="plant-detail"
@@ -71,6 +77,9 @@
 							  *ngIf="plant.inventory.flower">
 							[eat]
 						</span>
+						<span *ngIf="plant.inventory.flower">
+							({{plant.inventory.flower.count}} in inventory)
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.seedAppearance">
@@ -84,6 +93,9 @@
 							  *ngIf="plant.inventory.seed">
 							[eat]
 						</span>
+						<span *ngIf="plant.inventory.flower">
+							({{plant.inventory.flower.count}} in inventory)
+						</span>
 					</li>
 					<li class="plant-detail"
 						*ngIf="plant.fruitAppearance">
@@ -96,6 +108,9 @@
 							  (click)="eat(plant.inventory.fruit)"
 							  *ngIf="plant.inventory.fruit">
 							[eat]
+						</span>
+						<span *ngIf="plant.inventory.fruit">
+							({{plant.inventory.fruit.count}} in inventory)
 						</span>
 					</li>
 				</ul>

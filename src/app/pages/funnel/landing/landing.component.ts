@@ -96,7 +96,6 @@ export class LandingComponent implements OnInit {
 
         this.panelStream
             .subscribe((panel: string) => {
-                console.log('panel: ', panel);
                 this.panel = panel;
             });
     }

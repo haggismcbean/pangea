@@ -26,14 +26,11 @@ export class ApiService {
     }
 
     public post(url, data?) {
-        console.log('doing it!');
         url = `${this.baseUrl}/${url}` + this.getApiToken(url);
 
         if (!data) {
             data = {};
         }
-
-        console.log('seriously!', data);
 
         return this.http
             .post<any>(url, data);

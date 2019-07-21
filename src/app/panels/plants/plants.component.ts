@@ -92,7 +92,9 @@ export class PlantsComponent implements OnChanges {
             .subscribe((name: string) => {
                 this.plantService
                     .name(plant, name)
-                    .subscribe();
+                    .subscribe(() => {
+                        plant.customName = name;
+                    });
             });
 
         this.promptStream.next(plantPrompt);
@@ -113,7 +115,14 @@ export class PlantsComponent implements OnChanges {
             })
             .subscribe((response) => {
                 console.log('response: ', response);
-                // TODO - increment inventory count!
+
+                if (plant.inventory[plantPiece]) {
+                    plant.inventory[plantPiece].count++;
+                } else {
+                    plant.inventory[plantPiece] = {
+                        count: 1
+                    };
+                }
             });
     }
 
