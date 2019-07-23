@@ -114,8 +114,6 @@ export class PlantsComponent implements OnChanges {
                 plantPiece: plantPiece
             })
             .subscribe((response) => {
-                console.log('response: ', response);
-
                 if (plant.inventory[plantPiece]) {
                     plant.inventory[plantPiece].count++;
                 } else {
@@ -127,11 +125,10 @@ export class PlantsComponent implements OnChanges {
     }
 
     public eat(inventoryItem) {
-        // TODO - we can only eat plants that we have in our inventory!
         this.characterService
             .eat(inventoryItem.id)
             .subscribe((response) => {
-                console.log('response', response);
+                inventoryItem.count--;
             });
     }
 }
