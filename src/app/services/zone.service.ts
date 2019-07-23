@@ -58,4 +58,9 @@ export class ZoneService {
         return this.zoneWebService
             .explore(zoneId);
     }
+
+    public getDescription(zoneId: number): Observable<any> {
+        return this.zoneWebService
+            .getDescription(zoneId);
+    }
 }

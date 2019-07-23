@@ -27,6 +27,7 @@ export class LabourManager {
     private mainFeedStream;
     private optionsStream;
     private promptStream;
+    private panelStream;
 
     private zoneId: number;
 

@@ -8,7 +8,6 @@ import { LocationManager } from './location/location.manager';
 import { MovementManager } from './movement/movement.manager';
 import { LabourManager } from './labour/labour.manager';
 
-import { ForagingManager } from './labour/foraging/foraging.manager';
 import { HuntingManager } from './labour/hunting/hunting.manager';
 import { FarmingManager } from './labour/farming/farming.manager';
 import { MiningManager } from './labour/mining/mining.manager';
@@ -28,7 +27,6 @@ import { ExploringManager } from './labour/exploring/exploring.manager';
         LocationManager,
         MovementManager,
         LabourManager,
-        ForagingManager,
         HuntingManager,
         FarmingManager,
         MiningManager,

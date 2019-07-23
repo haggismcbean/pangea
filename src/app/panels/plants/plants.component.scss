@@ -1,26 +1,6 @@
 @import '../../styles/globals.scss';
 @import '../../styles/colours.scss';
-
-.table {
-	box-sizing: border-box;
-	text-rendering: geometricPrecision;
-}
-
-.fieldset {
-	border: 1px solid $text-normal-color;
-	padding: 1em;
-	position: relative;
-}
-
-.header {
-	border: 1px solid $text-normal-color;
-	padding: 0.3em 1ch;
-	box-sizing: border-box;
-	color: inherit;
-	display: table;
-	max-width: 100%;
-	white-space: normal;
-}
+@import '../../styles/table.scss';
 
 .plant-type {
 	font-weight: bold;

@@ -19,6 +19,7 @@ export class LocationManager {
     private mainFeedStream;
     private optionsStream;
     private promptStream;
+    private panelStream;
 
     constructor(
         private characterService: CharacterService,
@@ -39,7 +40,7 @@ export class LocationManager {
 
         const peopleOption = new Option('people');
         const plantsOption = new Option('plants');
-        const locationOption = new Option('loose items');
+        const locationOption = new Option('location');
         const inventoryOption = new Option('inventory');
         const activitiesOption = new Option('activities');
 
@@ -102,70 +103,7 @@ export class LocationManager {
     }
 
     private handleLocationOptionSelected() {
-        this.zoneService
-            .getZoneInventory(this.zoneId)
-            .subscribe((items: any[]) => {
-                this.showItemsAsMessages(items, 'the location');
-
-                _.forEach(items, (item) => {
-                    const itemOption = new Option(`${item.name} ${item.id}`);
-
-                    const descriptionOption = new Option('description');
-                    const pickUpOption = new Option('pick up');
-
-                    itemOption.setOptions([descriptionOption, pickUpOption]);
-
-                    descriptionOption
-                        .selectedStream
-                        .subscribe(() => this.handleItemDescriptionOptionSelected(item));
-
-                    pickUpOption
-                        .selectedStream
-                        .subscribe(() => this.handleItemPickUpOptionSelected(item));
-
-                    this.optionsStream.next(itemOption);
-                });
-
-                this.resetOptions();
-            });
-    }
-
-    private handleItemDescriptionOptionSelected(item) {
-        const itemDescription = new Message(0);
-        itemDescription.setText(
-            `You look at a ${item.name}. ${item.description}There is a total of ${item.count}`
-        );
-
-        this.mainFeedStream
-            .next(itemDescription);
-
-        this.resetOptions();
-    }
-
-    private handleItemPickUpOptionSelected(item) {
-        const amountPrompt = new Prompt(`how much would you like to pick up? (max ${item.count})`);
-
-        amountPrompt
-            .answerStream
-            .subscribe((amount: string) => {
-                const itemQuantity = Number(amount);
-
-                if (itemQuantity < 0 || itemQuantity > item.count) {
-                    this.resetOptions();
-                    return;
-                }
-
-                item.count -= itemQuantity;
-
-                this.zoneService
-                    .pickUp(item.id, itemQuantity)
-                    .subscribe(
-                        (response) => this.handleItemMoveSuccess('put down', item, response),
-                        (error) => this.resetOptions()
-                    );
-            });
-
-        this.promptStream.next(amountPrompt);
+        this.panelStream.next('location');
     }
 
     private handleInventoryOptionSelected() {
@@ -195,6 +133,18 @@ export class LocationManager {
 
                 this.resetOptions();
             });
+    }
+
+    private handleItemDescriptionOptionSelected(item) {
+        const itemDescription = new Message(0);
+        itemDescription.setText(
+            `You look at a ${item.name}. ${item.description}There is a total of ${item.count}`
+        );
+
+        this.mainFeedStream
+            .next(itemDescription);
+
+        this.resetOptions();
     }
 
     private handleItemPutDownOptionSelected(item) {

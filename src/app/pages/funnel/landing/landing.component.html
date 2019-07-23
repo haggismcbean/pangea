@@ -1,7 +1,8 @@
 <div class="landing-page">
 	<div class="panels">
 	    <!-- Location -->
-	    <pan-location *ngIf="false">
+	    <pan-location *ngIf="panel === 'location'"
+	    			  [character]="character">
 	    </pan-location>
 
 	    <!-- Plants -->

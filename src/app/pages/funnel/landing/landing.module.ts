@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ComponentsModule } from '../../../components/components.module';
 import { ActionsModule } from '../../../actions/actions.module';
+import { LocationModule } from '../../../panels/location/location.module';
 import { PlantsModule } from '../../../panels/plants/plants.module';
 
 import { landingRouting } from './landing.routing';
@@ -12,8 +13,10 @@ import { LandingComponent } from './landing.component';
     imports: [
         CommonModule,
         ComponentsModule,
-        ActionsModule,
         landingRouting,
+        // Child modules
+        ActionsModule,
+        LocationModule,
         PlantsModule
     ],
     providers: [
