@@ -4,7 +4,7 @@ import { ZoneService } from '../../services/zone.service';
 
 import { Character } from '../../models/character.model';
 
-import { weather } from './constants/weather';
+import { getWeatherGlyph } from './constants/weather';
 
 @Component({
     selector: 'pan-location',
@@ -14,18 +14,14 @@ import { weather } from './constants/weather';
 export class LocationComponent implements OnInit {
     @Input() public character: Character;
 
-    public description;
+    public location = {};
     public weatherGlyph;
 
     constructor(
         private zoneService: ZoneService
-    ) {
-        console.log('uh oh');
-    }
+    ) {}
 
     ngOnInit() {
-        console.log('hi');
-
         this.zoneService
             .getZoneInventory(this.character.zoneId)
             .subscribe((items: any[]) => {
@@ -35,9 +31,13 @@ export class LocationComponent implements OnInit {
         this.zoneService
             .getDescription(this.character.zoneId)
             .subscribe((location) => {
-                this.description = location.description;
+                console.log('location: ', location);
+                this.location = location;
 
-                this.weatherGlyph = weather.THUNDER_STORMS;
+                this.weatherGlyph = getWeatherGlyph({
+                    temperature: location.current_temperature,
+                    rainfall: location.current_rainfall,
+                });
             });
     }
 }

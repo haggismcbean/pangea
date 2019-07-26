@@ -3,7 +3,6 @@ import hljs from 'highlight.js/lib/highlight';
 import * as _ from 'lodash';
 
 const CLOUDY = `
-               
       .--.     
    .-(    ).   
   (___.__)__)  
@@ -11,7 +10,6 @@ const CLOUDY = `
 `;
 
 const FOGGY = `
-               
   _ - _ - _ -  
    _ - _ - _   
   _ - _ - _ -  
@@ -66,7 +64,15 @@ const THUNDER_STORMS = `
      ‘‘‘‘‘‘‘   
 `;
 
-const SNOW = `
+const LIGHT_SNOW = `
+      .-.      
+     (   ).    
+    (___(__)   
+     *  *  *   
+    *  *   *   
+`;
+
+const HEAVY_SNOW = `
       .-.      
      (   ).    
     (___(__)   
@@ -83,7 +89,59 @@ export const weather = {
     LIGHT_DRIZZLE: getStyledGlyph(LIGHT_DRIZZLE),
     LIGHT_RAIN_SHOWER: getStyledGlyph(LIGHT_RAIN_SHOWER),
     THUNDER_STORMS: getStyledGlyph(THUNDER_STORMS),
-    SNOW: getStyledGlyph(SNOW)
+    LIGHT_SNOW: getStyledGlyph(LIGHT_SNOW),
+    HEAVY_SNOW: getStyledGlyph(HEAVY_SNOW),
+};
+
+export const getWeatherGlyph = ({ temperature, rainfall }) => {
+    switch (temperature) {
+        case 0:
+        case 1:
+        case 2:
+            switch (rainfall) {
+                case 0:
+                case 1:
+                case 2:
+                    return CLOUDY;
+                case 3:
+                case 4:
+                    return LIGHT_SNOW;
+                case 5:
+                case 6:
+                    return HEAVY_SNOW;
+            }
+            break;
+        case 3:
+        case 4:
+            switch (rainfall) {
+                case 0:
+                case 1:
+                    return PARTLY_CLOUDY;
+                case 2:
+                    return FOGGY;
+                case 3:
+                case 4:
+                    return LIGHT_DRIZZLE;
+                case 5:
+                case 6:
+                    return HEAVY_RAIN;
+            }
+            break;
+        case 5:
+        case 6:
+            switch (rainfall) {
+                case 0:
+                case 1:
+                case 2:
+                    return SUNNY;
+                case 3:
+                case 4:
+                    return LIGHT_RAIN_SHOWER;
+                case 5:
+                case 6:
+                    return THUNDER_STORMS;
+            }
+    }
 };
 
 function getStyledGlyph(glyph) {

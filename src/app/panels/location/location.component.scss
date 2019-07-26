@@ -3,5 +3,20 @@
 @import '../../styles/table.scss';
 
 .weather-glyph {
-	width: 15ch;
+    width: 15ch;
+}
+
+.location__title {
+    display: flex;
+}
+
+.location__weather {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.location__description {
+    margin-top: 1em;
+    margin-left: 2ch;
 }

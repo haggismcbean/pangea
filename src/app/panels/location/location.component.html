@@ -1,16 +1,26 @@
-
 <form class="table">
 	<fieldset class="fieldset">
 		<legend class="header">
 			Location
 		</legend>
-		<div>
-			<div>
-				<pre class="weather-glyph"
+		<div class="location__title">
+			<div class="location__weather">
+				<pre class="location__weather-glyph"
 					 [innerHtml]="weatherGlyph">
 				</pre>
+				<span>{{location.weather}}</span>
+			</div>
+			<div class="location__description">
+				<span>{{location.description}}</span>
 			</div>
 		</div>
-		<span>{{description}}</span>
+
+		<div class="location__people"
+			 *ngIf="location.people && location.people.length > 0">
+			<span>People</span>
+			<div *ngFor="let person of location.people">
+				{{person.name}}
+			</div>
+		</div>
 	</fieldset>
 </form>
