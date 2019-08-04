@@ -34,6 +34,7 @@ export class LocationComponent implements OnInit {
             .getDescription(this.character.zoneId)
             .subscribe((location) => {
                 console.log('location: ', location);
+                // QUESTION - am I creating a new character each time i log in?
                 this.location = location;
 
                 this.weatherGlyph = getWeatherGlyph({
@@ -46,6 +47,10 @@ export class LocationComponent implements OnInit {
             .zoneUsersStream
             .subscribe((people) => {
                 console.log('zone people: ', people);
+                // this is just the awake ones
+                this.location.people = people;
+
+                // need the sleeping ones too!
             });
     }
 }
