@@ -132,7 +132,7 @@ export class LoginManager {
         this.webSocketService.addFeedStream(this.mainFeedStream);
         this.webSocketService.connect(this.userService.getUser().token, `chat.${character.id}`);
 
-        this.webSocketService.connectPresence(this.userService.getUser().token, `zone.${character.zone_id}`);
+        this.webSocketService.connectPresence(this.userService.getUser().token, `zone.${character.zoneId}`);
 
         return this.userLoggedInStream.next(character);
     }

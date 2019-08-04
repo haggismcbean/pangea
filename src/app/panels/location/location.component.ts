@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { ZoneService } from '../../services/zone.service';
+import { WebSocketService } from '../../services/web-socket.service';
 
 import { Character } from '../../models/character.model';
 
@@ -18,7 +19,8 @@ export class LocationComponent implements OnInit {
     public weatherGlyph;
 
     constructor(
-        private zoneService: ZoneService
+        private zoneService: ZoneService,
+        private webSocketService: WebSocketService
     ) {}
 
     ngOnInit() {
@@ -38,6 +40,12 @@ export class LocationComponent implements OnInit {
                     temperature: location.current_temperature,
                     rainfall: location.current_rainfall,
                 });
+            });
+
+        this.webSocketService
+            .zoneUsersStream
+            .subscribe((people) => {
+                console.log('zone people: ', people);
             });
     }
 }
