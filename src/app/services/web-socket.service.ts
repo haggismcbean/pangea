@@ -5,11 +5,15 @@ import { BehaviorSubject } from 'rxjs';
 import * as Echo from 'laravel-echo';
 import * as io from 'socket.io-client';
 
+import * as _ from 'lodash';
+
 import { Message } from '../models/message.model';
 
 @Injectable()
 export class WebSocketService {
-    public zoneUsersStream = new BehaviorSubject();
+    private zoneUsers = [];
+    public zoneUsersStream = new BehaviorSubject(this.zoneUsers);
+
     private mainFeedStream;
 
     public addFeedStream(feedStream): void {
@@ -77,12 +81,12 @@ export class WebSocketService {
             })
             .joining((user) => {
                 console.log('joining: ', user);
-                _.remove(zoneUsers, user.id);
+                _.remove(this.zoneUsers, user.id);
                 this.zoneUsersStream.next(this.zoneUsers);
             })
             .leaving((user) => {
                 console.log('leaving: ', user);
-                zoneUsers.push(user);
+                this.zoneUsers.push(user);
                 this.zoneUsersStream.next(this.zoneUsers);
             });
     }

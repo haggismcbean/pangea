@@ -15,7 +15,9 @@ import { getWeatherGlyph } from './constants/weather';
 export class LocationComponent implements OnInit {
     @Input() public character: Character;
 
-    public location = {};
+    public location = {
+        people: undefined
+    };
     public weatherGlyph;
 
     constructor(
