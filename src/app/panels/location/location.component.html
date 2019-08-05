@@ -16,9 +16,10 @@
 		</div>
 
 		<div class="location__people"
-			 *ngIf="location.people && location.people.length > 0">
+			 *ngIf="location.characters && location.characters.length > 0">
 			<span>People</span>
-			<div *ngFor="let person of location.people">
+			<div *ngFor="let person of location.characters">
+				<span *ngIf="person.isAwake">AWAKE</span>
 				{{person.name}}
 			</div>
 		</div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import * as _ from 'lodash';
+
 import { ZoneService } from '../../services/zone.service';
 import { WebSocketService } from '../../services/web-socket.service';
 
@@ -16,7 +18,8 @@ export class LocationComponent implements OnInit {
     @Input() public character: Character;
 
     public location = {
-        people: undefined
+        characters: [],
+        awakePeople: []
     };
     public weatherGlyph;
 
@@ -35,24 +38,38 @@ export class LocationComponent implements OnInit {
         this.zoneService
             .getDescription(this.character.zoneId)
             .subscribe((location) => {
-                console.log('location: ', location);
+                console.log(location);
                 // QUESTION - am I creating a new character each time i log in?
-                this.location = location;
+                this.location = _.assign(this.location, location);
 
                 this.weatherGlyph = getWeatherGlyph({
                     temperature: location.current_temperature,
                     rainfall: location.current_rainfall,
                 });
+
+                this.assignWakers();
             });
 
         this.webSocketService
             .zoneUsersStream
             .subscribe((people) => {
-                console.log('zone people: ', people);
                 // this is just the awake ones
-                this.location.people = people;
+                this.location.awakePeople = people;
+                this.assignWakers();
+                console.log('awake people: ', this.location.awakePeople);
 
                 // need the sleeping ones too!
             });
+    }
+
+    private assignWakers() {
+        if (this.location.characters.length === 0 || this.location.awakePeople.length === 0) {
+            return;
+        }
+
+        _.forEach(this.location.awakePeople, (awakePerson) => {
+            const locationPerson = _.find(this.location.characters, (person) => (person.id === awakePerson.id));
+            locationPerson.isAwake = true;
+        });
     }
 }
