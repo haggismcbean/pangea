@@ -21,11 +21,15 @@ export class LocationComponent implements OnInit {
 
     public location = {
         characters: [],
-        awakePeople: []
+        awakePeople: [],
+        items: [],
+        display: {
+            isShowingSleepers: false,
+            isShowingItems: false
+        }
     };
-    public weatherGlyph;
 
-    public isShowingSleepers = false;
+    public weatherGlyph;
 
     constructor(
         private zoneService: ZoneService,
@@ -37,6 +41,7 @@ export class LocationComponent implements OnInit {
             .getZoneInventory(this.character.zoneId)
             .subscribe((items: any[]) => {
                 console.log('zone inventory: ', items);
+                this.location.items = items;
             });
 
         const getZoneDescription = this.zoneService
@@ -55,9 +60,6 @@ export class LocationComponent implements OnInit {
 
                 this.location.awakePeople = awakePeople;
                 this.assignWakers();
-
-                console.log(location);
-                console.log(awakePeople);
             });
     }
 
@@ -86,7 +88,10 @@ export class LocationComponent implements OnInit {
     }
 
     public toggleShowSleepers() {
-        console.log('clicked');
-        this.isShowingSleepers = !this.isShowingSleepers;
+        this.location.display.isShowingSleepers = !this.location.display.isShowingSleepers;
+    }
+
+    public toggleShowItems() {
+        this.location.display.isShowingItems = !this.location.display.isShowingItems;
     }
 }

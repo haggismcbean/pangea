@@ -15,11 +15,33 @@
 			</div>
 		</div>
 
+		<div class="location__items">
+			<span class="announcement">Items</span>
+			<div *ngIf="!location.display.isShowingItems">
+				<span>{{location.items.length}} things lying around</span>
+				<span class="link"
+					  (click)="toggleShowItems()">
+					Show
+				</span>
+			</div>
+
+			<div class="location__items-list"
+				 *ngIf="location.display.isShowingItems">
+				<div *ngFor="let item of location.items">
+					{{item.count}} {{item.name}}
+				</div>
+				<span class="link"
+					  (click)="toggleShowItems()">
+					Hide
+				</span>
+			</div>
+		</div>
+
 		<div class="location__people"
 			 *ngIf="location.characters && location.characters.length > 0">
-			<span>People</span>
+			<span class="announcement">People</span>
 			<div *ngFor="let person of location.characters">
-				<div *ngIf="person.isAwake && !isShowingSleepers || isShowingSleepers" >
+				<div *ngIf="person.isAwake && !location.display.isShowingSleepers || location.display.isShowingSleepers" >
 					<div class="location__person-online"
 						 *ngIf="person.isAwake">
 					</div>
@@ -28,7 +50,7 @@
 			</div>
 
 			<div class="location__sleeping-people">
-				<div *ngIf="!isShowingSleepers">
+				<div *ngIf="!location.display.isShowingSleepers">
 					Plus {{asleepPeopleCount}} people sleeping
 
 					<span class="link"
@@ -37,7 +59,7 @@
 					</span>
 				</div>
 
-				<div *ngIf="isShowingSleepers"
+				<div *ngIf="location.display.isShowingSleepers"
 					 class="link"
 					 (click)="toggleShowSleepers()">
 					Hide
