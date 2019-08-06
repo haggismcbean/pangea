@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import * as _ from 'lodash';
 
+import { combineLatest } from 'rxjs';
+
 import { ZoneService } from '../../services/zone.service';
 import { WebSocketService } from '../../services/web-socket.service';
 
@@ -23,6 +25,8 @@ export class LocationComponent implements OnInit {
     };
     public weatherGlyph;
 
+    public isShowingSleepers = false;
+
     constructor(
         private zoneService: ZoneService,
         private webSocketService: WebSocketService
@@ -35,31 +39,37 @@ export class LocationComponent implements OnInit {
                 console.log('zone inventory: ', items);
             });
 
-        this.zoneService
-            .getDescription(this.character.zoneId)
-            .subscribe((location) => {
+        const getZoneDescription = this.zoneService
+            .getDescription(this.character.zoneId);
+
+        const getZoneUsers = this.webSocketService
+            .zoneUsersStream;
+
+        combineLatest(getZoneDescription, getZoneUsers)
+            .subscribe((results) => {
+                const location = results[0];
+                const awakePeople = results[1];
+
+                this.setLocation(location);
+                this.setWeather(location);
+
+                this.location.awakePeople = awakePeople;
+                this.assignWakers();
+
                 console.log(location);
-                // QUESTION - am I creating a new character each time i log in?
-                this.location = _.assign(this.location, location);
-
-                this.weatherGlyph = getWeatherGlyph({
-                    temperature: location.current_temperature,
-                    rainfall: location.current_rainfall,
-                });
-
-                this.assignWakers();
+                console.log(awakePeople);
             });
+    }
 
-        this.webSocketService
-            .zoneUsersStream
-            .subscribe((people) => {
-                // this is just the awake ones
-                this.location.awakePeople = people;
-                this.assignWakers();
-                console.log('awake people: ', this.location.awakePeople);
+    private setLocation(location) {
+        this.location = _.assign(this.location, location);
+    }
 
-                // need the sleeping ones too!
-            });
+    private setWeather(location) {
+        this.weatherGlyph = getWeatherGlyph({
+            temperature: location.current_temperature,
+            rainfall: location.current_rainfall,
+        });
     }
 
     private assignWakers() {
@@ -67,9 +77,16 @@ export class LocationComponent implements OnInit {
             return;
         }
 
+        this.asleepPeopleCount = this.location.characters.length - this.location.awakePeople.length;
+
         _.forEach(this.location.awakePeople, (awakePerson) => {
             const locationPerson = _.find(this.location.characters, (person) => (person.id === awakePerson.id));
             locationPerson.isAwake = true;
         });
+    }
+
+    public toggleShowSleepers() {
+        console.log('clicked');
+        this.isShowingSleepers = !this.isShowingSleepers;
     }
 }

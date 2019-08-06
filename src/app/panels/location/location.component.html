@@ -19,8 +19,29 @@
 			 *ngIf="location.characters && location.characters.length > 0">
 			<span>People</span>
 			<div *ngFor="let person of location.characters">
-				<span *ngIf="person.isAwake">AWAKE</span>
-				{{person.name}}
+				<div *ngIf="person.isAwake && !isShowingSleepers || isShowingSleepers" >
+					<div class="location__person-online"
+						 *ngIf="person.isAwake">
+					</div>
+					{{person.name}}
+				</div>
+			</div>
+
+			<div class="location__sleeping-people">
+				<div *ngIf="!isShowingSleepers">
+					Plus {{asleepPeopleCount}} people sleeping
+
+					<span class="link"
+						  (click)="toggleShowSleepers()">
+						Show
+					</span>
+				</div>
+
+				<div *ngIf="isShowingSleepers"
+					 class="link"
+					 (click)="toggleShowSleepers()">
+					Hide
+				</div>
 			</div>
 		</div>
 	</fieldset>
