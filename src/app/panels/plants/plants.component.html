@@ -7,9 +7,9 @@
 			<span class="plant-type">{{plantGroup}}s</span>
 
 			<div *ngFor="let plant of groupedPlants[plantGroup]">
-				<span class="plant-name"
+				<span class="expandable"
 					  (click)="plant.isShowing = !plant.isShowing"
-					  [ngClass]="{'has-plant-showing': !!plant.isShowing}">
+					  [ngClass]="{'expandable--is-showing': !!plant.isShowing}">
 					{{plant.customName || 'unknown ' + plantGroup}}
 				</span>
 				<span class="plant-tags">
@@ -36,7 +36,7 @@
 					  *ngIf="plant.customName"
 					  (click)="share(plant)">[share]</span>
 
-				<ul class="plant-details"
+				<ul class="expandable__detail"
 					*ngIf="plant.isShowing">
 					<li class="plant-detail"
 						*ngIf="plant.woodAppearance">

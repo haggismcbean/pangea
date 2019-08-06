@@ -7,24 +7,6 @@
 	text-transform: capitalize;
 }
 
-.plant-name {
-	&:before {
-		content: "+";
-	}
-
-	&.has-plant-showing:before {
-		content: "-";
-	}
-}
-
 .plant-details {
 	margin-bottom: 1em;
-}
-
-.plant-detail {
-	&:before {
-		content: "└";
-	}
-
-	padding-left: 2ch;
 }

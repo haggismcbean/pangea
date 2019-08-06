@@ -53,3 +53,21 @@ h4, p, div {
 .background-text {
 	color: $background-highlight;
 }
+
+.expandable {
+	&:before {
+		content: "+";
+	}
+
+	&.expandable--is-showing:before {
+		content: "-";
+	}
+}
+
+.expandable__detail {
+	&:before {
+		content: "└";
+	}
+
+	padding-left: 2ch;
+}

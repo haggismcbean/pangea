@@ -79,6 +79,8 @@ export class LocationComponent implements OnInit {
             return;
         }
 
+        console.log('characters: ', this.location.characters);
+
         this.asleepPeopleCount = this.location.characters.length - this.location.awakePeople.length;
 
         _.forEach(this.location.awakePeople, (awakePerson) => {
