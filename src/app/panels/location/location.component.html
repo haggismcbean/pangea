@@ -12,6 +12,12 @@
 			</div>
 			<div class="location__description">
 				<span>{{location.description}}</span>
+				<div>
+					<span>It has an average amount of plants</span>
+					<span class="link">
+						[See plants]
+					</span>
+				</div>
 			</div>
 		</div>
 
@@ -91,7 +97,7 @@
 
 			<div class="location__sleeping-people">
 				<div *ngIf="!location.display.isShowingSleepers">
-					Plus {{asleepPeopleCount}} people sleeping
+					Plus {{location.asleepPeopleCount}} people sleeping
 
 					<span class="link"
 						  (click)="toggleShowSleepers()">

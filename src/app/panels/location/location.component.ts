@@ -22,6 +22,7 @@ export class LocationComponent implements OnInit {
     public location = {
         characters: [],
         awakePeople: [],
+        asleepPeopleCount: 0,
         items: [],
         display: {
             isShowingSleepers: false,
@@ -81,7 +82,7 @@ export class LocationComponent implements OnInit {
 
         console.log('characters: ', this.location.characters);
 
-        this.asleepPeopleCount = this.location.characters.length - this.location.awakePeople.length;
+        this.location.asleepPeopleCount = this.location.characters.length - this.location.awakePeople.length;
 
         _.forEach(this.location.awakePeople, (awakePerson) => {
             const locationPerson = _.find(this.location.characters, (person) => (person.id === awakePerson.id));
