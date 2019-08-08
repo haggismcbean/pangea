@@ -1,0 +1,18 @@
+<form class="table">
+	<fieldset class="fieldset">
+		<legend class="header">
+			Inventory
+		</legend>
+
+		<span>Status</span>
+		<div>
+			<span>Health</span>
+			<span>Hunger</span>
+		</div>
+
+		<span>Items</span>
+		<div *ngFor="let item of inventory.items">
+			<span class="item-type">{{item}}</span>
+		</div>
+	</fieldset>
+</form>

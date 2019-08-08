@@ -12,6 +12,13 @@
 	    			[optionsStream]="optionsStream">
 	    </pan-plants>
 
+	    <!-- Inventory -->
+	    <pan-inventory *ngIf="panel === 'inventory'"
+	    		       [character]="character"
+	    			   [promptStream]="promptStream"
+	    			   [optionsStream]="optionsStream">
+	    </pan-inventory>
+
 		<!-- Main Text Feed -->
 	    <pan-feed class="feed"
 	              [feed]="feed"
