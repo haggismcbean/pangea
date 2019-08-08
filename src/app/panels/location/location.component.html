@@ -21,7 +21,23 @@
 			</div>
 		</div>
 
-		<div class="location__items">
+		<div class="table__options">
+			<legend class="header table__options-header"
+					(click)="showTab('isShowingItems')">
+				Items
+			</legend>
+			<legend class="header table__options-header"
+					(click)="showTab('isShowingPeople')">
+				People
+			</legend>
+			<legend class="header table__options-header"
+					(click)="showTab('isShowingActivities')">
+				Activities
+			</legend>
+		</div>
+
+		<div class="location__items"
+			 *ngIf="location.display.tabs.isShowingItems">
 			<span class="announcement">Items</span>
 			<div *ngIf="!location.display.isShowingItems">
 				<span>{{location.items.length}} things lying around</span>
@@ -59,7 +75,7 @@
 		</div>
 
 		<div class="location__people"
-			 *ngIf="location.characters && location.characters.length > 0">
+			 *ngIf="location.display.tabs.isShowingPeople">
 			<span class="announcement">People</span>
 			<div *ngFor="let person of location.characters">
 				<div class="expandable"
@@ -109,6 +125,19 @@
 					 class="link"
 					 (click)="toggleShowSleepers()">
 					Hide
+				</div>
+			</div>
+		</div>
+
+		<div class="location__activities"
+			 *ngIf="location.display.tabs.isShowingActivities">
+			<span class="announcement">Activities</span>
+			<div *ngFor="let activity of location.activities">
+				<div class="expandable"
+					 (click)="activity.isShowing = !activity.isShowing"
+					 [ngClass]="{'expandable--is-showing': !!activity.isShowing}">
+
+					{{activity}}
 				</div>
 			</div>
 		</div>

@@ -32,3 +32,17 @@
 	top: -2px;
 	left: 2px;
 }
+
+.table__options {
+	display: flex;
+}
+
+.table__options-header {
+	margin-right: 1ch;
+	border-bottom: none;
+}
+
+.location__items, .location__people, .location__activities {
+	border: 1px solid #fff;
+	padding: 1em;
+}

@@ -24,9 +24,15 @@ export class LocationComponent implements OnInit {
         awakePeople: [],
         asleepPeopleCount: 0,
         items: [],
+        activities: [],
         display: {
             isShowingSleepers: false,
-            isShowingItems: false
+            isShowingItems: false,
+            tabs: {
+                isShowingItems: true,
+                isShowingPeople: false,
+                isShowingActivities: false
+            }
         }
     };
 
@@ -43,6 +49,12 @@ export class LocationComponent implements OnInit {
             .subscribe((items: any[]) => {
                 console.log('zone inventory: ', items);
                 this.location.items = items;
+            });
+
+        this.zoneService
+            .getActivities(this.character.zoneId)
+            .subscribe((activities) => {
+                this.location.activities = activities;
             });
 
         const getZoneDescription = this.zoneService
@@ -80,8 +92,6 @@ export class LocationComponent implements OnInit {
             return;
         }
 
-        console.log('characters: ', this.location.characters);
-
         this.location.asleepPeopleCount = this.location.characters.length - this.location.awakePeople.length;
 
         _.forEach(this.location.awakePeople, (awakePerson) => {
@@ -96,5 +106,13 @@ export class LocationComponent implements OnInit {
 
     public toggleShowItems() {
         this.location.display.isShowingItems = !this.location.display.isShowingItems;
+    }
+
+    public showTab(tab) {
+        this.location.display.tabs.isShowingItems = false;
+        this.location.display.tabs.isShowingPeople = false;
+        this.location.display.tabs.isShowingActivities = false;
+
+        this.location.display.tabs[tab] = true;
     }
 }
