@@ -4,28 +4,80 @@
 			Inventory
 		</legend>
 
-		<div class="location__weather">
-			<span>Status</span>
-			<pre class="location__weather-glyph"
-				 [innerHtml]="characterGlyph">
-			</pre>
-		</div>
+		<div class="inventory">
+			<div class="inventory__character">
+				<span>{{character.name}}</span>
+				<pre class="inventory__character-glyph"
+					 [innerHtml]="characterGlyph">
+				</pre>
+			</div>
 
+			<div class="inventory__text">
+				<span class="announcement">Traits</span>
+				<div class="expandable"
+					 (click)="character.backstoryIsShowing = !character.backstoryIsShowing"
+					 [ngClass]="{'expandable--is-showing': !!character.backstoryIsShowing}">
 
-		<div>
-			<span>Health</span>
-			<span>Hunger</span>
-		</div>
+					Backstory
 
-		<span class="announcement">Items</span>
-		<div *ngIf="inventory.items && inventory.items.length > 0">
-			<div *ngFor="let item of inventory.items">
-				<span class="item-type">{{item}}</span>
+					<div class="expandable__detail"
+						 *ngIf="character.backstoryIsShowing">
+						{{character.backstory}}
+					</div>
+				</div>
+
+				<div class="expandable"
+					 (click)="character.personalityIsShowing = !character.personalityIsShowing"
+					 [ngClass]="{'expandable--is-showing': !!character.personalityIsShowing}">
+
+					Personality
+
+					<div class="expandable__detail"
+						 *ngIf="character.personalityIsShowing">
+						{{character.personality}}
+					</div>
+				</div>
+
+				<div class="expandable"
+					 (click)="character.appearanceIsShowing = !character.appearanceIsShowing"
+					 [ngClass]="{'expandable--is-showing': !!character.appearanceIsShowing}">
+
+					Appearance
+
+					<div class="expandable__detail"
+						 *ngIf="character.appearanceIsShowing">
+						{{character.appearance}}
+					</div>
+				</div>
+				
+				<div class="inventory__status">
+					<span class="announcement">Status</span>
+					<div>
+						<span>Health</span>
+						{{character.health}}
+					</div>
+					<div>
+						<span>Hunger</span>
+						{{character.hunger}}
+					</div>
+					<div>
+						<span>Exposure</span>
+						{{character.exposure}}
+					</div>
+				</div>
+				
+				<div class="inventory__items">
+					<span class="announcement">Items</span>
+					<div *ngIf="inventory.items && inventory.items.length > 0">
+						<div *ngFor="let item of inventory.items">
+							<span class="item-type">{{item}}</span>
+						</div>
+					</div>
+					<div *ngIf="!inventory.items || inventory.items.length === 0">
+						<span class="item-type">You don't have anything in your inventory</span>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div *ngIf="!inventory.items || inventory.items.length === 0">
-			<span class="item-type">You don't have anything in your inventory</span>
-		</div>
-		
 	</fieldset>
 </form>

@@ -31,10 +31,10 @@ export class InventoryComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('character: ', this.character);
         this.characterService
             .getInventory()
             .subscribe((items: any[]) => {
-                console.log('items mate: ', items);
                 this.inventory.items = items;
             });
 
@@ -42,7 +42,11 @@ export class InventoryComponent implements OnInit {
     }
 
     private setPerson() {
-        this.characterGlyph = characterGlyph.WOMAN;
+        if (this.character.gender === 'female') {
+            this.characterGlyph = characterGlyph.WOMAN;
+        } else {
+            this.characterGlyph = characterGlyph.MAN;
+        }
     }
 
     // private handleItemDescriptionOptionSelected(item) {

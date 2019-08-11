@@ -1,3 +1,11 @@
 @import '../../styles/globals.scss';
 @import '../../styles/colours.scss';
 @import '../../styles/table.scss';
+
+.inventory {
+	display: flex;
+}
+
+.inventory__text {
+	margin-left: 1ch;
+}

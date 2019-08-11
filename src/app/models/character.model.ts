@@ -19,6 +19,9 @@ export class Character {
     public weight: number;
     public zoneId: number;
     public isDead: boolean;
+    public health: number;
+    public hunger: number;
+    public exposure: number;
 
     constructor(id: number) {
         this.id = id;

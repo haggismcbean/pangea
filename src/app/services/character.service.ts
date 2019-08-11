@@ -156,6 +156,9 @@ export class CharacterService {
         character.weight = _character.weight;
         character.zoneId = _character.zone_id;
         character.isDead = !!_character.is_dead;
+        character.hunger = _character.hunger;
+        character.health = _character.hunger;
+        character.exposure = _character.exposure;
 
         return character;
     }
