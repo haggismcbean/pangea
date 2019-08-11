@@ -4,15 +4,28 @@
 			Inventory
 		</legend>
 
-		<span>Status</span>
+		<div class="location__weather">
+			<span>Status</span>
+			<pre class="location__weather-glyph"
+				 [innerHtml]="characterGlyph">
+			</pre>
+		</div>
+
+
 		<div>
 			<span>Health</span>
 			<span>Hunger</span>
 		</div>
 
-		<span>Items</span>
-		<div *ngFor="let item of inventory.items">
-			<span class="item-type">{{item}}</span>
+		<span class="announcement">Items</span>
+		<div *ngIf="inventory.items && inventory.items.length > 0">
+			<div *ngFor="let item of inventory.items">
+				<span class="item-type">{{item}}</span>
+			</div>
 		</div>
+		<div *ngIf="!inventory.items || inventory.items.length === 0">
+			<span class="item-type">You don't have anything in your inventory</span>
+		</div>
+		
 	</fieldset>
 </form>

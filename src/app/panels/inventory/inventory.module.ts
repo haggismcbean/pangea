@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 // import { ComponentsModule } from '../../../components/components.module';
 // import { ActionsModule } from '../../../actions/actions.module';
 
-import { InventoryComponent } from './Inventory.component';
+import { InventoryComponent } from './inventory.component';
 
 @NgModule({
     imports: [

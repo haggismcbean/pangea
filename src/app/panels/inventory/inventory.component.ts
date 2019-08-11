@@ -10,7 +10,7 @@ import { WebSocketService } from '../../services/web-socket.service';
 import { Message } from '../../models/message.model';
 import { Character } from '../../models/character.model';
 
-import { getWeatherGlyph } from './constants/weather';
+import { characterGlyph } from './constants/character';
 
 @Component({
     selector: 'pan-inventory',
@@ -24,6 +24,8 @@ export class InventoryComponent implements OnInit {
         items: []
     };
 
+    public characterGlyph;
+
     constructor(
         private characterService: CharacterService
     ) {}
@@ -35,6 +37,12 @@ export class InventoryComponent implements OnInit {
                 console.log('items mate: ', items);
                 this.inventory.items = items;
             });
+
+        this.setPerson();
+    }
+
+    private setPerson() {
+        this.characterGlyph = characterGlyph.WOMAN;
     }
 
     // private handleItemDescriptionOptionSelected(item) {
