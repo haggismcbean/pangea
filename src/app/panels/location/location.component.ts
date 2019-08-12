@@ -7,6 +7,7 @@ import { combineLatest } from 'rxjs';
 import { ZoneService } from '../../services/zone.service';
 import { WebSocketService } from '../../services/web-socket.service';
 
+import { Prompt } from '../../actions/prompt.model';
 import { Character } from '../../models/character.model';
 
 import { getWeatherGlyph } from './constants/weather';
@@ -18,6 +19,7 @@ import { getWeatherGlyph } from './constants/weather';
 })
 export class LocationComponent implements OnInit {
     @Input() public character: Character;
+    @Input() public promptStream;
 
     public location = {
         characters: [],
@@ -114,5 +116,27 @@ export class LocationComponent implements OnInit {
         this.location.display.tabs.isShowingActivities = false;
 
         this.location.display.tabs[tab] = true;
+    }
+
+    public collect(item) {
+        const amountPrompt = new Prompt('How much of this resource do you want to pick up?');
+
+        amountPrompt
+            .answerStream
+            .subscribe((amount) => {
+                amount = Number(amount);
+
+                if (amount < 1) {
+                    return;
+                }
+
+                this.zoneService
+                    .pickUp(item.id, amount)
+                    .subscribe((response) => {
+                        console.log('response', response);
+                    });
+            });
+
+        this.promptStream.next(amountPrompt);
     }
 }
