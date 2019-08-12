@@ -5,6 +5,7 @@ import { CharacterService } from './character.service';
 import { FarmService } from './farm.service';
 import { AuthGuardService } from './auth-guard.service';
 import { WebSocketService } from './web-socket.service';
+import { MessagesService } from './messages.service';
 import { ZoneService } from './zone.service';
 import { PlantService } from './plant.service';
 import { MineService } from './mine.service';
@@ -18,6 +19,7 @@ import { MineService } from './mine.service';
         FarmService,
         AuthGuardService,
         WebSocketService,
+        MessagesService,
         ZoneService,
         PlantService,
         MineService

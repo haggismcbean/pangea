@@ -70,7 +70,25 @@
 					<span class="announcement">Items</span>
 					<div *ngIf="inventory.items && inventory.items.length > 0">
 						<div *ngFor="let item of inventory.items">
-							<span class="item-type">{{item}}</span>
+							<span class="item-type expandable"
+								  (click)="item.isDescriptionShowing = ! item.isDescriptionShowing">
+								{{item.count}} {{item.name}}
+							</span>
+
+							<span class="link"
+								  (click)="give(item)">
+								[give]
+							</span>
+
+							<span class="link"
+								  (click)="drop(item)">
+								[drop]
+							</span>
+
+							<div class="expandable__detail"
+								 *ngIf="item.isDescriptionShowing">
+								{{item.description}}
+							</div>
 						</div>
 					</div>
 					<div *ngIf="!inventory.items || inventory.items.length === 0">

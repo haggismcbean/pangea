@@ -6,6 +6,7 @@ import { combineLatest } from 'rxjs';
 
 import { ZoneService } from '../../services/zone.service';
 import { WebSocketService } from '../../services/web-socket.service';
+import { MessagesService } from '../../services/messages.service';
 
 import { Prompt } from '../../actions/prompt.model';
 import { Character } from '../../models/character.model';
@@ -42,7 +43,8 @@ export class LocationComponent implements OnInit {
 
     constructor(
         private zoneService: ZoneService,
-        private webSocketService: WebSocketService
+        private webSocketService: WebSocketService,
+        private messagesService: MessagesService
     ) {}
 
     ngOnInit() {
@@ -138,5 +140,24 @@ export class LocationComponent implements OnInit {
             });
 
         this.promptStream.next(amountPrompt);
+    }
+
+    public talk($event, targetCharacter) {
+        const speechPrompt = new Prompt(`To ${targetCharacter.name}`);
+
+        speechPrompt
+            .answerStream
+            .subscribe((message) => {
+                console.log('message: ', message);
+                console.log('this.character: ', this.character);
+                console.log('targetCharacter: ', targetCharacter);
+                this.messagesService
+                    .sendCharacterMessage(message, this.character, targetCharacter)
+                    .subscribe((response) => {
+                        console.log('resposne: ', response);
+                    });
+            });
+
+        this.promptStream.next(speechPrompt);
     }
 }

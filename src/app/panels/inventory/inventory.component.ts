@@ -31,7 +31,6 @@ export class InventoryComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log('character: ', this.character);
         this.characterService
             .getInventory()
             .subscribe((items: any[]) => {

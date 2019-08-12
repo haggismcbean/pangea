@@ -6,7 +6,7 @@ import { ServicesModule } from '../services/services.module';
 import { ApiService } from './api.service';
 import { AuthenticationWebService } from './authentication-web.service';
 import { CharacterWebService } from './character-web.service';
-import { WebhookService } from './webhook.service';
+import { MessagesWebService } from './messages-web.service';
 import { FarmWebService } from './farm-web.service';
 import { ZoneWebService } from './zone-web.service';
 import { PlantWebService } from './plant-web.service';
@@ -20,7 +20,7 @@ import { MineWebService } from './mine-web.service';
     providers: [
         ApiService,
         AuthenticationWebService,
-        WebhookService,
+        MessagesWebService,
         CharacterWebService,
         FarmWebService,
         ZoneWebService,

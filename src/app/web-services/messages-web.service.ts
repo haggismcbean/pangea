@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
 @Injectable()
-export class WebhookService {
+export class MessagesWebService {
     constructor(
         private api: ApiService
     ) {}
@@ -18,10 +18,24 @@ export class WebhookService {
             .get(url);
     }
 
-    public addMessage(message) {
+    public sendMessage(message, sourceCharacter) {
         const url = `messages`;
 
         return this.api
-            .post(url, message);
+            .post(url, {
+                message,
+                sourceId: sourceCharacter.id
+            });
+    }
+
+    public sendCharacterMessage(message, sourceCharacter, targetCharacter) {
+        const url = `character/messages`;
+
+        return this.api
+            .post(url, {
+                message: message,
+                sourceId: sourceCharacter.id,
+                targetId: targetCharacter.id
+            });
     }
 }
