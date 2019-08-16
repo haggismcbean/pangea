@@ -7,8 +7,11 @@ import { combineLatest } from 'rxjs';
 import { ZoneService } from '../../services/zone.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { MessagesService } from '../../services/messages.service';
+import { CharacterService } from '../../services/character.service';
 
 import { Prompt } from '../../actions/prompt.model';
+import { Option } from '../../actions/option.model';
+
 import { Character } from '../../models/character.model';
 
 import { getWeatherGlyph } from './constants/weather';
@@ -21,6 +24,7 @@ import { getWeatherGlyph } from './constants/weather';
 export class LocationComponent implements OnInit {
     @Input() public character: Character;
     @Input() public promptStream;
+    @Input() public optionsStream;
 
     public location = {
         characters: [],
@@ -44,7 +48,8 @@ export class LocationComponent implements OnInit {
     constructor(
         private zoneService: ZoneService,
         private webSocketService: WebSocketService,
-        private messagesService: MessagesService
+        private messagesService: MessagesService,
+        private characterService: CharacterService
     ) {}
 
     ngOnInit() {
@@ -159,5 +164,43 @@ export class LocationComponent implements OnInit {
             });
 
         this.promptStream.next(speechPrompt);
+    }
+
+    public give(targetCharacter) {
+        this.characterService
+            .getInventory()
+            .subscribe((items: any[]) => {
+                console.log('items: ', items);
+
+                items.forEach((item) => {
+                    const itemOption = new Option(`${item.name}: ${item.description}`);
+
+                    itemOption
+                        .selectedStream
+                        .subscribe(() => {
+                            const amountPrompt = new Prompt('How much of this resource do you want to give?');
+
+                            amountPrompt
+                                .answerStream
+                                .subscribe((amount) => {
+                                    amount = Number(amount);
+
+                                    if (amount < 1 || amount > item.count) {
+                                        return;
+                                    }
+
+                                    this.zoneService
+                                        .giveItem(item.id, amount, targetCharacter)
+                                        .subscribe((response) => {
+                                            console.log('response', response);
+                                        });
+                                });
+
+                            this.promptStream.next(amountPrompt);
+                        });
+
+                    this.optionsStream.next(itemOption);
+                });
+            });
     }
 }
