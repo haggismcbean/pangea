@@ -189,8 +189,10 @@ export class LocationComponent implements OnInit {
                                         return;
                                     }
 
-                                    this.zoneService
-                                        .giveItem(item.id, amount, targetCharacter)
+                                    console.log(item.id, amount, targetCharacter);
+
+                                    this.characterService
+                                        .giveItem(item.id, amount, targetCharacter.id)
                                         .subscribe((response) => {
                                             console.log('response', response);
                                         });

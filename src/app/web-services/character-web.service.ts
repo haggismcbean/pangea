@@ -139,4 +139,15 @@ export class CharacterWebService {
                 itemId: itemId
             });
     }
+
+    public giveItem(itemId, amount, characterId) {
+        const url = `character/give`;
+
+        return this.api
+            .post(url, {
+                itemId: itemId,
+                itemQuantity: amount,
+                characterId: characterId
+            });
+    }
 }

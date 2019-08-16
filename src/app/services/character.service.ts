@@ -117,6 +117,11 @@ export class CharacterService {
             .eat(itemId);
     }
 
+    public giveItem(itemId, amount, characterId): Observable<any> {
+        return this.characterWebService
+            .giveItem(itemId, amount, characterId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()
