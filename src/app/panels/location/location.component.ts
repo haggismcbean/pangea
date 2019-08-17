@@ -56,7 +56,6 @@ export class LocationComponent implements OnInit {
         this.zoneService
             .getZoneInventory(this.character.zoneId)
             .subscribe((items: any[]) => {
-                console.log('zone inventory: ', items);
                 this.location.items = items;
             });
 
@@ -153,9 +152,6 @@ export class LocationComponent implements OnInit {
         speechPrompt
             .answerStream
             .subscribe((message) => {
-                console.log('message: ', message);
-                console.log('this.character: ', this.character);
-                console.log('targetCharacter: ', targetCharacter);
                 this.messagesService
                     .sendCharacterMessage(message, this.character, targetCharacter)
                     .subscribe((response) => {
@@ -170,8 +166,6 @@ export class LocationComponent implements OnInit {
         this.characterService
             .getInventory()
             .subscribe((items: any[]) => {
-                console.log('items: ', items);
-
                 items.forEach((item) => {
                     const itemOption = new Option(`${item.name}: ${item.description}`);
 
@@ -189,8 +183,6 @@ export class LocationComponent implements OnInit {
                                         return;
                                     }
 
-                                    console.log(item.id, amount, targetCharacter);
-
                                     this.characterService
                                         .giveItem(item.id, amount, targetCharacter.id)
                                         .subscribe((response) => {
@@ -203,6 +195,14 @@ export class LocationComponent implements OnInit {
 
                     this.optionsStream.next(itemOption);
                 });
+            });
+    }
+
+    public point(targetCharacter) {
+        this.characterService
+            .pointAt(targetCharacter.id)
+            .subscribe((response) => {
+                console.log('response: ', response);
             });
     }
 }

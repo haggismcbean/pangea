@@ -150,4 +150,14 @@ export class CharacterWebService {
                 characterId: characterId
             });
     }
+
+    public pointAt(sourceCharacterId, targetCharacterId) {
+        const url = `character/point`;
+
+        return this.api
+            .post(url, {
+                sourceId: sourceCharacterId,
+                targetId: targetCharacterId
+            });
+    }
 }

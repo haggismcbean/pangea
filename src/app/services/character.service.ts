@@ -122,6 +122,11 @@ export class CharacterService {
             .giveItem(itemId, amount, characterId);
     }
 
+    public pointAt(targetCharacterId): Observable<any> {
+        return this.characterWebService
+            .pointAt(this.current.id, targetCharacterId);
+    }
+
     private fetchCharacters(): Observable<Character[]> {
         return this.characterWebService
             .get()
