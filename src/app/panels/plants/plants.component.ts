@@ -106,22 +106,35 @@ export class PlantsComponent implements OnChanges {
     }
 
     public gather(plant, plantPiece) {
-        // TODO - gather more than one at a time!
+        const amountPrompt = new Prompt('How much of this plant do you want to gather?');
 
-        this.plantService
-            .gather({
-                plantId: plant.id,
-                plantPiece: plantPiece
-            })
-            .subscribe((response) => {
-                if (plant.inventory[plantPiece]) {
-                    plant.inventory[plantPiece].count++;
-                } else {
-                    plant.inventory[plantPiece] = {
-                        count: 1
-                    };
+        amountPrompt
+            .answerStream
+            .subscribe((amount) => {
+                amount = Number(amount);
+
+                if (amount < 1) {
+                    return;
                 }
+
+                this.plantService
+                    .gather({
+                        plantId: plant.id,
+                        plantPiece: plantPiece,
+                        amount: amount
+                    })
+                    .subscribe((response) => {
+                        if (plant.inventory[plantPiece]) {
+                            plant.inventory[plantPiece].count += amount;
+                        } else {
+                            plant.inventory[plantPiece] = {
+                                count: amount
+                            };
+                        }
+                    });
             });
+
+        this.promptStream.next(amountPrompt);
     }
 
     public eat(inventoryItem) {

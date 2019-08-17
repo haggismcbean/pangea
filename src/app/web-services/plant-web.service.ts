@@ -17,7 +17,8 @@ export class PlantWebService {
         return this.api
             .put(url, {
                 plantId: plant.plantId,
-                plantPiece: plant.plantPiece
+                plantPiece: plant.plantPiece,
+                amount: plant.amount
             });
     }
 
