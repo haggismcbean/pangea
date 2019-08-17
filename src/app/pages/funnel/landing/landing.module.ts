@@ -6,6 +6,7 @@ import { ActionsModule } from '../../../actions/actions.module';
 import { LocationModule } from '../../../panels/location/location.module';
 import { InventoryModule } from '../../../panels/inventory/inventory.module';
 import { PlantsModule } from '../../../panels/plants/plants.module';
+import { CraftingModule } from '../../../panels/crafting/crafting.module';
 
 import { landingRouting } from './landing.routing';
 import { LandingComponent } from './landing.component';
@@ -19,6 +20,7 @@ import { LandingComponent } from './landing.component';
         ActionsModule,
         LocationModule,
         PlantsModule,
+        CraftingModule,
         InventoryModule
     ],
     providers: [

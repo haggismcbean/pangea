@@ -205,4 +205,12 @@ export class LocationComponent implements OnInit {
                 console.log('response: ', response);
             });
     }
+
+    public attack(targetCharacter) {
+        this.characterService
+            .attack(targetCharacter.id)
+            .subscribe((response) => {
+                console.log('response: ', response);
+            });
+    }
 }

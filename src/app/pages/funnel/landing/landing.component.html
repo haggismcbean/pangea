@@ -16,10 +16,17 @@
 
 	    <!-- Inventory -->
 	    <pan-inventory *ngIf="panel === 'inventory'"
-	    		       [character]="character"
+	    		       [character]="character"	
 	    			   [promptStream]="promptStream"
 	    			   [optionsStream]="optionsStream">
 	    </pan-inventory>
+
+	    <!-- Crafting -->
+	    <pan-crafting *ngIf="panel === 'crafting'"
+	    		      [character]="character"	
+	    			  [promptStream]="promptStream"
+	    			  [optionsStream]="optionsStream">
+	    </pan-crafting>
 
 		<!-- Main Text Feed -->
 	    <pan-feed class="feed"

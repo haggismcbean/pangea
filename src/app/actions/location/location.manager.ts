@@ -42,9 +42,9 @@ export class LocationManager {
         const plantsOption = new Option('plants');
         const locationOption = new Option('location');
         const inventoryOption = new Option('inventory');
-        const activitiesOption = new Option('activities');
+        const craftingOption = new Option('crafting');
 
-        lookAtOption.setOptions([peopleOption, plantsOption, locationOption, inventoryOption, activitiesOption]);
+        lookAtOption.setOptions([peopleOption, plantsOption, locationOption, inventoryOption, craftingOption]);
 
         peopleOption
             .selectedStream
@@ -62,9 +62,9 @@ export class LocationManager {
             .selectedStream
             .subscribe(() => this.handleInventoryOptionSelected());
 
-        activitiesOption
+        craftingOption
             .selectedStream
-            .subscribe(() => this.handleActivitiesOptionSelected());
+            .subscribe(() => this.handleCraftingOptionSelected());
 
         lookAtOption.isConcat = true;
 
@@ -118,34 +118,7 @@ export class LocationManager {
             .next(resetMessage);
     }
 
-    private handleActivitiesOptionSelected() {
-        this.zoneService
-            .getActivities(this.zoneId)
-            .subscribe((activities) => {
-                const activitiesMessage = new Message(0);
-                activitiesMessage.setText('===== Activities in current location =====');
-
-                this.mainFeedStream
-                    .next(activitiesMessage);
-
-                _.forEach(activities, (activity) => {
-                    const activityMessage = new Message(0);
-                    activityMessage.setText(`${activity.item.name}: ${activity.progress} percent complete`);
-
-                    this.mainFeedStream
-                        .next(activityMessage);
-
-                    _.forEach(activity.ingredients, (ingredient) => {
-                        const itemMessage = new Message(0);
-                        const itemName = ingredient.item || ingredient.item_type;
-                        itemMessage.setText(`${itemName}: ${ingredient.quantity_added} out of ${ingredient.quantity_required} added`);
-
-                        this.mainFeedStream
-                            .next(itemMessage);
-                    });
-                });
-
-                this.resetOptions();
-            });
+    private handleCraftingOptionSelected() {
+        this.panelStream.next('crafting');
     }
 }
