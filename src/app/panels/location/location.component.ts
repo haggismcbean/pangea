@@ -62,7 +62,19 @@ export class LocationComponent implements OnInit {
         this.zoneService
             .getActivities(this.character.zoneId)
             .subscribe((activities) => {
+                _.forEach(activities, (activity) => {
+
+                    _.forEach(activity.requiredIngredients, (requiredIngredient) => {
+
+                        const suppliedIngredient = this.findSuppliedIngredient(activity, requiredIngredient);
+                        requiredIngredient.supply = suppliedIngredient;
+                    });
+                });
+
+                console.log('activities: ', activities);
+
                 this.location.activities = activities;
+
             });
 
         const getZoneDescription = this.zoneService
@@ -82,6 +94,18 @@ export class LocationComponent implements OnInit {
                 this.location.awakePeople = awakePeople;
                 this.assignWakers();
             });
+    }
+
+    private findSuppliedIngredient(activity, requiredIngredient) {
+        return _.find(activity.ingredients, (suppliedIngredient) => {
+            if (suppliedIngredient.type === requiredIngredient.type) {
+                return true;
+            }
+
+            if (suppliedIngredient.item_id === requiredIngredient.item_id) {
+                return true;
+            }
+        });
     }
 
     private setLocation(location) {

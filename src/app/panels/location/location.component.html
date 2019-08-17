@@ -142,7 +142,25 @@
 					 (click)="activity.isShowing = !activity.isShowing"
 					 [ngClass]="{'expandable--is-showing': !!activity.isShowing}">
 
-					{{activity}}
+					<span *ngIf="activity.type === 'crafting'">
+						{{activity.type}} {{activity.item.name}} : {{activity.progress}}%
+					</span>
+
+					<div *ngIf="activity.isShowing">
+						<ul *ngFor="let ingredient of activity.requiredIngredients">
+							<li class="expandable__detail"
+							    *ngIf="ingredient.item_type">
+							    <span *ngIf="ingredient.suppliedIngredient">
+							    	{{ingredient.suppliedIngredient.count}} of {{ingredient.quantity_min}} {{ingredient.item_type}}
+							    </span>
+							    <span *ngIf="!ingredient.suppliedIngredient">
+							    	0 of {{ingredient.quantity_min}} {{ingredient.item_type}}
+							    </span>
+							</li>
+							<li class="expandable__detail"
+							    *ngIf="ingredient.item">{{ingredient.item.name}}</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -37,4 +37,12 @@ export class CraftingComponent implements OnChanges {
             });
     }
 
+    public craft(recipe) {
+        this.characterService
+            .craftRecipe(recipe.id)
+            .subscribe((response) => {
+                console.log('response: ', response);
+            });
+    }
+
 }
