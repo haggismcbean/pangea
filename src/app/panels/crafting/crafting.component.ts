@@ -19,6 +19,8 @@ export class CraftingComponent implements OnChanges {
     @Input() public promptStream;
     @Input() public optionsStream;
 
+    public items = [];
+
     constructor(
         private zoneService: ZoneService,
         private plantService: PlantService,
@@ -27,12 +29,12 @@ export class CraftingComponent implements OnChanges {
     }
 
     ngOnChanges(changes) {
-        if (changes.character && this.character) {
-            this.getCraftables();
-        }
-    }
-
-    private getCraftables() {
+        this.characterService
+            .getCraftableItems()
+            .subscribe((items: any[]) => {
+                console.log('items: ', items);
+                this.items = items;
+            });
     }
 
 }
