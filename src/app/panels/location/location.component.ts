@@ -273,7 +273,13 @@ export class LocationComponent implements OnInit {
                         this.characterService
                             .addItemToActivity(activity.id, itemToAdd.id, amount)
                             .subscribe((response) => {
-                                console.log('response: ', response);
+                                if (ingredient.suppliedIngredient) {
+                                    ingredient.suppliedIngredient.count += amount;
+                                } else {
+                                    ingredient.suppliedIngredient = {
+                                        count: amount
+                                    }
+                                }
                             });
                     });
             });

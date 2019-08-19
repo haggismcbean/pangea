@@ -138,6 +138,7 @@ export class PlantsComponent implements OnChanges {
     }
 
     public eat(inventoryItem) {
+        console.log('item :', inventoryItem);
         this.characterService
             .eat(inventoryItem.id)
             .subscribe((response) => {

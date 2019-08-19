@@ -17,8 +17,8 @@ export class CharacterService {
         private characterWebService: CharacterWebService
     ) {}
 
-    public getCharacters(): Observable<Character[]> {
-        if (this.characters) {
+    public getCharacters(isCacheBust): Observable<Character[]> {
+        if (this.characters && !isCacheBust) {
             return of(this.characters);
         } else {
             return this.fetchCharacters();
@@ -140,6 +140,12 @@ export class CharacterService {
     private newCharacters(characters): Character[] {
         this.characters = _.map(characters, (_character) => {
             return this.newCharacter(_character);
+        });
+
+        _.forEach(this.characters, (character) => {
+            if (character.id === this.current.id) {
+                this.current = character;
+            }
         });
 
         return this.characters;
