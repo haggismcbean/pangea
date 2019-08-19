@@ -11,9 +11,6 @@ import { LabourManager } from './labour/labour.manager';
 import { HuntingManager } from './labour/hunting/hunting.manager';
 import { FarmingManager } from './labour/farming/farming.manager';
 import { MiningManager } from './labour/mining/mining.manager';
-import { CraftingManager } from './labour/crafting/crafting.manager';
-import { AddToActivityManager } from './labour/add-to-activity/add-to-activity.manager';
-import { WorkOnActivityManager } from './labour/work-on-activity/work-on-activity.manager';
 import { ExploringManager } from './labour/exploring/exploring.manager';
 
 @NgModule({
@@ -30,9 +27,6 @@ import { ExploringManager } from './labour/exploring/exploring.manager';
         HuntingManager,
         FarmingManager,
         MiningManager,
-        CraftingManager,
-        AddToActivityManager,
-        WorkOnActivityManager,
         ExploringManager
     ],
     declarations: [

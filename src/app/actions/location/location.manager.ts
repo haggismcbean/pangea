@@ -38,17 +38,12 @@ export class LocationManager {
 
         const lookAtOption = new Option('look at');
 
-        const peopleOption = new Option('people');
         const plantsOption = new Option('plants');
         const locationOption = new Option('location');
         const inventoryOption = new Option('inventory');
         const craftingOption = new Option('crafting');
 
-        lookAtOption.setOptions([peopleOption, plantsOption, locationOption, inventoryOption, craftingOption]);
-
-        peopleOption
-            .selectedStream
-            .subscribe(() => this.handlePeopleOptionSelected());
+        lookAtOption.setOptions([plantsOption, locationOption, inventoryOption, craftingOption]);
 
         plantsOption
             .selectedStream
@@ -71,33 +66,6 @@ export class LocationManager {
         this.optionsStream.next(lookAtOption);
     }
 
-    private handlePeopleOptionSelected() {
-        // once the user decides to look at people, we have to get the list of people!
-        this.zoneService
-            .getZoneCharacters(this.zoneId)
-            .subscribe((characters: Character[]) => {
-                _.forEach(characters, (character) => {
-                    const characterOption = new Option(character.name);
-
-                    characterOption
-                        .selectedStream
-                        .subscribe(() => this.handleCharacterOptionSelected(character));
-
-                    this.optionsStream.next(characterOption);
-                });
-            });
-    }
-
-    private handleCharacterOptionSelected(character) {
-        const characterDescription = new Message(0);
-        characterDescription.setText(character.appearance);
-
-        this.mainFeedStream
-            .next(characterDescription);
-
-        this.resetOptions();
-    }
-
     private handlePlantsOptionSelected() {
         this.panelStream.next('plants');
     }
@@ -110,6 +78,10 @@ export class LocationManager {
         this.panelStream.next('inventory');
     }
 
+    private handleCraftingOptionSelected() {
+        this.panelStream.next('crafting');
+    }
+
     private resetOptions() {
         const resetMessage = new Message(0);
         resetMessage.class = 'reset';
@@ -118,7 +90,4 @@ export class LocationManager {
             .next(resetMessage);
     }
 
-    private handleCraftingOptionSelected() {
-        this.panelStream.next('crafting');
-    }
 }

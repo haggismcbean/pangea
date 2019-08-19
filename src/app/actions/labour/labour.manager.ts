@@ -13,9 +13,6 @@ import { ZoneService } from '../../services/zone.service';
 import { HuntingManager } from './hunting/hunting.manager';
 import { FarmingManager } from './farming/farming.manager';
 import { MiningManager } from './mining/mining.manager';
-import { CraftingManager } from './crafting/crafting.manager';
-import { AddToActivityManager } from './add-to-activity/add-to-activity.manager';
-import { WorkOnActivityManager } from './work-on-activity/work-on-activity.manager';
 import { ExploringManager } from './exploring/exploring.manager';
 
 import * as _ from 'lodash';
@@ -39,9 +36,6 @@ export class LabourManager {
         private huntingManager: HuntingManager,
         private farmingManager: FarmingManager,
         private miningManager: MiningManager,
-        private craftingManager: CraftingManager,
-        private addToActivityManager: AddToActivityManager,
-        private workOnActivityManager: WorkOnActivityManager,
         private exploringManager: ExploringManager
     ) {}
 
@@ -60,9 +54,6 @@ export class LabourManager {
         this.huntingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.farmingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.miningManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
-        this.craftingManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
-        this.addToActivityManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
-        this.workOnActivityManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
         this.exploringManager.init(mainFeedStream, optionsStream, promptStream, labourOption);
 
         labourOption.isConcat = true;

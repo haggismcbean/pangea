@@ -42,7 +42,7 @@ export class LoginManager {
         this.promptStream = promptStream;
 
         this.characterService
-            .getCharacters()
+            .getCharacters(false)
             .subscribe(
                 (characters: Character[]) => {
                     this.clearMessageFeed();
@@ -99,7 +99,7 @@ export class LoginManager {
             .pipe(
                 flatMap((response: any) => {
                     return this.characterService
-                        .getCharacters();
+                        .getCharacters(false);
                 })
             )
             .subscribe(
