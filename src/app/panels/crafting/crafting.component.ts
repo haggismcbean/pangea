@@ -23,6 +23,9 @@ export class CraftingComponent implements OnChanges {
 
     public items = [];
 
+    public itemGroups;
+    public groupedItems;
+
     constructor(
         private zoneService: ZoneService,
         private plantService: PlantService,
@@ -35,6 +38,11 @@ export class CraftingComponent implements OnChanges {
             .getCraftableItems()
             .subscribe((items: any[]) => {
                 this.items = items;
+
+                const groupedItems = _.groupBy(items, item => item.category);
+
+                this.itemGroups = Object.keys(groupedItems);
+                this.groupedItems = groupedItems;
             });
     }
 
