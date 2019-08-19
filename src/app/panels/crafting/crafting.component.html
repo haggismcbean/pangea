@@ -15,8 +15,21 @@
 					<span>Recipe {{i + 1}}</span>
 
 					<span class="link"
+						  *ngIf="!recipe.activity"
 						  (click)="craft(recipe)">
 						[craft]
+					</span>
+
+					<span class="link"
+						  *ngIf="recipe.activity"
+						  (click)="craft(recipe)">
+						[craft another]
+					</span>
+
+					<span class="link"
+						  *ngIf="recipe.activity"
+						  (click)="workOn(recipe.activity)">
+						[work]
 					</span>
 
 				    <div class="crafting__stats">
@@ -31,10 +44,16 @@
 						<ul class="crafting__ingredient"
 							*ngFor="let ingredient of recipe.ingredients">
 							<li>
-								<span>{{ingredient.quantity_min}} - {{ingredient.quantity_max}} </span>
+								<span>{{ingredient.quantity_min}} </span>
 								<span *ngIf="ingredient.item">{{ingredient.item.name}}</span>
 								<span *ngIf="ingredient.item_type">{{ingredient.item_type}}</span>
 								<span> ({{ingredient.skill_name}})</span>
+
+								<span class="link"
+									  *ngIf="recipe.activity"
+									  (click)="addResource(recipe.activity, ingredient)">
+									[add]
+								</span>
 							</li>
 						</ul>
 				    </div>

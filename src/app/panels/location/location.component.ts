@@ -12,6 +12,7 @@ import { CharacterService } from '../../services/character.service';
 import { Prompt } from '../../actions/prompt.model';
 import { Option } from '../../actions/option.model';
 
+import { Message } from '../../models/message.model';
 import { Character } from '../../models/character.model';
 
 import { getWeatherGlyph } from './constants/weather';
@@ -23,6 +24,7 @@ import { getWeatherGlyph } from './constants/weather';
 })
 export class LocationComponent implements OnInit {
     @Input() public character: Character;
+    @Input() public mainFeedStream;
     @Input() public promptStream;
     @Input() public optionsStream;
 
@@ -235,6 +237,55 @@ export class LocationComponent implements OnInit {
             .attack(targetCharacter.id)
             .subscribe((response) => {
                 console.log('response: ', response);
+            });
+    }
+
+    public addResource(activity, ingredient) {
+        const amountPrompt = new Prompt('How much of this resource do you want to add?');
+
+        amountPrompt
+            .answerStream
+            .subscribe((amount) => {
+                this.characterService
+                    .getInventory()
+                    .subscribe((inventoryItems) => {
+                        console.log(inventoryItems);
+                        const itemToAdd = _.find(inventoryItems, (inventoryItem) => {
+                            if (ingredient.item_id === null) {
+                                return inventoryItem.name === ingredient.item_type;
+                            }
+
+                            if (ingredient.item_type === null) {
+                                return inventoryItem.id === ingredient.item_id;
+                            }
+                        });
+
+                        if (!itemToAdd) {
+                            console.log('fail');
+                            const errorMessage = new Message(0);
+                            errorMessage.setText(`Cannot find any of that item in your inventory`);
+
+                            this.mainFeedStream
+                                .next(errorMessage);
+                            return;
+                        }
+
+                        this.characterService
+                            .addItemToActivity(activity.id, itemToAdd.id, amount)
+                            .subscribe((response) => {
+                                console.log('response: ', response);
+                            });
+                    });
+            });
+
+        this.promptStream.next(amountPrompt);
+    }
+
+    public workOn(activity) {
+        this.characterService
+            .workOnActivity(activity.id)
+            .subscribe((response) => {
+                console.log('resposne: ', response);
             });
     }
 }

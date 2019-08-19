@@ -3,6 +3,7 @@
 	    <!-- Location -->
 	    <pan-location *ngIf="panel === 'location'"
 	    			  [character]="character"
+	    			  [mainFeedStream]="mainFeedStream"
 	    			  [promptStream]="promptStream"
 	    			  [optionsStream]="optionsStream">
 	    </pan-location>
@@ -24,6 +25,7 @@
 	    <!-- Crafting -->
 	    <pan-crafting *ngIf="panel === 'crafting'"
 	    		      [character]="character"	
+	    		      [mainFeedStream]="mainFeedStream"
 	    			  [promptStream]="promptStream"
 	    			  [optionsStream]="optionsStream">
 	    </pan-crafting>
