@@ -45,8 +45,12 @@ export class MiningManager {
 
     private onMineSelect() {
         const createOption = new Option('create');
+
         const mineOption = new Option('mine');
+        mineOption.isConcat = true;
+
         const reinforceOption = new Option('reinforce');
+        reinforceOption.isConcat = true;
 
         createOption
             .selectedStream

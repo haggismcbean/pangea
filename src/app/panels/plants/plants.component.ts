@@ -14,7 +14,7 @@ import * as _ from 'lodash';
     templateUrl: './plants.component.html',
     styleUrls: ['./plants.component.scss']
 })
-export class PlantsComponent implements OnChanges, OnInit {
+export class PlantsComponent implements OnInit {
     @Input() public promptStream;
     @Input() public optionsStream;
 

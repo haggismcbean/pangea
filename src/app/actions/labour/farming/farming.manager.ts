@@ -45,11 +45,21 @@ export class FarmingManager {
     private onFarmSelect() {
         // TODO - show options more intelligently
         const createOption = new Option('create');
+
         const ploughOption = new Option('plough');
+        ploughOption.isConcat = true;
+
         const plantOption = new Option('plant');
+        plantOption.isConcat = true;
+
         const tillOption = new Option('till');
+        tillOption.isConcat = true;
+
         const fertilizeOption = new Option('fertilize');
+        fertilizeOption.isConcat = true;
+
         const harvestOption = new Option('harvest');
+        harvestOption.isConcat = true;
 
         createOption
             .selectedStream
