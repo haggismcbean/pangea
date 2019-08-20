@@ -7,6 +7,21 @@
 	text-transform: capitalize;
 }
 
-.plant-detail {
-	display: inline-block;
+.plant-tag__flowering {
+	background-color: $flower-color;
+	padding: 0 0 0 1ch;
+	margin: 0 1ch 0 0;
+}
+
+.plant-tag__fruiting {
+	background-color: $fruit-color;
+	padding: 0 0 0 1ch;
+	margin: 0 1ch 0 0;
+}
+
+.plant-tag__seeding {
+	background-color: $seed-color;
+	color: $background;
+	padding: 0 0 0 1ch;
+	margin: 0 1ch 0 0;
 }
