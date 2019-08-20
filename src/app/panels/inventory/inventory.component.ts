@@ -18,7 +18,7 @@ import { characterGlyph } from './constants/character';
     styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
-    @Input() public character: Character;
+    public character: Character;
 
     public inventory = {
         items: []
@@ -31,6 +31,8 @@ export class InventoryComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.character = this.characterService.getCurrent();
+
         this.characterService
             .getInventory()
             .subscribe((items: any[]) => {

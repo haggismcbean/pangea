@@ -2,7 +2,6 @@
 	<div class="panels">
 	    <!-- Location -->
 	    <pan-location *ngIf="panel === 'location'"
-	    			  [character]="character"
 	    			  [mainFeedStream]="mainFeedStream"
 	    			  [promptStream]="promptStream"
 	    			  [optionsStream]="optionsStream">
@@ -10,21 +9,18 @@
 
 	    <!-- Plants -->
 	    <pan-plants *ngIf="panel === 'plants'"
-	    		    [character]="character"
 	    			[promptStream]="promptStream"
 	    			[optionsStream]="optionsStream">
 	    </pan-plants>
 
 	    <!-- Inventory -->
 	    <pan-inventory *ngIf="panel === 'inventory'"
-	    		       [character]="character"	
 	    			   [promptStream]="promptStream"
 	    			   [optionsStream]="optionsStream">
 	    </pan-inventory>
 
 	    <!-- Crafting -->
 	    <pan-crafting *ngIf="panel === 'crafting'"
-	    		      [character]="character"	
 	    		      [mainFeedStream]="mainFeedStream"
 	    			  [promptStream]="promptStream"
 	    			  [optionsStream]="optionsStream">

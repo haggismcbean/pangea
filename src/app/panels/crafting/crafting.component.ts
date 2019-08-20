@@ -16,11 +16,11 @@ import * as _ from 'lodash';
     styleUrls: ['./crafting.component.scss']
 })
 export class CraftingComponent implements OnChanges {
-    @Input() public character: Character;
     @Input() public mainFeedStream;
     @Input() public promptStream;
     @Input() public optionsStream;
 
+    public character: Character;
     public items = [];
 
     public itemGroups;
@@ -34,6 +34,8 @@ export class CraftingComponent implements OnChanges {
     }
 
     ngOnChanges(changes) {
+        this.character = this.characterService.getCurrent();
+
         this.characterService
             .getCraftableItems()
             .subscribe((items: any[]) => {

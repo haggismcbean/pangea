@@ -23,10 +23,11 @@ import { getWeatherGlyph } from './constants/weather';
     styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit {
-    @Input() public character: Character;
     @Input() public mainFeedStream;
     @Input() public promptStream;
     @Input() public optionsStream;
+
+    public character: Character;
 
     public location = {
         characters: [],
@@ -55,6 +56,8 @@ export class LocationComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.character = this.characterService.getCurrent();
+
         this.zoneService
             .getZoneInventory(this.character.zoneId)
             .subscribe((items: any[]) => {
