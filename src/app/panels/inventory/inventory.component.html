@@ -73,7 +73,11 @@
 							<span class="item-type expandable"
 								  (click)="item.isDescriptionShowing = ! item.isDescriptionShowing"
 								  [ngClass]="{'expandable--is-showing': !!item.isDescriptionShowing}">
-								{{item.count}} {{item.name}}
+								{{item.count}} 
+								<span *ngIf="item.customName">
+									{{item.customName}} 
+								</span>
+								{{item.name}}
 							</span>
 
 							<span class="link"

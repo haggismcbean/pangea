@@ -46,13 +46,22 @@ export class ExploringManager {
         this.zoneService
             .explore(this.zoneId)
             .subscribe((exploreActivity) => {
-                const cancelActivityOption = new Option('cancel');
+                if (exploreActivity.progress === 100) {
+                    const resetMessage = new Message(0);
+                    resetMessage.class = 'reset';
 
-                cancelActivityOption
-                    .selectedStream
-                    .subscribe(() => this.cancelActivity(exploreActivity));
+                    this.mainFeedStream
+                        .next(resetMessage);
+                } else {
+                    const cancelActivityOption = new Option('cancel');
 
-                this.optionsStream.next(cancelActivityOption);
+                    cancelActivityOption
+                        .selectedStream
+                        .subscribe(() => this.cancelActivity(exploreActivity));
+
+                    this.optionsStream.next(cancelActivityOption);
+                }
+
             });
     }
 
