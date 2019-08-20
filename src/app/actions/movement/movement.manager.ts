@@ -37,6 +37,7 @@ export class MovementManager {
         this.zoneService
             .getBorderingZones(zoneId)
             .subscribe((zones) => {
+                console.log('HI HARRY HAHAHAHAH');
                 const zoneOptions = [];
 
                 if (zones.parentZone) {
@@ -79,23 +80,8 @@ export class MovementManager {
         this.zoneService
             .changeZones(zone.id)
             .subscribe((response) => {
-                const newZone = response.targetZone;
-
-                const currentCharacter = this.characterService
-                    .getCurrent();
-                currentCharacter.zoneId = newZone.id;
-
                 const resetMessage = new Message(0);
                 resetMessage.class = 'reset';
-
-                this.mainFeedStream
-                    .next(resetMessage);
-
-                const newZoneDescription = new Message(0);
-                newZoneDescription.setText(newZone.description);
-
-                this.mainFeedStream
-                    .next(newZoneDescription);
             });
     }
 }
