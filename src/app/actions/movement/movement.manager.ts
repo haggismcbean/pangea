@@ -37,7 +37,6 @@ export class MovementManager {
         this.zoneService
             .getBorderingZones(zoneId)
             .subscribe((zones) => {
-                console.log('HI HARRY HAHAHAHAH');
                 const zoneOptions = [];
 
                 if (zones.parentZone) {
