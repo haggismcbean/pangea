@@ -143,7 +143,7 @@ export class CharacterService {
         });
 
         _.forEach(this.characters, (character) => {
-            if (character.id === this.current.id) {
+            if (character.id === _.get(this.current, 'id')) {
                 this.current = character;
             }
         });
