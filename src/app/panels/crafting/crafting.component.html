@@ -9,11 +9,13 @@
 
 			<div *ngFor="let item of groupedItems[itemGroup]">
 				<span class="expandable"
-					  (click)="item.isShowing = !item.isShowing">
+					  (click)="item.isShowing = !item.isShowing"
+					  [ngClass]="{'expandable--is-showing': !!item.isShowing}">
 					{{item.name}}
 				</span>
 
-				<div *ngFor="let recipe of item.recipes; let i = index">
+				<div class="item__recipes"
+					 *ngFor="let recipe of item.recipes; let i = index">
 					<div *ngIf="item.isShowing">
 						<span>Recipe {{i + 1}}</span>
 
@@ -36,13 +38,13 @@
 						</span>
 
 					    <div class="crafting__stats">
-							<div class="expandable__detail">Efficiency: {{recipe.base_efficiency}}</div>
-							<div class="expandable__detail">Rot Rate: {{recipe.base_rot_rate}}</div>
-							<div class="expandable__detail">Size: {{recipe.base_volume}}</div>
+							<div class="expandable__detail"> Efficiency: {{recipe.base_efficiency}}</div>
+							<div class="expandable__detail"> Rot Rate: {{recipe.base_rot_rate}}</div>
+							<div class="expandable__detail"> Size: {{recipe.base_volume}}</div>
 					    </div>
 
 					    <div class="expandable__detail">
-							<span>Ingredients</span>
+							<span> Ingredients</span>
 
 							<ul class="crafting__ingredient"
 								*ngFor="let ingredient of recipe.ingredients">

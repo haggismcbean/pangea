@@ -71,7 +71,8 @@
 					<div *ngIf="inventory.items && inventory.items.length > 0">
 						<div *ngFor="let item of inventory.items">
 							<span class="item-type expandable"
-								  (click)="item.isDescriptionShowing = ! item.isDescriptionShowing">
+								  (click)="item.isDescriptionShowing = ! item.isDescriptionShowing"
+								  [ngClass]="{'expandable--is-showing': !!item.isDescriptionShowing}">
 								{{item.count}} {{item.name}}
 							</span>
 
