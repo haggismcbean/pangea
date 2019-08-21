@@ -5,6 +5,8 @@ import * as _ from 'lodash';
 import { combineLatest } from 'rxjs';
 
 import { ZoneService } from '../../services/zone.service';
+import { MineService } from '../../services/mine.service';
+import { FarmService } from '../../services/farm.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { MessagesService } from '../../services/messages.service';
 import { CharacterService } from '../../services/character.service';
@@ -30,7 +32,7 @@ export class LocationComponent implements OnInit {
     public character: Character;
 
     public location = {
-        name: "",
+        name: '',
         characters: [],
         awakePeople: [],
         asleepPeopleCount: 0,
@@ -55,6 +57,8 @@ export class LocationComponent implements OnInit {
 
     constructor(
         private zoneService: ZoneService,
+        private farmService: FarmService,
+        private mineService: MineService,
         private webSocketService: WebSocketService,
         private messagesService: MessagesService,
         private characterService: CharacterService
@@ -81,8 +85,6 @@ export class LocationComponent implements OnInit {
                     });
                 });
 
-                console.log('activities: ', activities);
-
                 this.location.activities = activities;
 
             });
@@ -108,8 +110,6 @@ export class LocationComponent implements OnInit {
 
                 this.location.awakePeople = awakePeople;
                 this.assignWakers();
-
-                console.log('location: ', this.location);
             });
     }
 
@@ -163,5 +163,85 @@ export class LocationComponent implements OnInit {
         this.location.display.tabs.isShowingActivities = false;
 
         this.location.display.tabs[tab] = true;
+    }
+
+    public name(zone) {
+        const namePrompt = new Prompt('Enter name');
+
+        namePrompt
+            .answerStream
+            .subscribe((name: string) => {
+                console.log('name? ', name);
+                if (!name) {
+                    return;
+                }
+
+                this.zoneService
+                    .name(zone.id, name)
+                    .subscribe(() => {
+                        zone.customName = name;
+                    });
+            });
+
+        this.promptStream.next(namePrompt);
+    }
+
+    public moveTo(zone) {
+        this.zoneService
+            .changeZones(zone.id)
+            .subscribe((response) => {
+                const resetMessage = new Message(0);
+                resetMessage.class = 'reset';
+            });
+    }
+
+    public createMine() {
+        this.mineService
+            .createMine()
+            .subscribe((mineActivity) => {
+                this.onActivityCreated(mineActivity);
+            });
+    }
+
+    public createFarm() {
+        this.farmService
+            .createPlot(5)
+            .subscribe((farmActivity) => {
+                this.onActivityCreated(farmActivity);
+            });
+    }
+
+    public explore() {
+        this.zoneService
+            .explore(this.character.zoneId)
+            .subscribe((exploreActivity) => {
+                this.onActivityCreated(exploreActivity);
+            });
+    }
+
+    private onActivityCreated(activity) {
+        if (activity.progress === 100) {
+            const resetMessage = new Message(0);
+            resetMessage.class = 'reset';
+
+            this.mainFeedStream
+                .next(resetMessage);
+        } else {
+            const cancelActivityOption = new Option('cancel');
+
+            cancelActivityOption
+                .selectedStream
+                .subscribe(() => this.cancelActivity(activity));
+
+            this.optionsStream.next(cancelActivityOption);
+        }
+    }
+
+    private cancelActivity(activity) {
+        this.characterService
+            .cancelActivity(activity.id)
+            .subscribe((response) => {
+                console.log('response: ', response);
+            });
     }
 }

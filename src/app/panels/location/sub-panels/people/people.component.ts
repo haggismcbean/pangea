@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -20,13 +20,15 @@ import { Character } from '../../../../models/character.model';
     templateUrl: './people.component.html',
     styleUrls: ['./people.component.scss']
 })
-export class PeopleComponent {
+export class PeopleComponent implements OnInit {
     @Input() public mainFeedStream;
     @Input() public promptStream;
     @Input() public optionsStream;
 
     @Input() public people;
     @Input() public asleepPeopleCount;
+
+    public character: Character;
 
     public isShowingSleepers = false;
 
@@ -36,6 +38,10 @@ export class PeopleComponent {
         private messagesService: MessagesService,
         private characterService: CharacterService
     ) {}
+
+    ngOnInit() {
+        this.character = this.characterService.getCurrent();
+    }
 
     public talk($event, targetCharacter) {
         const speechPrompt = new Prompt(`To ${targetCharacter.name}`);

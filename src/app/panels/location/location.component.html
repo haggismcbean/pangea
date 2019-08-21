@@ -1,7 +1,12 @@
 <form class="table">
 	<fieldset class="fieldset">
 		<legend class="header">
-			Location
+			<span *ngIf="location.customName">{{location.customName}}</span>
+			<span *ngIf="!location.customName">{{location.name}}</span>
+			<span class="link"
+				  (click)="name(location)">
+				[name]
+			</span>
 		</legend>
 		<div class="location__title">
 			<div class="location__weather">
@@ -12,12 +17,23 @@
 				<span>{{location.weather}}</span>
 
 				<div class="location__actions">
-					<span>Terraforming</span>
 					<ul *ngIf="!location.parent_zone">
-						<li>[camp]</li>
-						<li>[mine]</li>
-						<li>[farm]</li>
-						<li>[explore]</li>
+						<li class="link"
+							(click)="createCamp()">
+							[camp]
+						</li>
+						<li class="link"
+							(click)="createMine()">
+							[create mine]
+						</li>
+						<li class="link"
+							(click)="createFarm()">
+							[create farm]
+						</li>
+						<li class="link"
+							(click)="explore()">
+							[explore]
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -34,35 +50,109 @@
 					<span class="location__neighbours-title">Neighbouring Locations</span>
 					<ul class="location__neighbours-list">
 						<li *ngIf="location.borders.parentZone">
-							{{location.borders.parentZone.name}}
-							<span>[name]</span>
-							<span>[go]</span>
+							<span *ngIf="location.borders.parentZone.customName">
+								{{location.borders.parentZone.customName}}
+							</span>
+							<span *ngIf="!location.borders.parentZone.customName">
+								{{location.borders.parentZone.name}}
+							</span>
+							<span class="link"
+								  (click)="name(location.borders.parentZone)">
+								[name]
+							</span>
+							<span class="link"
+								  (click)="moveTo(location.borders.parentZone)">
+								[go]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.north">
-							North Wilderness
-							<span>[name]</span>
-							<span>[go]</span>
+							<span *ngIf="location.borders.siblingZones.north.customName">
+								{{location.borders.siblingZones.north.customName}}
+							</span>
+
+							<span *ngIf="!location.borders.siblingZones.north.customName">
+								North Wilderness
+							</span>
+
+							<span class="link"
+								  (click)="name(location.borders.siblingZones.north)">
+								[name]
+							</span>
+							<span class="link"
+								  (click)="moveTo(location.borders.siblingZones.north)">
+								[go]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.east">
-							East Wilderness
-							<span>[name]</span>
-							<span>[go]</span>
+							<span *ngIf="location.borders.siblingZones.east.customName">
+								{{location.borders.siblingZones.east.customName}}
+							</span>
+
+							<span *ngIf="!location.borders.siblingZones.east.customName">
+								East Wilderness
+							</span>
+							<span class="link"
+								  (click)="name(location.borders.siblingZones.east)">
+								[name]
+							</span>
+							<span class="link"
+								  (click)="moveTo(location.borders.siblingZones.east)">
+								[go]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.south">
-							South Wilderness
-							<span>[name]</span>
-							<span>[go]</span>
+							<span *ngIf="location.borders.siblingZones.south.customName">
+								{{location.borders.siblingZones.south.customName}}
+							</span>
+
+							<span *ngIf="!location.borders.siblingZones.south.customName">
+								South Wilderness
+							</span>
+
+							<span class="link"
+								  (click)="name(location.borders.siblingZones.south)">
+								[name]
+							</span>
+							<span class="link"
+								  (click)="moveTo(location.borders.siblingZones.south)">
+								[go]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.west">
-							West Wilderness
-							<span>[name]</span>
-							<span>[go]</span>
+							<span *ngIf="location.borders.siblingZones.west.customName">
+								{{location.borders.siblingZones.west.customName}}
+							</span>
+
+							<span *ngIf="!location.borders.siblingZones.west.customName">
+								West Wilderness
+							</span>
+
+							<span class="link"
+								  (click)="name(location.borders.siblingZones.west)">
+								[name]
+							</span>
+							<span class="link"
+								  (click)="moveTo(location.borders.siblingZones.west)">
+								[go]
+							</span>
 						</li>
 						<div *ngFor="let childZone of location.borders.childZones">
 							<li>
-								{{childZone.name}}
-								<span>[name]</span>
-								<span>[go]</span>
+								<span *ngIf="childZone.customName">
+									{{childZone.customName}}
+								</span>
+
+								<span *ngIf="!childZone.customName">
+									{{childZone.name}}
+								</span>
+								<span class="link"
+								  	  (click)="name(childZone)">
+								  	[name]
+								  </span>
+								<span class="link"
+								  	  (click)="moveTo(childZone)">
+								  	[go]
+								</span>
 							</li>
 						</div>
 					</ul>

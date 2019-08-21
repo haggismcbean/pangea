@@ -86,4 +86,14 @@ export class ZoneWebService {
         return this.api
             .post(url);
     }
+
+    public name(zoneId: number, name: string): any {
+        const url = `zone/name`;
+
+        return this.api
+            .post(url, {
+                zoneId: zoneId,
+                name: name
+            });
+    }
 }

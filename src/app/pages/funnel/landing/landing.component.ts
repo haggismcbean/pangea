@@ -76,6 +76,7 @@ export class LandingComponent implements OnInit {
 
                 if (message.class === 'reset') {
                     this.setOptions();
+                    this.panel = undefined;
                 }
             });
 
