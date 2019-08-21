@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 
 import { Message } from '../models/message.model';
 import { CharacterService } from './character.service';
+import { UserService } from './user.service';
 
 @Injectable()
 export class WebSocketService {
@@ -18,7 +19,8 @@ export class WebSocketService {
     private mainFeedStream;
 
     constructor (
-        private characterService: CharacterService
+        private characterService: CharacterService,
+        private userService: UserService
     ) {}
 
     public addFeedStream(feedStream): void {
@@ -62,6 +64,7 @@ export class WebSocketService {
 
         echo.join(channelId)
             .listen('MessageSent', (e) => {
+                console.log('web socket presence message received!', e);
                 this.handleMessage(e.message);
             })
             .here((users) => {
@@ -107,6 +110,11 @@ export class WebSocketService {
                     this.mainFeedStream
                         .next(resetMessage);
                 });
+        }
+
+        if (message.change === 'group') {
+            console.log('connecting presence:', `group.${message.change_id}`);
+            this.connectPresence(this.userService.getUser().token, `group.${message.change_id}`);
         }
     }
 }
