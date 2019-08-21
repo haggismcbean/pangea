@@ -1,0 +1,14 @@
+@import '../../../../styles/globals.scss';
+@import '../../../../styles/colours.scss';
+@import '../../../../styles/table.scss';
+
+.location__person-online {
+	border-radius: 10em;
+	width: 5px;
+	height: 5px;
+	background-color: $text-title-color;
+	border: 1px solid $text-normal-color;
+	display: inline-block;
+	position: relative;
+	left: 2px;
+}

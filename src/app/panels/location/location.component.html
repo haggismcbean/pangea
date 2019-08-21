@@ -5,20 +5,70 @@
 		</legend>
 		<div class="location__title">
 			<div class="location__weather">
+				<span>It is {{location.season}}</span>
 				<pre class="location__weather-glyph"
 					 [innerHtml]="weatherGlyph">
 				</pre>
 				<span>{{location.weather}}</span>
+
+				<div class="location__actions">
+					<span>Terraforming</span>
+					<ul *ngIf="!location.parent_zone">
+						<li>[camp]</li>
+						<li>[mine]</li>
+						<li>[farm]</li>
+						<li>[explore]</li>
+					</ul>
+				</div>
 			</div>
 			<div class="location__description">
 				<span>{{location.description}}</span>
-				<div>
+				<div *ngIf="!location.parent_zone">
 					<span>It has an average amount of plants</span>
 					<span class="link">
 						[See plants]
 					</span>
 				</div>
+				
+				<div class="location__neighbours">
+					<span class="location__neighbours-title">Neighbouring Locations</span>
+					<ul class="location__neighbours-list">
+						<li *ngIf="location.borders.parentZone">
+							{{location.borders.parentZone.name}}
+							<span>[name]</span>
+							<span>[go]</span>
+						</li>
+						<li *ngIf="location.borders.siblingZones.north">
+							North Wilderness
+							<span>[name]</span>
+							<span>[go]</span>
+						</li>
+						<li *ngIf="location.borders.siblingZones.east">
+							East Wilderness
+							<span>[name]</span>
+							<span>[go]</span>
+						</li>
+						<li *ngIf="location.borders.siblingZones.south">
+							South Wilderness
+							<span>[name]</span>
+							<span>[go]</span>
+						</li>
+						<li *ngIf="location.borders.siblingZones.west">
+							West Wilderness
+							<span>[name]</span>
+							<span>[go]</span>
+						</li>
+						<div *ngFor="let childZone of location.borders.childZones">
+							<li>
+								{{childZone.name}}
+								<span>[name]</span>
+								<span>[go]</span>
+							</li>
+						</div>
+					</ul>
+				</div>
 			</div>
+
 		</div>
 
 		<div class="table__options">
@@ -38,138 +88,30 @@
 
 		<div class="location__items"
 			 *ngIf="location.display.tabs.isShowingItems">
-			<span class="announcement">Items</span>
-			<div *ngIf="!location.display.isShowingItems">
-				<span>{{location.items.length}} things lying around</span>
-				<span class="link"
-					  (click)="toggleShowItems()">
-					Show
-				</span>
-			</div>
-
-			<div class="location__items-list"
-				 *ngIf="location.display.isShowingItems">
-				<div *ngFor="let item of location.items"
-					 class="expandable"
-					 (click)="item.isShowing = !item.isShowing"
-					 [ngClass]="{'expandable--is-showing': !!item.isShowing}">
-
-					{{item.count}} {{item.name}}
-
-					<span class="link"
-						  (click)="collect(item)">
-						<span>[take]</span>
-					</span>
-
-					<div class="expandable__detail"
-						 *ngIf="item.isShowing">
-						{{item.description}}
-					</div>
-				</div>
-
-				<span class="link"
-					  (click)="toggleShowItems()">
-					Hide
-				</span>
-			</div>
+			<pan-items [mainFeedStream]="mainFeedStream"
+					   [promptStream]="promptStream"
+					   [optionsStream]="optionsStream"
+					   [items]="location.items">
+			</pan-items>
 		</div>
 
 		<div class="location__people"
 			 *ngIf="location.display.tabs.isShowingPeople">
-			<span class="announcement">People</span>
-			<div *ngFor="let person of location.characters">
-				<div class="expandable"
-					 (click)="person.isShowing = !person.isShowing"
-					 *ngIf="person.isAwake && !location.display.isShowingSleepers || location.display.isShowingSleepers"
-					 [ngClass]="{'expandable--is-showing': !!person.isShowing}">
-
-					<div class="location__person-online"
-						 *ngIf="person.isAwake">
-					</div>
-					{{person.name}}
-
-					<span class="link"
-						  (click)="talk($event, person)">
-						[Talk]
-					</span>
-
-					<span class="link"
-						  (click)="give(person)">
-						[Give]
-					</span>
-
-					<span class="link"
-						  (click)="point(person)">
-						[Point]
-					</span>
-
-					<span class="link"
-						  (click)="attack(person)">
-						[Attack]
-					</span>
-
-					<div class="expandable__detail"
-						 *ngIf="person.isShowing">
-						{{person.appearance}}
-					</div>
-				</div>
-
-			</div>
-
-			<div class="location__sleeping-people">
-				<div *ngIf="!location.display.isShowingSleepers">
-					Plus {{location.asleepPeopleCount}} people sleeping
-
-					<span class="link"
-						  (click)="toggleShowSleepers()">
-						Show
-					</span>
-				</div>
-
-				<div *ngIf="location.display.isShowingSleepers"
-					 class="link"
-					 (click)="toggleShowSleepers()">
-					Hide
-				</div>
-			</div>
+			<pan-people [mainFeedStream]="mainFeedStream"
+					    [promptStream]="promptStream"
+						[optionsStream]="optionsStream"
+						[people]="location.characters"
+						[asleepPeopleCount]="location.asleepPeopleCount">
+			</pan-people>
 		</div>
 
 		<div class="location__activities"
 			 *ngIf="location.display.tabs.isShowingActivities">
-			<span class="announcement">Activities</span>
-			<div *ngFor="let activity of location.activities">
-				<div class="expandable"
-					 (click)="activity.isShowing = !activity.isShowing"
-					 [ngClass]="{'expandable--is-showing': !!activity.isShowing}">
-
-					<span *ngIf="activity.type === 'crafting'">
-						{{activity.type}} {{activity.item.name}} : {{activity.progress}}%
-					</span>
-
-					<span class="link"
-						  (click)="workOn(activity)">
-						[work]
-					</span>
-
-					<div *ngIf="activity.isShowing">
-						<ul *ngFor="let ingredient of activity.requiredIngredients">
-							<li class="expandable__detail"
-							    *ngIf="ingredient.item_type">
-							    <span *ngIf="ingredient.suppliedIngredient">
-							    	{{ingredient.suppliedIngredient.count}} of {{ingredient.quantity_min}} {{ingredient.item_type}}
-							    </span>
-							    <span *ngIf="!ingredient.suppliedIngredient">
-							    	0 of {{ingredient.quantity_min}} {{ingredient.item_type}}
-							    </span>
-							    <span class="link"
-							    	  (click)="addResource(activity, ingredient)">[add]</span>
-							</li>
-							<li class="expandable__detail"
-							    *ngIf="ingredient.item">{{ingredient.item.name}}</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<pan-activities [mainFeedStream]="mainFeedStream"
+					        [promptStream]="promptStream"
+						    [optionsStream]="optionsStream"
+						    [activities]="location.activities">
+			</pan-activities>
 		</div>
 	</fieldset>
 </form>

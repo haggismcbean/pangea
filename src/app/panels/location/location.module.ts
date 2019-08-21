@@ -6,6 +6,9 @@ import { CommonModule } from '@angular/common';
 // import { ActionsModule } from '../../../actions/actions.module';
 
 import { LocationComponent } from './location.component';
+import { ActivitiesComponent } from './sub-panels/activities/activities.component';
+import { ItemsComponent } from './sub-panels/items/items.component';
+import { PeopleComponent } from './sub-panels/people/people.component';
 
 @NgModule({
     imports: [
@@ -15,10 +18,16 @@ import { LocationComponent } from './location.component';
     providers: [
     ],
     declarations: [
-        LocationComponent
+        LocationComponent,
+        ActivitiesComponent,
+        ItemsComponent,
+        PeopleComponent
     ],
     exports: [
-        LocationComponent
+        LocationComponent,
+        ActivitiesComponent,
+        ItemsComponent,
+        PeopleComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
 })

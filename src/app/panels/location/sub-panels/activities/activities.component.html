@@ -1,0 +1,34 @@
+<span class="announcement">Activities</span>
+<div *ngFor="let activity of activities">
+	<div class="expandable"
+		 (click)="activity.isShowing = !activity.isShowing"
+		 [ngClass]="{'expandable--is-showing': !!activity.isShowing}">
+
+		<span *ngIf="activity.type === 'crafting'">
+			{{activity.type}} {{activity.item.name}} : {{activity.progress}}%
+		</span>
+
+		<span class="link"
+			  (click)="workOn(activity)">
+			[work]
+		</span>
+
+		<div *ngIf="activity.isShowing">
+			<ul *ngFor="let ingredient of activity.requiredIngredients">
+				<li class="expandable__detail"
+				    *ngIf="ingredient.item_type">
+				    <span *ngIf="ingredient.suppliedIngredient">
+				    	{{ingredient.suppliedIngredient.count}} of {{ingredient.quantity_min}} {{ingredient.item_type}}
+				    </span>
+				    <span *ngIf="!ingredient.suppliedIngredient">
+				    	0 of {{ingredient.quantity_min}} {{ingredient.item_type}}
+				    </span>
+				    <span class="link"
+				    	  (click)="addResource(activity, ingredient)">[add]</span>
+				</li>
+				<li class="expandable__detail"
+				    *ngIf="ingredient.item">{{ingredient.item.name}}</li>
+			</ul>
+		</div>
+	</div>
+</div>

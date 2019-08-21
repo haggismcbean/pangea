@@ -1,0 +1,21 @@
+<span class="announcement">Items</span>
+
+<div class="location__items-list">
+	<div *ngFor="let item of items"
+		 class="expandable"
+		 (click)="item.isShowing = !item.isShowing"
+		 [ngClass]="{'expandable--is-showing': !!item.isShowing}">
+
+		{{item.count}} {{item.name}}
+
+		<span class="link"
+			  (click)="collect(item)">
+			<span>[take]</span>
+		</span>
+
+		<div class="expandable__detail"
+			 *ngIf="item.isShowing">
+			{{item.description}}
+		</div>
+	</div>
+</div>

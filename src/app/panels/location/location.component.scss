@@ -18,19 +18,27 @@
 
 .location__description {
     margin-top: 1em;
-    margin-left: 2ch;
+    margin-left: 2ch;	
 }
 
-.location__person-online {
-	border-radius: 10em;
-	width: 5px;
-	height: 5px;
-	background-color: $text-title-color;
-	border: 1px solid $text-normal-color;
-	display: inline-block;
-	position: relative;
-	top: -2px;
-	left: 2px;
+.location__neighbours {
+	margin-top: 1em;
+}
+
+.location__neighbours-title {
+	font-weight: 600;
+}
+
+.location__neighbours-list {
+	max-height: 10em;
+	border: 1px solid $input-border-color;
+	overflow: scroll;
+	padding: 1ch 1ch;
+	margin-bottom: 1em;
+}
+
+.location__actions {
+	margin-top: 1em;
 }
 
 .table__options {

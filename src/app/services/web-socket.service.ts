@@ -97,7 +97,7 @@ export class WebSocketService {
 
     private refreshSubscription(message) {
         if (message.change === 'zone') {
-            // TODO - OTHER CHANGE ZONE TASKS: JOINING AND LEAVING ROOMS, ENSURING ALL ENDPOINTS UPDATED
+            // TODO - OTHER CHANGE ZONE TASKS: JOINING AND LEAVING ROOMS
             const character = this.characterService
                 .getCharacters(true)
                 .subscribe(() => {

@@ -1,0 +1,56 @@
+<span class="announcement">People</span>
+	<div *ngFor="let person of people">
+		<div class="expandable"
+			 (click)="person.isShowing = !person.isShowing"
+			 *ngIf="person.isAwake && !isShowingSleepers || isShowingSleepers"
+			 [ngClass]="{'expandable--is-showing': !!person.isShowing}">
+
+			<div class="location__person-online"
+				 *ngIf="person.isAwake">
+			</div>
+			{{person.name}}
+
+			<span class="link"
+				  (click)="talk($event, person)">
+				[Talk]
+			</span>
+
+			<span class="link"
+				  (click)="give(person)">
+				[Give]
+			</span>
+
+			<span class="link"
+				  (click)="point(person)">
+				[Point]
+			</span>
+
+			<span class="link"
+				  (click)="attack(person)">
+				[Attack]
+			</span>
+
+			<div class="expandable__detail"
+				 *ngIf="person.isShowing">
+				{{person.appearance}}
+			</div>
+		</div>
+
+	</div>
+
+	<div class="location__sleeping-people">
+		<div *ngIf="!isShowingSleepers">
+			Plus {{asleepPeopleCount}} people sleeping
+
+			<span class="link"
+				  (click)="toggleShowSleepers()">
+				Show
+			</span>
+		</div>
+
+		<div *ngIf="isShowingSleepers"
+			 class="link"
+			 (click)="toggleShowSleepers()">
+			Hide
+		</div>
+	</div>
