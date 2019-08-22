@@ -38,4 +38,14 @@ export class MessagesWebService {
                 targetId: targetCharacter.id
             });
     }
+
+    public sendGroupMessage(message, sourceCharacter) {
+        const url = `group/messages`;
+
+        return this.api
+            .post(url, {
+                message: message,
+                sourceId: sourceCharacter.id
+            });
+    }
 }

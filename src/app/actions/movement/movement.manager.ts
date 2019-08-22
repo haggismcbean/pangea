@@ -76,11 +76,15 @@ export class MovementManager {
     }
 
     private onZoneOptionSelect(zone): void {
+        console.log('zone: ', zone);
         this.zoneService
             .changeZones(zone.id)
             .subscribe((response) => {
+                console.log('okay now we reset');
                 const resetMessage = new Message(0);
                 resetMessage.class = 'reset';
+
+                this.mainFeedStream.next(resetMessage);
             });
     }
 }

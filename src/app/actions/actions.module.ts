@@ -7,11 +7,15 @@ import { CharacterCreationManager } from './character-creation/character-creatio
 import { LocationManager } from './location/location.manager';
 import { MovementManager } from './movement/movement.manager';
 import { LabourManager } from './labour/labour.manager';
+import { SpeakingManager } from './speaking/speaking.manager';
 
 import { HuntingManager } from './labour/hunting/hunting.manager';
 import { FarmingManager } from './labour/farming/farming.manager';
 import { MiningManager } from './labour/mining/mining.manager';
 import { ExploringManager } from './labour/exploring/exploring.manager';
+
+import { GroupSpeakManager } from './speaking/group-speak/group-speak.manager';
+import { ZoneSpeakManager } from './speaking/zone-speak/zone-speak.manager';
 
 @NgModule({
     imports: [
@@ -24,10 +28,13 @@ import { ExploringManager } from './labour/exploring/exploring.manager';
         LocationManager,
         MovementManager,
         LabourManager,
+        SpeakingManager,
         HuntingManager,
         FarmingManager,
         MiningManager,
-        ExploringManager
+        ExploringManager,
+        GroupSpeakManager,
+        ZoneSpeakManager
     ],
     declarations: [
     ],

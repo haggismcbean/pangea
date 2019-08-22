@@ -27,6 +27,23 @@ export class WebSocketService {
         this.mainFeedStream = feedStream;
     }
 
+    public leaveChannel(token, channelId): void {
+        const echo = new Echo({
+            broadcaster: 'socket.io',
+            host: 'http://local.pangea-api.com:6001',
+            auth:
+            {
+                headers:
+                {
+                    'Authorization': 'Bearer ' + token
+                },
+            },
+            client: io
+        });
+
+        echo.leave(channelId);
+    }
+
     public connect(token, channelId): void {
         const echo = new Echo({
             broadcaster: 'socket.io',
@@ -99,10 +116,19 @@ export class WebSocketService {
     }
 
     private refreshSubscription(message) {
+        const token = this.userService.getUser().token;
+        const character = this.characterService.getCurrent();
+
         if (message.change === 'zone') {
-            // TODO - OTHER CHANGE ZONE TASKS: JOINING AND LEAVING ROOMS
-            const character = this.characterService
-                .getCharacters(true)
+            this.leaveChannel(token, `zone.{character.zoneId}`);
+            if (character.groupId) {
+                this.leaveChannel(token, `group.{character.groupId}`);
+            }
+
+            this.characterService
+                .getCharacters({
+                    isCacheBust: true
+                })
                 .subscribe(() => {
                     const resetMessage = new Message(0);
                     resetMessage.class = 'reset';
@@ -114,7 +140,7 @@ export class WebSocketService {
 
         if (message.change === 'group') {
             console.log('connecting presence:', `group.${message.change_id}`);
-            this.connectPresence(this.userService.getUser().token, `group.${message.change_id}`);
+            this.connectPresence(token, `group.${message.change_id}`);
         }
     }
 }

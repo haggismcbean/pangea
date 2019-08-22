@@ -1,17 +1,23 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, flatMap } from 'rxjs/operators';
 
 // import { Zone } from '../models/character.model';
 import { ZoneWebService } from '../web-services/zone-web.service';
+import { CharacterService } from '../services/character.service';
+import { UserService } from '../services/user.service';
+import { WebSocketService } from '../services/web-socket.service';
 
 import * as _ from 'lodash';
 
 @Injectable()
 export class ZoneService {
     constructor(
-        private zoneWebService: ZoneWebService
+        private zoneWebService: ZoneWebService,
+        private characterService: CharacterService,
+        private userService: UserService,
+        private webSocketService: WebSocketService
     ) {}
 
     public getBorderingZones(zoneId: number): Observable<any> {
@@ -20,8 +26,23 @@ export class ZoneService {
     }
 
     public changeZones(zoneId: number): Observable<any> {
+        const character = this.characterService.getCurrent();
+        const token = this.userService.getUser().token;
+        // whenever we change zones, we need to leave all the chat rooms we're part of
+        this.webSocketService.leaveChannel(token, `zone.${character.zoneId}`);
+        this.webSocketService.leaveChannel(token, `group.${character.groupId}`);
+
         return this.zoneWebService
-            .changeZones(zoneId);
+            .changeZones(zoneId)
+            .pipe(
+                flatMap((newZone) => {
+                    this.webSocketService.connectPresence(token, `zone.${zoneId}`);
+                    return this.characterService
+                        .getCharacters({
+                            isCacheBust: true
+                        });
+                })
+            );
     }
 
     public getZoneCharacters(zoneId: number): Observable<any> {

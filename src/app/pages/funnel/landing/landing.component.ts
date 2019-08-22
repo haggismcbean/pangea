@@ -16,6 +16,7 @@ import { CharacterCreationManager } from '../../../actions/character-creation/ch
 import { LocationManager } from '../../../actions/location/location.manager';
 import { MovementManager } from '../../../actions/movement/movement.manager';
 import { LabourManager } from '../../../actions/labour/labour.manager';
+import { SpeakingManager } from '../../../actions/speaking/speaking.manager';
 
 import { CharacterService } from '../../../services/character.service';
 import { ZoneService } from '../../../services/zone.service';
@@ -52,6 +53,7 @@ export class LandingComponent implements OnInit {
         private locationManager: LocationManager,
         private movementManager: MovementManager,
         private labourManager: LabourManager,
+        private speakingManager: SpeakingManager,
 
         private characterService: CharacterService,
         private zoneService: ZoneService,
@@ -202,6 +204,9 @@ export class LandingComponent implements OnInit {
 
         // do
         this.labourManager.init(this.mainFeedStream, this.optionsStream, this.promptStream, this.panelStream);
+
+        // speak to
+        this.speakingManager.init(this.mainFeedStream, this.optionsStream, this.promptStream, this.panelStream);
 
         // move to
         this.movementManager.init(this.mainFeedStream, this.optionsStream, this.promptStream);

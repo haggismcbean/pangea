@@ -17,7 +17,7 @@ export class CharacterService {
         private characterWebService: CharacterWebService
     ) {}
 
-    public getCharacters(isCacheBust): Observable<Character[]> {
+    public getCharacters({ isCacheBust }): Observable<Character[]> {
         if (this.characters && !isCacheBust) {
             return of(this.characters);
         } else {
@@ -171,6 +171,7 @@ export class CharacterService {
         character.userId = _character.user_id;
         character.weight = _character.weight;
         character.zoneId = _character.zone_id;
+        character.groupId = _character.group_id;
         character.isDead = !!_character.is_dead;
         character.hunger = _character.hunger;
         character.health = _character.hunger;

@@ -17,4 +17,9 @@ export class MessagesService {
         return this.messagesWebService
             .sendCharacterMessage(message, sourceCharacter, targetCharacter);
     }
+
+    public sendGroupMessage(message, sourceCharacter) {
+        return this.messagesWebService
+            .sendGroupMessage(message, sourceCharacter);
+    }
 }

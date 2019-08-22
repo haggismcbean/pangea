@@ -40,7 +40,9 @@ export class InventoryComponent implements OnInit {
             });
 
         this.characterService
-            .getCharacters(true)
+            .getCharacters({
+                isCacheBust: true
+            })
             .subscribe(() => {
                 this.character = this.characterService.getCurrent();
                 console.log('character: ', this.character);

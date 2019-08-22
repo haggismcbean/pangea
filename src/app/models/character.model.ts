@@ -18,6 +18,7 @@ export class Character {
     public userId: number;
     public weight: number;
     public zoneId: number;
+    public groupId: number;
     public isDead: boolean;
     public health: number;
     public hunger: number;
