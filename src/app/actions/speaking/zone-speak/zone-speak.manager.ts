@@ -29,7 +29,6 @@ export class ZoneSpeakManager {
     public init(mainFeedStream, optionsStream, promptStream, parentOption): void {
         this.character = this.characterService.getCurrent();
 
-
         this.mainFeedStream = mainFeedStream;
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
@@ -37,7 +36,7 @@ export class ZoneSpeakManager {
         this.zoneService
             .getDescription(this.character.zoneId)
             .subscribe((zone) => {
-                if (zone.parent_id) {
+                if (zone.parent_zone) {
                     const zoneSpeakOption = new Option('location');
 
                     parentOption.setOption(zoneSpeakOption);

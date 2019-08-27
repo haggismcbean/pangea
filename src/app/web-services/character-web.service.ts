@@ -25,6 +25,15 @@ export class CharacterWebService {
             .get(url);
     }
 
+    public getCharacter(characterId): any {
+        const url = `character/${characterId}`;
+
+        console.log('making request', `character/${characterId}`);
+
+        return this.api
+            .get(url);
+    }
+
     public inventory(characterId): any {
         const url = `character/${characterId}/inventory`;
 
@@ -159,5 +168,12 @@ export class CharacterWebService {
                 sourceId: sourceCharacterId,
                 targetId: targetCharacterId
             });
+    }
+
+    public getLastMessage(characterId: number) {
+        const url = `character/${characterId}/last_message`;
+
+        return this.api
+            .get(url);
     }
 }

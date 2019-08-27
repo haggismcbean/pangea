@@ -45,7 +45,6 @@ export class InventoryComponent implements OnInit {
             })
             .subscribe(() => {
                 this.character = this.characterService.getCurrent();
-                console.log('character: ', this.character);
             });
 
         this.setPerson();

@@ -179,4 +179,9 @@ export class CharacterService {
 
         return character;
     }
+
+    public getLastMessage(characterId: number) {
+        return this.characterWebService
+            .getLastMessage(characterId);
+    }
 }

@@ -29,7 +29,9 @@ export class WebSocketService {
     }
 
     public leaveChannel(token, channelId): void {
-        this.groupChannel.leave(channelId);
+        if (this.groupChannel) {
+            this.groupChannel.leave(channelId);
+        }
     }
 
     public connect(token, channelId): void {
@@ -48,7 +50,6 @@ export class WebSocketService {
 
         echo.private(channelId)
             .listen('MessageSent', (e) => {
-                console.log('web socket message received!', e);
                 this.handleMessage(e.message);
             });
     }
@@ -69,23 +70,17 @@ export class WebSocketService {
 
         echo.join(channelId)
             .listen('MessageSent', (e) => {
-                console.log('web socket presence message received!', e);
                 this.handleMessage(e.message);
             })
-            .here((users) => {
-                console.log('here: ', users);
-                this.zoneUsers = users;
+            .here((characters) => {
+                this.zoneUsers = characters;
                 this.zoneUsersStream.next(this.zoneUsers);
             })
-            .joining((user) => {
-                console.log('joining: ', user);
-                this.zoneUsers.push(user);
-                this.zoneUsersStream.next(this.zoneUsers);
+            .joining((character) => {
+                this.handleCharacterJoining(character);
             })
-            .leaving((user) => {
-                console.log('leaving: ', user);
-                _.remove(this.zoneUsers, user.id);
-                this.zoneUsersStream.next(this.zoneUsers);
+            .leaving((character) => {
+                this.handleCharacterLeaving(character);
             });
 
         if (channelId.indexOf('group') > -1) {
@@ -134,5 +129,65 @@ export class WebSocketService {
         if (message.change === 'group') {
             this.connectPresence(token, `group.${message.change_id}`);
         }
+    }
+
+    private handleCharacterJoining(character) {
+        this.zoneUsers.push(character);
+        this.zoneUsersStream.next(this.zoneUsers);
+
+        // send joining message
+        this.characterService
+            .getCharacters({
+                isCacheBust: true
+            })
+            .subscribe(() => {
+                this.characterService
+                    .getLastMessage(character.id)
+                    .subscribe((lastMessage) => {
+                        if (lastMessage.change === 'zone') {
+                            const message = new Message(0);
+                            message.setText(`${character.name} has arrived`);
+
+                            this.mainFeedStream
+                                .next(message);
+                        } else {
+                            const message = new Message(0);
+                            message.setText(`${character.name} has woken up`);
+
+                            this.mainFeedStream
+                                .next(message);
+                        }
+                    });
+            });
+    }
+
+    private handleCharacterLeaving(character) {
+        _.remove(this.zoneUsers, character.id);
+        this.zoneUsersStream.next(this.zoneUsers);
+
+        // send leaving message
+        this.characterService
+            .getCharacters({
+                isCacheBust: true
+            })
+            .subscribe(() => {
+                this.characterService
+                    .getLastMessage(character.id)
+                    .subscribe((lastMessage) => {
+                        if (lastMessage.change === 'zone' && lastMessage.change_id !== character.zoneId) {
+                            const message = new Message(0);
+                            message.setText(`${character.name} has left`);
+
+                            this.mainFeedStream
+                                .next(message);
+                        } else {
+                            const message = new Message(0);
+                            message.setText(`${character.name} has fallen asleep`);
+
+                            this.mainFeedStream
+                                .next(message);
+                        }
+                    });
+            });
     }
 }

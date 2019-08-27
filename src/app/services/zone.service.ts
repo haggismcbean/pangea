@@ -28,6 +28,7 @@ export class ZoneService {
     public changeZones(zoneId: number): Observable<any> {
         const character = this.characterService.getCurrent();
         const token = this.userService.getUser().token;
+
         // whenever we change zones, we need to leave all the chat rooms we're part of
         this.webSocketService.leaveChannel(token, `zone.${character.zoneId}`);
         this.webSocketService.leaveChannel(token, `group.${character.groupId}`);
