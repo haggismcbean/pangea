@@ -34,8 +34,6 @@ export class ZoneSpeakManager {
         this.optionsStream = optionsStream;
         this.promptStream = promptStream;
 
-        console.log('this.character: ', this.character);
-
         this.zoneService
             .getDescription(this.character.zoneId)
             .subscribe((zone) => {

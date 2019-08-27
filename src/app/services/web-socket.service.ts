@@ -17,6 +17,7 @@ export class WebSocketService {
     public zoneUsersStream = new BehaviorSubject(this.zoneUsers);
 
     private mainFeedStream;
+    private groupChannel;
 
     constructor (
         private characterService: CharacterService,
@@ -28,20 +29,7 @@ export class WebSocketService {
     }
 
     public leaveChannel(token, channelId): void {
-        const echo = new Echo({
-            broadcaster: 'socket.io',
-            host: 'http://local.pangea-api.com:6001',
-            auth:
-            {
-                headers:
-                {
-                    'Authorization': 'Bearer ' + token
-                },
-            },
-            client: io
-        });
-
-        echo.leave(channelId);
+        this.groupChannel.leave(channelId);
     }
 
     public connect(token, channelId): void {
@@ -91,14 +79,19 @@ export class WebSocketService {
             })
             .joining((user) => {
                 console.log('joining: ', user);
-                _.remove(this.zoneUsers, user.id);
+                this.zoneUsers.push(user);
                 this.zoneUsersStream.next(this.zoneUsers);
             })
             .leaving((user) => {
                 console.log('leaving: ', user);
-                this.zoneUsers.push(user);
+                _.remove(this.zoneUsers, user.id);
                 this.zoneUsersStream.next(this.zoneUsers);
             });
+
+        if (channelId.indexOf('group') > -1) {
+            this.groupChannel = echo;
+        }
+
     }
 
     private handleMessage(_message) {
@@ -139,7 +132,6 @@ export class WebSocketService {
         }
 
         if (message.change === 'group') {
-            console.log('connecting presence:', `group.${message.change_id}`);
             this.connectPresence(token, `group.${message.change_id}`);
         }
     }
