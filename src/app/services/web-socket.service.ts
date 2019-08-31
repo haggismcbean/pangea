@@ -50,6 +50,7 @@ export class WebSocketService {
 
         echo.private(channelId)
             .listen('MessageSent', (e) => {
+                console.log('message', e);
                 this.handleMessage(e.message);
             });
     }
@@ -70,16 +71,20 @@ export class WebSocketService {
 
         echo.join(channelId)
             .listen('MessageSent', (e) => {
+                console.log('message', e);
                 this.handleMessage(e.message);
             })
             .here((characters) => {
+                console.log('here', characters);
                 this.zoneUsers = characters;
                 this.zoneUsersStream.next(this.zoneUsers);
             })
             .joining((character) => {
+                console.log('joining', character);
                 this.handleCharacterJoining(character);
             })
             .leaving((character) => {
+                console.log('leaving', character);
                 this.handleCharacterLeaving(character);
             });
 
@@ -141,23 +146,11 @@ export class WebSocketService {
                 isCacheBust: true
             })
             .subscribe(() => {
-                this.characterService
-                    .getLastMessage(character.id)
-                    .subscribe((lastMessage) => {
-                        if (lastMessage.change === 'zone') {
-                            const message = new Message(0);
-                            message.setText(`${character.name} has arrived`);
+                const message = new Message(0);
+                message.setText(`${character.name} has woken up`);
 
-                            this.mainFeedStream
-                                .next(message);
-                        } else {
-                            const message = new Message(0);
-                            message.setText(`${character.name} has woken up`);
-
-                            this.mainFeedStream
-                                .next(message);
-                        }
-                    });
+                this.mainFeedStream
+                    .next(message);
             });
     }
 
@@ -171,23 +164,11 @@ export class WebSocketService {
                 isCacheBust: true
             })
             .subscribe(() => {
-                this.characterService
-                    .getLastMessage(character.id)
-                    .subscribe((lastMessage) => {
-                        if (lastMessage.change === 'zone' && lastMessage.change_id !== character.zoneId) {
-                            const message = new Message(0);
-                            message.setText(`${character.name} has left`);
+                const message = new Message(0);
+                message.setText(`${character.name} has fallen asleep`);
 
-                            this.mainFeedStream
-                                .next(message);
-                        } else {
-                            const message = new Message(0);
-                            message.setText(`${character.name} has fallen asleep`);
-
-                            this.mainFeedStream
-                                .next(message);
-                        }
-                    });
+                this.mainFeedStream
+                    .next(message);
             });
     }
 }

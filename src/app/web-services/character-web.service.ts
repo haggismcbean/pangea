@@ -25,6 +25,13 @@ export class CharacterWebService {
             .get(url);
     }
 
+    public getUserCharacters(): Observable<any> {
+        const url = `user_characters`;
+
+        return this.api
+            .get(url);
+    }
+
     public getCharacter(characterId): any {
         const url = `character/${characterId}`;
 

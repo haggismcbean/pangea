@@ -42,9 +42,7 @@ export class LoginManager {
         this.promptStream = promptStream;
 
         this.characterService
-            .getCharacters({
-                isCacheBust: false
-            })
+            .getUserCharacters()
             .subscribe(
                 (characters: Character[]) => {
                     this.clearMessageFeed();
@@ -63,7 +61,6 @@ export class LoginManager {
 
                     this.optionsStream.next(loginOption);
                 });
-
     }
 
     private onOptionSelected() {

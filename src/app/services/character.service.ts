@@ -17,6 +17,16 @@ export class CharacterService {
         private characterWebService: CharacterWebService
     ) {}
 
+    public getUserCharacters(): Observable<Character[]> {
+        return this.characterWebService
+            .getUserCharacters()
+            .pipe(
+                map((characters) => {
+                    return this.newCharacters(characters);
+                })
+            );
+    }
+
     public getCharacters({ isCacheBust }): Observable<Character[]> {
         if (this.characters && !isCacheBust) {
             return of(this.characters);
