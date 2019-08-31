@@ -7,6 +7,8 @@ import { combineLatest } from 'rxjs';
 import { CharacterService } from '../../services/character.service';
 import { WebSocketService } from '../../services/web-socket.service';
 
+import { Prompt } from '../../actions/prompt.model';
+import { Option } from '../../actions/option.model';
 import { Message } from '../../models/message.model';
 import { Character } from '../../models/character.model';
 
@@ -18,6 +20,9 @@ import { characterGlyph } from './constants/character';
     styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
+    @Input() public promptStream;
+    @Input() public optionsStream;
+
     public character: Character;
 
     public inventory = {
@@ -58,43 +63,59 @@ export class InventoryComponent implements OnInit {
         }
     }
 
-    // private handleItemDescriptionOptionSelected(item) {
-    //     const itemDescription = new Message(0);
-    //     itemDescription.setText(
-    //         `You look at a ${item.name}. ${item.description}There is a total of ${item.count}`
-    //     );
+    public drop(item) {
+        const amountPrompt = new Prompt(`how much would you like to put down? (max ${item.count})`);
 
-    //     this.mainFeedStream
-    //         .next(itemDescription);
+        amountPrompt
+            .answerStream
+            .subscribe((amount: string) => {
+                const itemQuantity = Number(amount);
 
-    //     this.resetOptions();
-    // }
+                if (itemQuantity < 0 || itemQuantity > item.count) {
+                    return;
+                }
 
-    // private handleItemPutDownOptionSelected(item) {
-    //     const amountPrompt = new Prompt(`how much would you like to put down? (max ${item.count})`);
+                item.count -= itemQuantity;
 
-    //     amountPrompt
-    //         .answerStream
-    //         .subscribe((amount: string) => {
-    //             const itemQuantity = Number(amount);
+                this.characterService
+                    .putDown(item.id, itemQuantity)
+                    .subscribe(
+                        (response) => {
+                            console.log('response: ', response);
+                        }
+                    );
+            });
 
-    //             if (itemQuantity < 0 || itemQuantity > item.count) {
-    //                 this.resetOptions();
-    //                 return;
-    //             }
+        this.promptStream.next(amountPrompt);
+    }
 
-    //             item.count -= itemQuantity;
+    public give(item) {
+        const amountPrompt = new Prompt(`how much would you like to give? (max ${item.count})`);
 
-    //             this.characterService
-    //                 .putDown(item.id, itemQuantity)
-    //                 .subscribe(
-    //                     (response) => {
-    //                         console.log('response: ', response);
-    //                     },
-    //                     (error) => this.resetOptions()
-    //                 );
-    //         });
+        amountPrompt
+            .answerStream
+            .subscribe((amount: string) => {
+                this.characterService
+                    .getCharacters({ isCacheBust: true })
+                    .subscribe((characters) => {
+                        _.forEach(characters, character => {
+                            const characterOption = new Option(character.name);
 
-    //     this.promptStream.next(amountPrompt);
-    // }
+                            characterOption
+                                .selectedStream
+                                .subscribe(() => {
+                                    this.characterService
+                                        .giveItem(item.id, amount, character.id)
+                                        .subscribe((response) => {
+                                            console.log('response: ', response);
+                                        });
+                                });
+
+                            this.optionsStream.next(characterOption);
+                        });
+                    });
+            });
+
+        this.promptStream.next(amountPrompt);
+    }
 }

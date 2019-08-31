@@ -180,7 +180,7 @@ export class CharacterService {
         return character;
     }
 
-    public getLastMessage(characterId: number) {
+    public getLastMessage(characterId: number): Observable<any> {
         return this.characterWebService
             .getLastMessage(characterId);
     }
