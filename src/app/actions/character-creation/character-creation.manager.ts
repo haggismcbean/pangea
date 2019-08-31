@@ -34,25 +34,31 @@ export class CharacterCreationManager {
         this.characterService
             .create()
             .subscribe((character) => {
-                this.sendMessage('Name: ' + character.name, 'system');
+                const source = {
+                    id: 0,
+                    name: 'system'
+                };
 
-                this.sendMessage('Appearance:', 'system');
-                this.sendMessage(character.appearance, 'system');
+                this.sendMessage('Name: ' + character.name, source);
 
-                this.sendMessage('Traits:', 'system');
-                this.sendMessage(character.personality, 'system');
+                this.sendMessage('Appearance:', source);
+                this.sendMessage(character.appearance, source);
 
-                this.sendMessage('Bio:', 'system');
-                this.sendMessage(character.backstory, 'system');
+                this.sendMessage('Traits:', source);
+                this.sendMessage(character.personality, source);
+
+                this.sendMessage('Bio:', source);
+                this.sendMessage(character.backstory, source);
 
                 this.sendPrompt('Confirm details (y/n)', character);
             });
     }
 
-    private sendMessage(messageText: string, messageClass: string): void {
+    private sendMessage(messageText: string, source: any): void {
         const message = new Message(0);
         message.setText(messageText);
-        message.setClass(messageClass);
+        message.setSource(source);
+        message.setDate(Date.now());
 
         this.mainFeedStream.next(message);
     }

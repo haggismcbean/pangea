@@ -52,7 +52,11 @@ export class LandingManager {
         const message = new Message(0);
         message.setText(text);
         message.setClass('announcement');
-        message.setDate('');
+        message.setDate(Date.now());
+        message.setSource({
+            id: 0,
+            name: 'system'
+        });
 
         return message;
     }
@@ -61,7 +65,11 @@ export class LandingManager {
         const message = new Message(0);
         message.setText(text);
         message.setClass('cta');
-        message.setDate('');
+        message.setDate(Date.now());
+        message.setSource({
+            id: 0,
+            name: 'system'
+        });
 
         return message;
     }
@@ -69,6 +77,11 @@ export class LandingManager {
     private getMessage(text: string) {
         const message = new Message(0);
         message.setText(text);
+        message.setDate(Date.now());
+        message.setSource({
+            id: 0,
+            name: 'system'
+        });
 
         return message;
     }

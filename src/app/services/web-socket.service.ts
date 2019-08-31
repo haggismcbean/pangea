@@ -99,6 +99,11 @@ export class WebSocketService {
     private handleMessage(_message) {
         if (this.mainFeedStream) {
             const message = new Message(0);
+            message.setSource({
+                id: _message.source_id,
+                name: _message.source_name
+            });
+            message.setDate(_message.created_at);
             message.setText(_message.message);
             const character = this.characterService.getCurrent();
 

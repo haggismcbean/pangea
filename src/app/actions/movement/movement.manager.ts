@@ -80,7 +80,6 @@ export class MovementManager {
         this.zoneService
             .changeZones(zone.id)
             .subscribe((response) => {
-                console.log('okay now we reset');
                 const resetMessage = new Message(0);
                 resetMessage.class = 'reset';
 

@@ -70,6 +70,10 @@ export class LandingComponent implements OnInit {
 
         this.mainFeedStream
             .subscribe((message: Message) => {
+                if (!message.date) {
+                    message.setDate(Date.now());
+                }
+
                 this.feed.addMessage(message);
 
                 if (message.class === 'error') {
@@ -172,26 +176,46 @@ export class LandingComponent implements OnInit {
                 const intro = new Message(0);
                 intro.setText(wakeUpText.intro);
                 intro.setClass('');
+                intro.setSource({
+                    id: 0,
+                    name: 'system'
+                });
                 delayedMessages.addMessage(intro);
 
                 const location = new Message(0);
                 location.setText('You find yourself in ' + wakeUpText.zone.description);
                 location.setClass('');
+                location.setSource({
+                    id: 0,
+                    name: 'system'
+                });
                 delayedMessages.addMessage(location);
 
                 const farNature = new Message(0);
                 farNature.setText(wakeUpText.farNature);
                 farNature.setClass('');
+                farNature.setSource({
+                    id: 0,
+                    name: 'system'
+                });
                 delayedMessages.addMessage(farNature);
 
                 const closeNature = new Message(0);
                 closeNature.setText(wakeUpText.closeNature);
                 closeNature.setClass('');
+                closeNature.setSource({
+                    id: 0,
+                    name: 'system'
+                });
                 delayedMessages.addMessage(closeNature);
 
                 const drone = new Message(0);
                 drone.setText(wakeUpText.drone);
                 drone.setClass('');
+                drone.setSource({
+                    id: 0,
+                    name: 'system'
+                });
                 delayedMessages.addMessage(drone);
             });
     }

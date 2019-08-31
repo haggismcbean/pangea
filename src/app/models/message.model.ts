@@ -1,11 +1,19 @@
+import * as moment from 'moment';
+
 export class Message {
 
     public id: number;
     public text: string;
-    public class: string;
     public date: string;
     public isShowing: boolean;
     public isClear: boolean;
+
+    public source: {
+        id: null,
+        name: null
+    };
+    public class: string;
+
     public action: any;
 
     constructor(id: number) {
@@ -24,7 +32,13 @@ export class Message {
     }
 
     public setDate(date: any): Message {
-        this.date = date;
+        this.date = moment(date);
+        return this;
+    }
+
+    public setSource(source): Message {
+        // character (name), system
+        this.source = source;
         return this;
     }
 

@@ -21,5 +21,22 @@
 	bottom: 0.5em;
 	left: 0.5em;
 	width: calc(100% - 1em);
+}
 
+.message {
+	display: flex;
+	flex-direction: row;
+}
+
+.message__details {
+	padding: 0 1ch 0.5em;
+	flex: 0 0 12ch;
+}
+
+.message__body {
+
+}
+
+.message__source, .message__date {
+	display: block;
 }

@@ -57,8 +57,12 @@ export class ActivitiesComponent {
                         });
 
                         if (!itemToAdd) {
-                            console.log('fail');
                             const errorMessage = new Message(0);
+                            errorMessage.setDate(Date.now());
+                            errorMessage.setSource({
+                                id: 0,
+                                name: 'system'
+                            });
                             errorMessage.setText(`Cannot find any of that item in your inventory`);
 
                             this.mainFeedStream

@@ -1,6 +1,19 @@
 <div class="feed-component__container box">
-    <div *ngFor="let message of messages">
-        <p *ngIf="message.isShowing"
+    <div class="message"
+         *ngFor="let message of messages">
+        <div class="message__details">
+            <span class="message__source">
+                {{message.source.name}}
+            </span>
+            <span class="message__date">
+                {{message.date.format('D.MMM')}}
+            </span>
+            <span class="message__date">
+                {{message.date.format('h:mma')}}
+            </span>
+        </div>
+        <p class="message__body"
+           *ngIf="message.isShowing"
            [class]="'message ' + message.class">
             {{message.text}}
 

@@ -45,18 +45,6 @@ export class RegisterManager {
         this.optionsStream.next(registerOption);
     }
 
-    // private onOptionSelected() {
-    //     const namePrompt = new Prompt('name');
-
-    //     namePrompt
-    //         .answerStream
-    //         .subscribe((name: string) => {
-    //             this.onNameProvided(name);
-    //         });
-
-    //     this.promptStream.next(namePrompt);
-    // }
-
     private onNameProvided(name: string) {
         const emailPrompt = new Prompt('email');
 
@@ -108,7 +96,6 @@ export class RegisterManager {
                     this.userRegisteredStream
                         .next(registerResponseData);
                 }, (rawError) => {
-                    console.log('error: ', rawError);
                     const error = new Message(0);
                     error.setText('error: ' + rawError.error.error);
                     error.setClass('error');
