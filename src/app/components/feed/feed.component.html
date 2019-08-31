@@ -3,6 +3,12 @@
         <p *ngIf="message.isShowing"
            [class]="'message ' + message.class">
             {{message.text}}
+
+            <span class="link"
+            	  *ngIf="message.action"
+            	  (click)="message.action.callback()">
+            	[{{message.action.text}}]
+            </span>
         </p>
     </div>
 </div>

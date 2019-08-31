@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { Message } from '../models/message.model';
 import { CharacterService } from './character.service';
 import { UserService } from './user.service';
+import { ZoneWebService } from '../web-services/zone-web.service';
 
 @Injectable()
 export class WebSocketService {
@@ -21,7 +22,8 @@ export class WebSocketService {
 
     constructor (
         private characterService: CharacterService,
-        private userService: UserService
+        private userService: UserService,
+        private zoneWebService: ZoneWebService
     ) {}
 
     public addFeedStream(feedStream): void {
@@ -98,6 +100,20 @@ export class WebSocketService {
         if (this.mainFeedStream) {
             const message = new Message(0);
             message.setText(_message.message);
+            const character = this.characterService.getCurrent();
+
+            // If the message is a user leaving, we can opt to follow the user
+            if (_message.change === 'zone' && _message.source_id !== character.id) {
+                message.setAction({
+                    text: 'follow',
+                    callback: () => {
+                        const targetZone = _message.change_id;
+                        this.zoneWebService
+                            .changeZones(targetZone)
+                            .subscribe();
+                    }
+                });
+            }
 
             this.mainFeedStream
                 .next(message);

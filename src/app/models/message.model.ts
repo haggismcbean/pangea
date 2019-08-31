@@ -6,6 +6,7 @@ export class Message {
     public date: string;
     public isShowing: boolean;
     public isClear: boolean;
+    public action: any;
 
     constructor(id: number) {
         this.id = id;
@@ -24,6 +25,11 @@ export class Message {
 
     public setDate(date: any): Message {
         this.date = date;
+        return this;
+    }
+
+    public setAction(action: any): Message {
+        this.action = action;
         return this;
     }
 }

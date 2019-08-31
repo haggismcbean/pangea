@@ -36,6 +36,10 @@ export class FeedComponent implements OnInit {
             });
     }
 
+    public follow() {
+        console.log('clicked');
+    }
+
     private showNextMessage() {
         const nextMessage = _.find(this.messages, {isShowing: false});
 
