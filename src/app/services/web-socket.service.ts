@@ -162,11 +162,19 @@ export class WebSocketService {
                 isCacheBust: true
             })
             .subscribe(() => {
-                const message = new Message(0);
-                message.setText(`${character.name} has woken up`);
+                this.characterService
+                    .getLastMessage(character.id)
+                    .subscribe((lastMessage) => {
+                        if (lastMessage.change === 'zone') {
+                            // hopefully we'll get an arrival message from the backend
+                        } else {
+                            const message = new Message(0);
+                            message.setText(`${character.name} has woken up`);
 
-                this.mainFeedStream
-                    .next(message);
+                            this.mainFeedStream
+                                .next(message);
+                        }
+                    });
             });
     }
 
@@ -180,11 +188,19 @@ export class WebSocketService {
                 isCacheBust: true
             })
             .subscribe(() => {
-                const message = new Message(0);
-                message.setText(`${character.name} has fallen asleep`);
+                this.characterService
+                    .getLastMessage(character.id)
+                    .subscribe((lastMessage) => {
+                        if (lastMessage.change === 'zone' && lastMessage.change_id !== character.zoneId) {
+                            // hopefully we'll get a leave message from the backend
+                        } else {
+                            const message = new Message(0);
+                            message.setText(`${character.name} has fallen asleep`);
 
-                this.mainFeedStream
-                    .next(message);
+                            this.mainFeedStream
+                                .next(message);
+                        }
+                    });
             });
     }
 }
