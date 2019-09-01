@@ -114,4 +114,20 @@ export class PeopleComponent implements OnInit {
     public toggleShowSleepers() {
         this.isShowingSleepers = !this.isShowingSleepers;
     }
+
+    public name(targetCharacter) {
+        const namePrompt = new Prompt(`Name:`);
+
+        namePrompt
+            .answerStream
+            .subscribe((newName) => {
+                this.characterService
+                    .name(targetCharacter, newName)
+                    .subscribe((response) => {
+                        targetCharacter.name = newName;
+                    });
+            });
+
+        this.promptStream.next(namePrompt);
+    }
 }

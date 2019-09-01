@@ -8,7 +8,7 @@
 			<div class="location__person-online"
 				 *ngIf="person.isAwake">
 			</div>
-			{{person.name}}
+			{{person.name || 'Unknown'}}
 
 			<span class="link"
 				  (click)="talk($event, person)">
@@ -28,6 +28,11 @@
 			<span class="link"
 				  (click)="attack(person)">
 				[Attack]
+			</span>
+
+			<span class="link"
+				  (click)="name(person)">
+				[Name]
 			</span>
 
 			<div class="expandable__detail"

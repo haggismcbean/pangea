@@ -4,7 +4,7 @@ export class Message {
 
     public id: number;
     public text: string;
-    public date: string;
+    public date: moment.Moment;
     public isShowing: boolean;
     public isClear: boolean;
 

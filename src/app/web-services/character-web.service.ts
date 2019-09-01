@@ -183,4 +183,14 @@ export class CharacterWebService {
         return this.api
             .get(url);
     }
+
+    public name(characterId: number, newName: string) {
+        const url = `character/name`;
+
+        return this.api
+            .post(url, {
+                namedCharacterId: characterId,
+                name: newName
+            });
+    }
 }

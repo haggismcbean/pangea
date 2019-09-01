@@ -194,4 +194,9 @@ export class CharacterService {
         return this.characterWebService
             .getLastMessage(characterId);
     }
+
+    public name(targetCharacter: Character, newName: string): Observable<any> {
+        return this.characterWebService
+            .name(targetCharacter.id, newName);
+    }
 }

@@ -2,7 +2,8 @@
     <div class="message"
          *ngFor="let message of messages">
         <div class="message__details">
-            <span class="message__source">
+            <span class="message__source"
+                  *ngIf="message.source">
                 {{message.source.name}}
             </span>
             <span class="message__date">
