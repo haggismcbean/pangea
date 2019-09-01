@@ -98,9 +98,26 @@ export class PlantsComponent implements OnInit {
         this.promptStream.next(plantPrompt);
     }
 
-    public share() {
-        // TODO
-        // have to choose user/s somehow
+    public share(plant) {
+        this.characterService
+            .getCharacters({ isCacheBust: true })
+            .subscribe((characters) => {
+                _.forEach(characters, character => {
+                    const characterOption = new Option(character.name);
+
+                    characterOption
+                        .selectedStream
+                        .subscribe(() => {
+                            this.plantService
+                                .share(plant, character)
+                                .subscribe((response) => {
+                                    console.log('response: ', response);
+                                });
+                        });
+
+                    this.optionsStream.next(characterOption);
+                });
+            });
     }
 
     public gather(plant, plantPiece) {

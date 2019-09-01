@@ -21,4 +21,9 @@ export class PlantService {
         return this.plantWebService
             .name(plant, newName);
     }
+
+    public share(plant: any, character: string) {
+        return this.plantWebService
+            .share(plant, character);
+    }
 }

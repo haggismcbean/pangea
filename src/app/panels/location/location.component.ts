@@ -255,7 +255,6 @@ export class LocationComponent implements OnInit {
                     characterOption
                         .selectedStream
                         .subscribe(() => {
-                            // todo - share zone (name and ZoneFinder) with character
                             this.zoneService
                                 .share(character, zone)
                                 .subscribe((response) => {

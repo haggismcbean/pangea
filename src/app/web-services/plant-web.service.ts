@@ -31,4 +31,14 @@ export class PlantWebService {
                 name: newName
             });
     }
+
+    public share(plant: any, character: any) {
+        const url = `plant/share`;
+
+        return this.api
+            .post(url, {
+                plantId: plant.id,
+                characterId: character.id
+            });
+    }
 }
