@@ -96,4 +96,14 @@ export class ZoneWebService {
                 name: name
             });
     }
+
+    public share(characterId: number, zoneId: number) {
+        const url = `zone/share`;
+
+        return this.api
+            .post(url, {
+                characterId: characterId,
+                zoneId: zoneId
+            });
+    }
 }

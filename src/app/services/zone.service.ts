@@ -90,4 +90,9 @@ export class ZoneService {
         return this.zoneWebService
             .name(zoneId, name);
     }
+
+    public share(character, zone): Observable<any> {
+        return this.zoneWebService
+            .share(character.id, zone.id);
+    }
 }

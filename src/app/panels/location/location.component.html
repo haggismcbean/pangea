@@ -60,6 +60,10 @@
 								  (click)="moveTo(location.borders.parentZone)">
 								[go]
 							</span>
+							<span class="link"
+								  (click)="share(location.borders.parentZone)">
+								[share]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.north">
 							<span *ngIf="location.borders.siblingZones.north.customName">
@@ -78,6 +82,10 @@
 								  (click)="moveTo(location.borders.siblingZones.north)">
 								[go]
 							</span>
+							<span class="link"
+								  (click)="share(location.borders.siblingZones.north)">
+								[share]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.east">
 							<span *ngIf="location.borders.siblingZones.east.customName">
@@ -94,6 +102,10 @@
 							<span class="link"
 								  (click)="moveTo(location.borders.siblingZones.east)">
 								[go]
+							</span>
+							<span class="link"
+								  (click)="share(location.borders.siblingZones.east)">
+								[share]
 							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.south">
@@ -113,6 +125,10 @@
 								  (click)="moveTo(location.borders.siblingZones.south)">
 								[go]
 							</span>
+							<span class="link"
+								  (click)="share(location.borders.siblingZones.south)">
+								[share]
+							</span>
 						</li>
 						<li *ngIf="location.borders.siblingZones.west">
 							<span *ngIf="location.borders.siblingZones.west.customName">
@@ -131,6 +147,10 @@
 								  (click)="moveTo(location.borders.siblingZones.west)">
 								[go]
 							</span>
+							<span class="link"
+								  (click)="share(location.borders.siblingZones.west)">
+								[share]
+							</span>
 						</li>
 						<div *ngFor="let childZone of location.borders.childZones">
 							<li>
@@ -148,6 +168,10 @@
 								<span class="link"
 								  	  (click)="moveTo(childZone)">
 								  	[go]
+								</span>
+								<span class="link"
+									  (click)="share(childZone)">
+									[share]
 								</span>
 							</li>
 						</div>

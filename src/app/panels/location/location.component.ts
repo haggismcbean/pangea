@@ -244,4 +244,27 @@ export class LocationComponent implements OnInit {
                 console.log('response: ', response);
             });
     }
+
+    public share(zone) {
+        this.characterService
+            .getCharacters({ isCacheBust: true })
+            .subscribe((characters) => {
+                _.forEach(characters, character => {
+                    const characterOption = new Option(character.name);
+
+                    characterOption
+                        .selectedStream
+                        .subscribe(() => {
+                            // todo - share zone (name and ZoneFinder) with character
+                            this.zoneService
+                                .share(character, zone)
+                                .subscribe((response) => {
+                                    console.log('response: ', response);
+                                });
+                        });
+
+                    this.optionsStream.next(characterOption);
+                });
+            });
+    }
 }
