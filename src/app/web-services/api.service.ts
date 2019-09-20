@@ -7,7 +7,7 @@ import { UserService } from '../services/user.service';
 
 @Injectable()
 export class ApiService {
-    private readonly baseUrl = 'http://local.pangea-api.com:8888/api';
+    private readonly baseUrl = 'http://api.pangeana.com/api';
 
     constructor(
         private http: HttpClient,
