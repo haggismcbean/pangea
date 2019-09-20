@@ -5526,7 +5526,7 @@ var WebSocketService = /** @class */ (function () {
         var _this = this;
         var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_2__({
             broadcaster: 'socket.io',
-            host: 'http://local.pangea-api.com:6001',
+            host: 'http://api.pangeana.com:6001',
             auth: {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -5834,7 +5834,7 @@ var ApiService = /** @class */ (function () {
     function ApiService(http, userService) {
         this.http = http;
         this.userService = userService;
-        this.baseUrl = 'http://local.pangea-api.com:8888/api';
+        this.baseUrl = 'http://api.pangeana.com/api';
     }
     ApiService.prototype.get = function (url, data) {
         url = this.baseUrl + "/" + url + this.getApiToken(url);
