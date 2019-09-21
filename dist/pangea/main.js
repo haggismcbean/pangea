@@ -5544,7 +5544,7 @@ var WebSocketService = /** @class */ (function () {
         var _this = this;
         var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_2__({
             broadcaster: 'socket.io',
-            host: 'http://local.pangea-api.com:6001',
+            host: 'http://api.pangeana.com:6001',
             auth: {
                 headers: {
                     'Authorization': 'Bearer ' + token

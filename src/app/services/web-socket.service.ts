@@ -60,7 +60,7 @@ export class WebSocketService {
     public connectPresence(token, channelId): void {
         const echo = new Echo({
             broadcaster: 'socket.io',
-            host: 'http://local.pangea-api.com:6001',
+            host: 'http://api.pangeana.com:6001',
             auth:
             {
                 headers:
