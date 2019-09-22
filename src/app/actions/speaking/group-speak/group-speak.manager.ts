@@ -52,6 +52,12 @@ export class GroupSpeakManager {
                     .sendGroupMessage(message, this.character)
                     .subscribe((response) => {
                         console.log('response: ', response);
+                    }, (response) => {
+                        const error = new Message(0);
+                        error.setText(response.error.message);
+                        error.setClass('error-notification');
+
+                        this.mainFeedStream.next(error);
                     });
             });
 
