@@ -80,6 +80,12 @@ export class MiningManager {
             .createMine()
             .subscribe((mineActivity) => {
                 console.log('creating mine: ', mineActivity);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -100,6 +106,12 @@ export class MiningManager {
                                 })
                                 .subscribe((mineActivity) => {
                                     console.log('you did something!', mineActivity);
+                                }, ({ error }) => {
+                                    const error = new Message(0);
+                                    message.setText(error.message);
+                                    message.setClass('error');
+
+                                    this.mainFeedStream.next(message);
                                 });
                         });
 
@@ -113,6 +125,12 @@ export class MiningManager {
             .reinforceMine()
             .subscribe((mineActivity) => {
                 console.log('reinforcing mine: ', mineActivity);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 }

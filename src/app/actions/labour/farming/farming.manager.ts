@@ -110,6 +110,12 @@ export class FarmingManager {
             .cancelActivity(huntActivity.id)
             .subscribe((response) => {
                 console.log('response: ', response);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -125,6 +131,12 @@ export class FarmingManager {
                     .subscribe(() => this.cancelActivity(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -140,6 +152,12 @@ export class FarmingManager {
                     .subscribe(() => this.cancelActivity(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -154,6 +172,12 @@ export class FarmingManager {
                     .subscribe(() => this.cancelActivity(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -168,6 +192,12 @@ export class FarmingManager {
                     .subscribe(() => this.cancelActivity(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -182,6 +212,12 @@ export class FarmingManager {
                     .subscribe(() => this.cancelActivity(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -196,6 +232,12 @@ export class FarmingManager {
                     .subscribe(() => this.cancelActivity(farmActivity));
 
                 this.optionsStream.next(cancelFarmOption);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 }

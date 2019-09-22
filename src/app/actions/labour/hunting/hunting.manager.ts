@@ -61,6 +61,12 @@ export class HuntingManager {
             .cancelActivity(huntActivity.id)
             .subscribe((response) => {
                 console.log('response: ', response);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 }

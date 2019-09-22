@@ -62,6 +62,12 @@ export class ExploringManager {
                     this.optionsStream.next(cancelActivityOption);
                 }
 
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 
@@ -70,6 +76,12 @@ export class ExploringManager {
             .cancelActivity(activity.id)
             .subscribe((response) => {
                 console.log('response: ', response);
+            }, ({ error }) => {
+                const error = new Message(0);
+                message.setText(error.message);
+                message.setClass('error');
+
+                this.mainFeedStream.next(message);
             });
     }
 }
