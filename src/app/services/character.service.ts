@@ -184,7 +184,7 @@ export class CharacterService {
         character.groupId = _character.group_id;
         character.isDead = !!_character.is_dead;
         character.hunger = _character.hunger;
-        character.health = _character.hunger;
+        character.health = _character.health;
         character.exposure = _character.exposure;
 
         return character;
