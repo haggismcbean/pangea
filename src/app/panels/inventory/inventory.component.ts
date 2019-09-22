@@ -48,8 +48,10 @@ export class InventoryComponent implements OnInit {
             .getCharacters({
                 isCacheBust: true
             })
-            .subscribe(() => {
+            .subscribe((characters) => {
+                console.log(characters);
                 this.character = this.characterService.getCurrent();
+
             });
 
         this.setPerson();

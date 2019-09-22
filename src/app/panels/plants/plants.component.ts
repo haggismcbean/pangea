@@ -143,6 +143,7 @@ export class PlantsComponent implements OnInit {
                             plant.inventory[plantPiece].count += amount;
                         } else {
                             plant.inventory[plantPiece] = {
+                                id: response.item_id
                                 count: amount
                             };
                         }
