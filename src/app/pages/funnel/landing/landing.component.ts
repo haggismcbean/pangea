@@ -74,6 +74,8 @@ export class LandingComponent implements OnInit {
                     message.setDate(Date.now());
                 }
 
+                console.log('new message: ', message);
+
                 this.feed.addMessage(message);
 
                 if (message.class === 'error') {

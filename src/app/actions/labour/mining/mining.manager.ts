@@ -80,12 +80,12 @@ export class MiningManager {
             .createMine()
             .subscribe((mineActivity) => {
                 console.log('creating mine: ', mineActivity);
-            }, ({ error }) => {
+            }, (response) => {
                 const error = new Message(0);
-                message.setText(error.message);
-                message.setClass('error');
+                error.setText(response.error.message);
+                error.setClass('error-notification');
 
-                this.mainFeedStream.next(message);
+                this.mainFeedStream.next(error);
             });
     }
 
@@ -106,12 +106,12 @@ export class MiningManager {
                                 })
                                 .subscribe((mineActivity) => {
                                     console.log('you did something!', mineActivity);
-                                }, ({ error }) => {
+                                }, (response) => {
                                     const error = new Message(0);
-                                    message.setText(error.message);
-                                    message.setClass('error');
+                                    error.setText(response.error.message);
+                                    error.setClass('error-notification');
 
-                                    this.mainFeedStream.next(message);
+                                    this.mainFeedStream.next(error);
                                 });
                         });
 
@@ -125,12 +125,12 @@ export class MiningManager {
             .reinforceMine()
             .subscribe((mineActivity) => {
                 console.log('reinforcing mine: ', mineActivity);
-            }, ({ error }) => {
+            }, (response) => {
                 const error = new Message(0);
-                message.setText(error.message);
-                message.setClass('error');
+                error.setText(response.error.message);
+                error.setClass('error-notification');
 
-                this.mainFeedStream.next(message);
+                this.mainFeedStream.next(error);
             });
     }
 }
