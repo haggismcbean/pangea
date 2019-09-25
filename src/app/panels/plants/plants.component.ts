@@ -143,7 +143,7 @@ export class PlantsComponent implements OnInit {
                             plant.inventory[plantPiece].count += amount;
                         } else {
                             plant.inventory[plantPiece] = {
-                                id: response.item_id
+                                id: response.item_id,
                                 count: amount
                             };
                         }
@@ -154,7 +154,6 @@ export class PlantsComponent implements OnInit {
     }
 
     public eat(inventoryItem) {
-        console.log('item :', inventoryItem);
         this.characterService
             .eat(inventoryItem.id)
             .subscribe((response) => {

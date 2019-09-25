@@ -42,7 +42,7 @@ export class LandingComponent implements OnInit {
     public promptStream;
     public panelStream;
 
-    public panel: string;
+    public panel: string = '';
 
     constructor(
         private router: Router,
@@ -82,7 +82,7 @@ export class LandingComponent implements OnInit {
 
                 if (message.class === 'reset') {
                     this.setOptions();
-                    this.panel = undefined;
+                    this.panel = '';
                 }
             });
 

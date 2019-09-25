@@ -1,36 +1,37 @@
 <div class="landing-page">
-	<div class="panels">
-	    <!-- Location -->
-	    <pan-location *ngIf="panel === 'location'"
-	    			  [mainFeedStream]="mainFeedStream"
-	    			  [promptStream]="promptStream"
-	    			  [optionsStream]="optionsStream">
-	    </pan-location>
+    <div class="panels">
+        <!-- Location -->
+        <pan-location *ngIf="panel === 'location'"
+                      [mainFeedStream]="mainFeedStream"
+                      [promptStream]="promptStream"
+                      [optionsStream]="optionsStream">
+        </pan-location>
 
-	    <!-- Plants -->
-	    <pan-plants *ngIf="panel === 'plants'"
-	    			[promptStream]="promptStream"
-	    			[optionsStream]="optionsStream">
-	    </pan-plants>
+        <!-- Plants -->
+        <pan-plants *ngIf="panel === 'plants'"
+                    [promptStream]="promptStream"
+                    [optionsStream]="optionsStream">
+        </pan-plants>
 
-	    <!-- Inventory -->
-	    <pan-inventory *ngIf="panel === 'inventory'"
-	    			   [promptStream]="promptStream"
-	    			   [optionsStream]="optionsStream">
-	    </pan-inventory>
+        <!-- Inventory -->
+        <pan-inventory *ngIf="panel === 'inventory'"
+                       [promptStream]="promptStream"
+                       [optionsStream]="optionsStream">
+        </pan-inventory>
 
-	    <!-- Crafting -->
-	    <pan-crafting *ngIf="panel === 'crafting'"
-	    		      [mainFeedStream]="mainFeedStream"
-	    			  [promptStream]="promptStream"
-	    			  [optionsStream]="optionsStream">
-	    </pan-crafting>
+        <!-- Crafting -->
+        <pan-crafting *ngIf="panel === 'crafting'"
+                      [mainFeedStream]="mainFeedStream"
+                      [promptStream]="promptStream"
+                      [optionsStream]="optionsStream">
+        </pan-crafting>
 
-		<!-- Main Text Feed -->
-	    <pan-feed class="feed"
-	              [feed]="feed"
-	    ></pan-feed>
-	</div>
+        <!-- Main Text Feed -->
+        <pan-feed *ngIf="panel === ''"
+                  class="feed"
+                  [feed]="feed"
+        ></pan-feed>
+    </div>
     <pan-input class="input"
                [options]="options"
                [originalOptions]="originalOptions"
