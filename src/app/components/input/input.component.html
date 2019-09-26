@@ -2,8 +2,9 @@
     <div class="text">
         <span class="input__current">{{promptText}}>&nbsp;</span>
         <span class="input__current"
-              [ngClass]="{'input__current--password': (prompt && prompt.isPassword)}">{{input}}</span>
-        <span class="input__suggestion">{{hint}}</span>
+              [ngClass]="{'input__current--password': (prompt && prompt.isPassword)}"
+              [innerHtml]="input.htmlInput">
+        </span>
     </div>
     <div class="options">
         <div class="option"

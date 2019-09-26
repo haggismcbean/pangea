@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, HostListener, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, OnChanges, HostListener, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import * as _ from 'lodash';
@@ -6,12 +6,17 @@ import * as _ from 'lodash';
 import { Option } from '../../actions/option.model';
 import { Prompt } from '../../actions/prompt.model';
 
+import { InputText } from './models/input-text.model';
+import { Selection } from './models/selection.model';
+import { HintedOption } from './models/hinted-option.model';
+
 @Component({
     selector: 'pan-input',
     templateUrl: 'input.component.html',
     styleUrls: [
         './input.component.scss',
     ],
+    encapsulation: ViewEncapsulation.None,
 })
 export class InputComponent implements OnInit, OnChanges {
     @Input() public options: Option[] = [];
@@ -20,14 +25,19 @@ export class InputComponent implements OnInit, OnChanges {
     @Input() public panelStream;
 
     public currentOptions: Option[];
-    public input = '';
-    public hint = '';
+    public hintedOption: HintedOption;
+
+    public selection: Selection;
+    public input: InputText;
+    // public promptText: PromptText;
+    // public keysMap: KeyMap;
+    // public optionTree: OptionTree;
+    // public hintedOption: HintedOption;
+
     public promptText = '';
-    public hintedOption: Option;
+    public hint;
 
     private keysMap = {};
-
-    private caretPosition = 0;
     private optionsTree = [];
     private currentOptionSuggestion = null;
 
@@ -59,7 +69,10 @@ export class InputComponent implements OnInit, OnChanges {
         this.handleKeypress(event);
     }
 
-    constructor() {}
+    constructor() {
+        this.selection = new Selection();
+        this.input = new InputText('', this.selection);
+    }
 
     public ngOnInit() {
         this.currentOptions = this.options;
@@ -85,7 +98,7 @@ export class InputComponent implements OnInit, OnChanges {
             return;
         }
 
-        const clippedInput = this.getAccountedForInput(this.input);
+        const clippedInput = this.getAccountedForInput(this.input.rawInput);
 
         option
             .selectedStream
@@ -111,6 +124,10 @@ export class InputComponent implements OnInit, OnChanges {
         // if user presses other special character
         if (keyboardEvent.key === 'Shift' || keyboardEvent.key === 'Meta' || keyboardEvent.key === 'Control') {
             return;
+        } else if (keyboardEvent.key === 'Alt') {
+            keyboardEvent.preventDefault();
+            return;
+
         } else {
             keyboardEvent.preventDefault();
         }
@@ -161,13 +178,13 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     private handleBackspace() {
-        this.input = this.input.slice(0, this.caretPosition - 1);
-        this.hint = '';
-        this.caretPosition--;
+        const inputLength = this.input.rawInput.length;
+        this.input.deleteText(inputLength - 1, inputLength);
+        this.selection.selectEnd(this.input.rawInput);
     }
 
     private resetOptions() {
-        if (_.last(this.optionsTree) && this.input.indexOf(_.last(this.optionsTree).name) === -1) {
+        if (_.last(this.optionsTree) && this.input.rawInput.indexOf(_.last(this.optionsTree).name) === -1) {
             this.optionsTree.pop();
 
             if (this.optionsTree.length === 0) {
@@ -182,8 +199,8 @@ export class InputComponent implements OnInit, OnChanges {
     // Enter
 
     private handleOptionsEnter() {
-        const clippedInput = this.getAccountedForInput(this.input);
-        _.replace(this.input, clippedInput, '');
+        const clippedInput = this.getAccountedForInput(this.input.rawInput);
+        _.replace(this.input.rawInput, clippedInput, '');
 
         const selectedOption = _.last(this.optionsTree);
 
@@ -196,9 +213,8 @@ export class InputComponent implements OnInit, OnChanges {
             this.resetInput();
         } else {
             this.currentOptions = this.options;
-            this.input = '';
+            this.input.deleteText();
             this.hint = '';
-            this.caretPosition = 0;
         }
     }
 
@@ -208,9 +224,8 @@ export class InputComponent implements OnInit, OnChanges {
             .next(this.input);
 
         this.prompt = undefined;
-        this.input = '';
+        this.input.deleteText();
         this.promptText = '';
-        this.caretPosition = this.input.length;
     }
 
     /////////////
@@ -218,9 +233,8 @@ export class InputComponent implements OnInit, OnChanges {
 
     private handleOptionsTab() {
         if (this.hint) {
-            this.input += this.hint + ' ';
+            this.input.addText(this.hint + ' ');
             this.hint = '';
-            this.caretPosition = this.input.length;
             this.optionsTree.push(this.hintedOption);
             this.currentOptions = this.hintedOption.options;
             this.hintedOption = undefined;
@@ -252,19 +266,30 @@ export class InputComponent implements OnInit, OnChanges {
         this.handleInput(keyboardEvent);
 
         if (this.currentOptions) {
-            this.hintedOption = this.getHintedOption(this.currentOptions, this.input);
+            const _hintedOption = this.getHintedOption(this.currentOptions, this.input.rawInput);
+            
+            if (_hintedOption) {
+                this.hintedOption = new HintedOption(_hintedOption);
+            }
         }
 
         if (this.hintedOption) {
-            this.hint = this.getHint(this.hintedOption, this.input);
+            this.hint = this.hintedOption.calculateHintText(this.getAccountedForInput(this.input.rawInput));
+            this.input.addText(this.hint);
+
+            const selectionStart = this.input.rawInput.length - this.hint.length;
+            this.selection.select(selectionStart);
+
+            this.input.calculateHtmlInput();
         } else {
             this.hint = '';
         }
     }
 
     private handleInput(keyboardEvent: KeyboardEvent) {
-        this.input += keyboardEvent.key;
-        this.caretPosition++;
+        this.input.deleteText(this.selection.start, this.selection.end);
+        this.input.addText(keyboardEvent.key);
+        this.selection.selectEnd(this.input.rawInput);
     }
 
     private getHintedOption(options: Option[], input: string): Option {
@@ -274,11 +299,6 @@ export class InputComponent implements OnInit, OnChanges {
         });
 
         return option;
-    }
-
-    private getHint(option: Option, input: string): string {
-        const clippedInput = this.getAccountedForInput(input);
-        return _.replace(option.name, clippedInput, '');
     }
 
     ////////////
@@ -299,10 +319,9 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     private resetInput() {
-        this.input = '';
+        this.input.deleteText();
         this.hint = '';
         this.promptText = '';
-        this.caretPosition = this.input.length;
         this.optionsTree = [];
         this.hintedOption = undefined;
     }
