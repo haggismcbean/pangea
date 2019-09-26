@@ -44,7 +44,7 @@ export class InputText {
         this.htmlInput += this.rawInput.slice(startPosition, endPosition);
         this.htmlInput += this.END_TAG;
 
-        if (endPosition) {
+        if (endPosition !== undefined) {
             this.htmlInput += this.rawInput.slice(endPosition);
         }
 

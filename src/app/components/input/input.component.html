@@ -8,7 +8,7 @@
     </div>
     <div class="options">
         <div class="option"
-             *ngFor="let option of currentOptions">
+             *ngFor="let option of optionsTree.currentOptions">
             <span class="option__root option__text"
                   (click)="onOptionClicked(option)">
                 {{option.name}}</span>

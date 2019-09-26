@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import { Subject } from 'rxjs';
 
 export class Option {
@@ -31,5 +33,9 @@ export class Option {
         }
 
         return this;
+    }
+
+    public hasChildOptions() {
+        return this.options && this.options.length > 0;
     }
 }
