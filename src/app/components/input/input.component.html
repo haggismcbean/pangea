@@ -5,7 +5,7 @@
               [ngClass]="{'input__current--password': (prompt && prompt.isPassword)}"
               [innerHtml]="inputText.htmlInput"
               (mousedown)="mousedown($event)"
-              (mouseup)="mouseup($event)"
+              (window:mouseup)="mouseup($event)"
               (mousemove)="mousemove($event)">
         </span>
     </div>

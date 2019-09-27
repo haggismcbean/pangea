@@ -132,6 +132,7 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     public mousedown($event) {
+        $event.preventDefault();
         if (!this.inputText) {
             return;
         }
@@ -146,6 +147,7 @@ export class InputComponent implements OnInit, OnChanges {
     }
 
     public mousemove($event) {
+        $event.preventDefault();
         if (!this.isMouseDown) {
             return;
         }
@@ -164,8 +166,8 @@ export class InputComponent implements OnInit, OnChanges {
         this.inputText.calculateHtmlInput();
     }
 
-    public mouseup() {
+    public mouseup($event) {
+        $event.preventDefault();
         this.isMouseDown = false;
-
     }
 }
