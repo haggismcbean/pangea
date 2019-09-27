@@ -15,6 +15,8 @@ export class OptionsMode {
     private originalOptions;
     private panelStream;
 
+    private navigator: any = window.navigator;
+
 	constructor(input: InputText, selection: Selection) {
 		this.inputText = input;
 		this.selection = selection;
@@ -85,6 +87,7 @@ export class OptionsMode {
             this.optionsTree.selectOption(this.hintedOption.option);
             this.hintedOption = undefined;
             this.selection.selectEnd(this.inputText.rawInput);
+            this.inputText.calculateHtmlInput();
         }
 	}
 
@@ -123,8 +126,9 @@ export class OptionsMode {
                 this.inputText.deleteText(this.selection.start, this.selection.end);
             }
 
+            const keyLength = keyboardEvent.key.length;
             this.inputText.addText(keyboardEvent.key, this.selection.start);
-            this.selection.select(this.selection.start + 1, this.selection.start + 2);
+            this.selection.select(this.selection.start + keyLength, this.selection.start + keyLength + 1);
         } else {
             this.inputText.deleteText(this.selection.start, this.selection.end);
             this.inputText.addText(keyboardEvent.key);
@@ -193,5 +197,29 @@ export class OptionsMode {
         }
 
         this.inputText.calculateHtmlInput();
+    }
+
+    public paste(pastedText) {
+        this.navigator.clipboard
+            .readText()
+            .then(clipboard => {
+                this.input({
+                    key: clipboard
+                });
+            });
+    }
+
+    public copy() {
+        this.navigator.clipboard
+            .writeText(this.inputText.getSelectedInput());
+    }
+
+    public cut() {
+        this.navigator.clipboard
+            .writeText(this.inputText.getSelectedInput())
+            .then(() => {
+                this.inputText.deleteText(this.selection.start, this.selection.end);
+                this.selection.select(this.selection.start, this.selection.start + 1);
+            });
     }
 }

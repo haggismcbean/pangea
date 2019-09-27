@@ -83,6 +83,24 @@ export class KeysMap {
             return;
         }
 
+        // user presses ctrl + v
+        if (keyboardEvent.key === 'v' && this.keysMap['Control']) {
+            this.actions.paste();
+            return;
+        }
+
+        // user presses ctrl + c
+        if (keyboardEvent.key === 'c' && this.keysMap['Control']) {
+            this.actions.copy();
+            return;
+        }
+
+        // user presses ctrl + x
+        if (keyboardEvent.key === 'x' && this.keysMap['Control']) {
+            this.actions.cut();
+            return;
+        }
+
         // otherwise
         this.actions.input(keyboardEvent);
     }

@@ -67,4 +67,10 @@ export class InputText {
 
         return unselectedInput;
     }
+
+    public getSelectedInput() {
+        const rawInput = this.rawInput;
+
+        return rawInput.slice(this.selection.start, this.selection.end);
+    }
 }

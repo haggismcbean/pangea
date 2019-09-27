@@ -11,6 +11,8 @@ export class PromptMode {
     private prompt;
     private panelStream;
 
+    private navigator: any = window.navigator;
+
 	constructor(input: InputText, selection: Selection) {
 		this.inputText = input;
 		this.selection = selection;
@@ -54,9 +56,20 @@ export class PromptMode {
 	}
 
 	public input(keyboardEvent) {
-        this.inputText.deleteText(this.selection.start, this.selection.end);
-        this.inputText.addText(keyboardEvent.key);
-        this.selection.selectEnd(this.inputText.rawInput);
+        if (this.selection.start !== this.inputText.rawInput.length) {
+            if (this.selection.start + 1 < this.selection.end) {
+                this.inputText.deleteText(this.selection.start, this.selection.end);
+            }
+
+            this.inputText.addText(keyboardEvent.key, this.selection.start);
+            this.selection.select(this.selection.start + 1, this.selection.start + 2);
+        } else {
+            this.inputText.deleteText(this.selection.start, this.selection.end);
+            this.inputText.addText(keyboardEvent.key);
+            this.selection.selectEnd(this.inputText.rawInput);
+        }
+
+        this.inputText.calculateHtmlInput();
 	}
 
 	public escape() {
@@ -88,5 +101,57 @@ export class PromptMode {
         }
 
         this.inputText.calculateHtmlInput();
+    }
+
+    public shiftArrow(direction) {
+        if (direction === 'left') {
+            if (this.selection.start === 0) {
+                return;
+            }
+
+            if (this.selection.blinker === this.selection.end && this.selection.start + 1 < this.selection.end) {
+                this.selection.select(this.selection.start, this.selection.end - 1);
+            } else {
+                this.selection.select(this.selection.start - 1, this.selection.end, this.selection.start - 1);
+            }
+        }
+
+        if (direction === 'right') {
+            if (this.selection.end === this.inputText.rawInput.length) {
+                return;
+            }
+
+            if (this.selection.blinker === this.selection.end) {
+                this.selection.select(this.selection.start, this.selection.end + 1);
+            } else {
+                this.selection.select(this.selection.start + 1, this.selection.end, this.selection.start + 1);
+            }
+        }
+
+        this.inputText.calculateHtmlInput();
+    }
+
+    public paste(pastedText) {
+        this.navigator.clipboard
+            .readText()
+            .then(clipboard => {
+                this.input({
+                    key: clipboard
+                });
+            });
+    }
+
+    public copy() {
+        this.navigator.clipboard
+            .writeText(this.inputText.getSelectedInput());
+    }
+
+    public cut() {
+        this.navigator.clipboard
+            .writeText(this.inputText.getSelectedInput())
+            .then(() => {
+                this.inputText.deleteText(this.selection.start, this.selection.end);
+                this.selection.select(this.selection.start, this.selection.start + 1);
+            });
     }
 }
