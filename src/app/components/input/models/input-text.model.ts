@@ -14,8 +14,16 @@ export class InputText {
         this.selection = selection;
     }
 
-    public addText(text) {
-        this.rawInput += text;
+    public addText(text, startPosition = undefined) {
+        if (!startPosition) {
+            this.rawInput += text;
+        } else {
+            const oldRawInput = this.rawInput;
+            this.rawInput = oldRawInput.slice(0, startPosition);
+            this.rawInput += text;
+            this.rawInput += oldRawInput.slice(startPosition);
+        }
+
         return this.calculateHtmlInput();
     }
 

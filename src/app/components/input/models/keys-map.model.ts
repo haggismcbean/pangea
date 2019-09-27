@@ -12,6 +12,8 @@ export class KeysMap {
     public handleKeypress(keyboardEvent: KeyboardEvent) {
         this.keysMap[keyboardEvent.key] = keyboardEvent.type === 'keydown';
 
+        // console.log(keyboardEvent.key);
+
         if (this.keysMap['Meta'] && this.keysMap['m'] || this.keysMap['Control'] && this.keysMap['m']) {
             keyboardEvent.preventDefault();
             return;
@@ -60,8 +62,24 @@ export class KeysMap {
         }
 
         // if user presses left
-        if (keyboardEvent.key === 'ArrowLeft' || keyboardEvent.key === 'ArrowRight') {
-            // TODO
+        if (keyboardEvent.key === 'ArrowLeft') {
+            if (this.keysMap['Shift']) {
+                this.actions.shiftArrow('left')
+            } else {
+                this.actions.arrow('left');
+            }
+
+            return;
+        }
+
+        // if user presses left
+        if (keyboardEvent.key === 'ArrowRight') {
+            if (this.keysMap['Shift']) {
+                this.actions.shiftArrow('right')
+            } else {
+                this.actions.arrow('right');
+            }
+
             return;
         }
 

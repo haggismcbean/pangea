@@ -10,6 +10,10 @@
 	background: $text-normal-color;
 }
 
+.input__current {
+	white-space: pre;
+}
+
 .text {
 	border-bottom: 1px solid $input-border-color;
 	padding: 1em;

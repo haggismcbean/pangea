@@ -63,14 +63,19 @@ export class OptionsMode {
 	}
 
 	private handleBackspace() {
-        if (this.selection.start !== this.selection.end) {
-            this.inputText.deleteText(this.selection.start, this.selection.end);
-        } else {
+        if (
+            this.selection.end - 1 === this.inputText.rawInput.length &&
+            this.selection.start + 1 >= this.selection.end
+        ) {
             const inputLength = this.inputText.rawInput.length;
             this.inputText.deleteText(inputLength - 1, inputLength);
+            this.selection.selectEnd(this.inputText.rawInput);
+        } else {
+            this.inputText.deleteText(this.selection.start, this.selection.end);
+            this.selection.select(this.selection.start, this.selection.start + 1);
         }
-
-        this.selection.selectEnd(this.inputText.rawInput);
+        
+        this.inputText.calculateHtmlInput();
 	}
 
 	public tab() {
@@ -79,6 +84,7 @@ export class OptionsMode {
             this.inputText.addText(' ');
             this.optionsTree.selectOption(this.hintedOption.option);
             this.hintedOption = undefined;
+            this.selection.selectEnd(this.inputText.rawInput);
         }
 	}
 
@@ -90,6 +96,8 @@ export class OptionsMode {
 
             if (_hintedOption) {
             	this.hintedOption = new HintedOption(_hintedOption);
+            } else {
+                this.hintedOption = undefined;
             }
         }
 
@@ -101,13 +109,27 @@ export class OptionsMode {
             this.selection.select(selectionStart);
 
             this.inputText.calculateHtmlInput();
+        } else if (this.selection.start === this.inputText.rawInput.length) {
+            this.inputText.deleteText(this.selection.start, this.selection.end);
+            this.selection.selectEnd(this.inputText.rawInput);
         }
+
+        this.inputText.calculateHtmlInput();
 	}
 
 	private handleInput(keyboardEvent) {
-        this.inputText.deleteText(this.selection.start, this.selection.end);
-        this.inputText.addText(keyboardEvent.key);
-        this.selection.selectEnd(this.inputText.rawInput);
+        if (!this.hintedOption && this.selection.start !== this.inputText.rawInput.length) {
+            if (this.selection.start + 1 < this.selection.end) {
+                this.inputText.deleteText(this.selection.start, this.selection.end);
+            }
+
+            this.inputText.addText(keyboardEvent.key, this.selection.start);
+            this.selection.select(this.selection.start + 1, this.selection.start + 2);
+        } else {
+            this.inputText.deleteText(this.selection.start, this.selection.end);
+            this.inputText.addText(keyboardEvent.key);
+            this.selection.selectEnd(this.inputText.rawInput);
+        }
 	}
 
 	public escape() {
@@ -122,4 +144,54 @@ export class OptionsMode {
         this.optionsTree.clearSelectedOptions();
         this.hintedOption = undefined;
 	}
+
+    // shared
+
+    public arrow(direction) {
+        if (direction === 'left') {
+            if (this.selection.start === 0) {
+                return;
+            }
+
+            this.selection.select(this.selection.start - 1, this.selection.start);
+        }
+
+        if (direction === 'right') {
+            if (this.selection.start === this.inputText.rawInput.length) {
+                return;
+            }
+
+            this.selection.select(this.selection.start + 1, this.selection.start + 2);
+        }
+
+        this.inputText.calculateHtmlInput();
+    }
+
+    public shiftArrow(direction) {
+        if (direction === 'left') {
+            if (this.selection.start === 0) {
+                return;
+            }
+
+            if (this.selection.blinker === this.selection.end && this.selection.start + 1 < this.selection.end) {
+                this.selection.select(this.selection.start, this.selection.end - 1);
+            } else {
+                this.selection.select(this.selection.start - 1, this.selection.end, this.selection.start - 1);
+            }
+        }
+
+        if (direction === 'right') {
+            if (this.selection.end === this.inputText.rawInput.length) {
+                return;
+            }
+
+            if (this.selection.blinker === this.selection.end) {
+                this.selection.select(this.selection.start, this.selection.end + 1);
+            } else {
+                this.selection.select(this.selection.start + 1, this.selection.end, this.selection.start + 1);
+            }
+        }
+
+        this.inputText.calculateHtmlInput();
+    }
 }
