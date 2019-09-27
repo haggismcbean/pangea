@@ -73,8 +73,13 @@ export class OptionsMode {
             this.inputText.deleteText(inputLength - 1, inputLength);
             this.selection.selectEnd(this.inputText.rawInput);
         } else {
-            this.inputText.deleteText(this.selection.start, this.selection.end);
-            this.selection.select(this.selection.start, this.selection.start + 1);
+            if (this.selection.end - this.selection.start === 1) {
+                this.inputText.deleteText(this.selection.start - 1, this.selection.start);
+                this.selection.select(this.selection.start - 1, this.selection.start);
+            } else {
+                this.inputText.deleteText(this.selection.start, this.selection.end);
+                this.selection.select(this.selection.start, this.selection.start + 1);
+            }
         }
         
         this.inputText.calculateHtmlInput();

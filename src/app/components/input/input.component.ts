@@ -42,6 +42,9 @@ export class InputComponent implements OnInit, OnChanges {
     private promptMode: PromptMode;
     private optionsMode: OptionsMode;
 
+    private isMouseDown: boolean = false;
+    private selectionStart: number;
+
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
         this.handleKeypress(event);
@@ -133,16 +136,36 @@ export class InputComponent implements OnInit, OnChanges {
             return;
         }
 
+        this.isMouseDown = true;
+
         const selectedElementClassName = _.first($event.path).className;
-        const selectionStart = parseInt(selectedElementClassName.replace('pangeana__input-position-', ''));
+        this.selectionStart = parseInt(selectedElementClassName.replace('pangeana__input-position-', ''));
 
-        console.log(selectionStart);
+        this.selection.select(this.selectionStart, this.selectionStart + 1);
+        this.inputText.calculateHtmlInput();
+    }
 
-        this.selection.select(selectionStart, selectionStart + 1);
+    public mousemove($event) {
+        if (!this.isMouseDown) {
+            return;
+        }
+
+        const selectedElementClassName = _.first($event.path).className;
+        const selectionPosition = parseInt(selectedElementClassName.replace('pangeana__input-position-', ''));
+    
+        if (selectionPosition > this.selectionStart) {
+            this.selection.select(this.selectionStart, selectionPosition);
+        }
+
+        if (selectionPosition < this.selectionStart) {
+            this.selection.select(selectionPosition, this.selectionStart);
+        }
+
         this.inputText.calculateHtmlInput();
     }
 
     public mouseup() {
+        this.isMouseDown = false;
 
     }
 }
