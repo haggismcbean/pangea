@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, HostListener, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, map, filter, buffer } from 'rxjs/operators';
 
 import * as _ from 'lodash';
 
@@ -45,6 +46,11 @@ export class InputComponent implements OnInit, OnChanges {
     private isMouseDown: boolean = false;
     private selectionStart: number;
 
+    private clickStream$;
+    private buffer$;
+    private doubleClick$;
+    private tripleClick$;
+
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
         this.handleKeypress(event);
@@ -71,6 +77,10 @@ export class InputComponent implements OnInit, OnChanges {
         this.currentMode = this.promptMode;
 
         this.keysMap = new KeysMap(this.currentMode, this.reset.bind(this));
+
+        this.initClickStreams();
+        this.watchDoubleClick();
+        this.watchTripleClick();
     }
 
     private initOptionsMode() {
@@ -85,6 +95,30 @@ export class InputComponent implements OnInit, OnChanges {
         this.promptMode.setPanelStream(this.panelStream);
     }
 
+    private initClickStreams() {
+        this.clickStream$ = new Subject();
+
+        this.buffer$ = this.clickStream$.pipe(
+            debounceTime(150)
+        );
+
+        this.doubleClick$ = this.clickStream$.pipe(
+            buffer(this.buffer$),
+            map((list: any) => {
+                return list.length;
+            }),
+            filter(x => x === 2),
+        );
+
+        this.tripleClick$ = this.clickStream$.pipe(
+            buffer(this.buffer$),
+            map((list: any) => {
+                return list.length;
+            }),
+            filter(x => x === 3),
+        );
+    }
+
     public ngOnChanges(changes) {
         if (!this.currentMode) {
             return;
@@ -92,7 +126,6 @@ export class InputComponent implements OnInit, OnChanges {
 
         if (changes.prompt && changes.prompt.currentValue) {
             this.promptText = changes.prompt.currentValue.name;
-            console.log('what, and again or sometihng? ', this.promptText);
             this.promptMode.setPrompt(changes.prompt.currentValue);
             this.currentMode = this.promptMode;
         } else {
@@ -137,6 +170,8 @@ export class InputComponent implements OnInit, OnChanges {
             return;
         }
 
+        this.clickStream$.next();
+
         this.isMouseDown = true;
 
         const selectedElementClassName = _.first($event.path).className;
@@ -169,5 +204,47 @@ export class InputComponent implements OnInit, OnChanges {
     public mouseup($event) {
         $event.preventDefault();
         this.isMouseDown = false;
+    }
+
+    private watchDoubleClick() {
+        this.doubleClick$
+        .subscribe(() => {
+            // highlight currently selected word
+            if (this.inputText.rawInput[this.selection.start] === ' ') {
+                return;
+            }
+
+            const words = this.inputText.rawInput.split(' ');
+
+            let letterCount = 0;
+            let clickedWord;
+            let firstLetter = 0;
+            let lastLetter = 0;
+
+            _.forEach(words, (word) => {
+                if (letterCount > this.selection.start) {
+                    return;
+                }
+
+                letterCount += word.length + 1;
+
+                if (letterCount > this.selection.start) {
+                    clickedWord = word;
+                    firstLetter = letterCount - word.length - 1;
+                    lastLetter = letterCount - 1;
+                }
+            });
+
+            this.selection.select(firstLetter, lastLetter);
+            this.inputText.calculateHtmlInput();
+        });
+    }
+
+    private watchTripleClick() {
+        this.tripleClick$
+        .subscribe(() => {
+            this.selection.selectAll(this.inputText.rawInput);
+            this.inputText.calculateHtmlInput();
+        });
     }
 }
