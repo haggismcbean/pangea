@@ -15,6 +15,10 @@ export class InputText {
     }
 
     public addText(text, startPosition = undefined) {
+        if (text.indexOf('<') > -1 || text.indexOf('>') > -1) {
+            return;
+        }
+
         if (!startPosition) {
             this.rawInput += text;
         } else {
@@ -44,6 +48,7 @@ export class InputText {
     }
 
     public calculateHtmlInput() {
+        // first we add the selection span
         const startPosition = this.selection.start;
         const endPosition = this.selection.end;
 
@@ -55,6 +60,33 @@ export class InputText {
         if (endPosition !== undefined) {
             this.htmlInput += this.rawInput.slice(endPosition);
         }
+
+        // then we wrap each letter in a span
+        const rawInputCharacters = this.htmlInput.split('');
+
+        let isHtmlTag = false;
+        let rawInputIndex = 0;
+
+        this.htmlInput = rawInputCharacters.reduce((htmlInput, rawInputCharacter) => {
+            if (rawInputCharacter === '<') {
+                isHtmlTag = true;
+            }
+
+            if (isHtmlTag) {
+                htmlInput += rawInputCharacter;
+            } else {
+                htmlInput += `<span class="pangeana__input-position-${rawInputIndex}">`;
+                htmlInput += rawInputCharacter;
+                rawInputIndex++
+                htmlInput += `</span>`;
+            }
+
+            if (rawInputCharacter === '>') {
+                isHtmlTag = false;
+            }
+
+            return htmlInput;
+        }, '');
 
         return this.htmlInput;
     }

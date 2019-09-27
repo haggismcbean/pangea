@@ -30,7 +30,7 @@ export class InputComponent implements OnInit, OnChanges {
     @Input() public panelStream;
 
     public selection: Selection;
-    public input: InputText;
+    public inputText: InputText;
     public optionsTree: OptionsTree;
     public hintedOption: HintedOption;
     // public promptText: PromptText;
@@ -56,13 +56,13 @@ export class InputComponent implements OnInit, OnChanges {
 
     public ngOnInit() {
         this.selection = new Selection();
-        this.input = new InputText('', this.selection);
+        this.inputText = new InputText('', this.selection);
         this.optionsTree = new OptionsTree(this.options);
 
-        this.promptMode = new PromptMode(this.input, this.selection);
+        this.promptMode = new PromptMode(this.inputText, this.selection);
         this.initPromptMode();
 
-        this.optionsMode = new OptionsMode(this.input, this.selection);
+        this.optionsMode = new OptionsMode(this.inputText, this.selection);
         this.initOptionsMode();
 
         this.currentMode = this.promptMode;
@@ -126,5 +126,23 @@ export class InputComponent implements OnInit, OnChanges {
         this.promptText = '';
         this.currentMode = this.optionsMode;
         this.keysMap = new KeysMap(this.currentMode, this.reset.bind(this));
+    }
+
+    public mousedown($event) {
+        if (!this.inputText) {
+            return;
+        }
+
+        const selectedElementClassName = _.first($event.path).className;
+        const selectionStart = parseInt(selectedElementClassName.replace('pangeana__input-position-', ''));
+
+        console.log(selectionStart);
+
+        this.selection.select(selectionStart, selectionStart + 1);
+        this.inputText.calculateHtmlInput();
+    }
+
+    public mouseup() {
+
     }
 }

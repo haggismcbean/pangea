@@ -3,7 +3,9 @@
         <span class="input__current">{{promptText}}>&nbsp;</span>
         <span class="input__current"
               [ngClass]="{'input__current--password': (prompt && prompt.isPassword)}"
-              [innerHtml]="input.htmlInput">
+              [innerHtml]="inputText.htmlInput"
+              (mousedown)="mousedown($event)"
+              (mouseup)="mouseup($event)">
         </span>
     </div>
     <div class="options">
