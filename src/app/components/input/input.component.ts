@@ -99,7 +99,7 @@ export class InputComponent implements OnInit, OnChanges {
         this.clickStream$ = new Subject();
 
         this.buffer$ = this.clickStream$.pipe(
-            debounceTime(150)
+            debounceTime(250)
         );
 
         this.doubleClick$ = this.clickStream$.pipe(
