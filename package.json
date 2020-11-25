@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "core-js": "^2.5.4",
-    "highlight.js": "^9.15.8",
+    "highlight.js": "^10.1.2",
     "laravel-echo": "^1.4.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
